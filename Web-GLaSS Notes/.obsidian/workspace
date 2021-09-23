@@ -1,0 +1,102 @@
+{
+  "main": {
+    "id": "358edbb58d421b5f",
+    "type": "split",
+    "children": [
+      {
+        "id": "debd25a4347192ee",
+        "type": "leaf",
+        "state": {
+          "type": "markdown",
+          "state": {
+            "file": "C++ Notes/Lists.md",
+            "mode": "preview"
+          }
+        }
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "b8e0cd729e169c44",
+    "type": "split",
+    "children": [
+      {
+        "id": "b8efa4352de2af96",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "16ad6ef0db6fb8fd",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {}
+            }
+          },
+          {
+            "id": "01b3e5b51b816f8f",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "dab68ff8ff22bd14",
+    "type": "split",
+    "children": [
+      {
+        "id": "f93e86d6b13e310c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dc1c0481e0095b5a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "C++ Notes/Lists.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "active": "debd25a4347192ee",
+  "lastOpenFiles": [
+    "C++ Notes/Lists.md",
+    "C++ Notes/Untitled.md",
+    "Web GL Notes/Matrices/Matrix Math.md",
+    "Engine Documentation/Transform.md",
+    "Engine Documentation/GameObject.md",
+    "Web GL Notes/Matrices/Projection Matrix.md",
+    "Web GL Notes/Matrices/Camera or View Matrix.md",
+    "Web GL Notes/Matrices/Model Matrix.md",
+    "Engine Documentation/Untitled.md",
+    "Web GL Notes/Matrices/Untitled.md"
+  ]
+}

@@ -1,0 +1,6 @@
+class MeshRenderer {
+public:
+	MeshRenderer() {
+
+	}
+};

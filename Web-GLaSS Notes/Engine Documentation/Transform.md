@@ -1,0 +1,1 @@
+A component that contains Positional, rotational, and scaling information, and process it accordingly.
