@@ -10,9 +10,18 @@ cp -R ./src/shaders ./lib/data # Copy shaders
 echo "- WebPage"
 cp -R ./src/WebPage/* ./lib
 
-echo ""
-echo "Compiling code"
-./emsdk/upstream/emscripten/emcc src/main.cpp -s WASM=1 -s USE_GLFW=3 -o ./lib/index.js --preload-file ./lib/data # Compile code
+               # Find all cpp files in   # Exclude any file             # Replace newlines
+               # src/                    # in a .vshistory folder       # with space
+CPP_FILEPATHS=$(find src/ -name "*.cpp" -not -path "*/\.vshistory/*" | tr '\n' ' ') 
 
+echo ""
+echo "Compiling files: "
+echo ${CPP_FILEPATHS}
+echo ""
+
+echo "Running emcc..."
+./emsdk/upstream/emscripten/emcc ${CPP_FILEPATHS} -O0 -s LLD_REPORT_UNDEFINED -s WASM=1 -s USE_GLFW=3 -o ./lib/index.js --preload-file ./lib/data # Compile code
+
+echo ""
 echo "Compilation complete"
 echo ""

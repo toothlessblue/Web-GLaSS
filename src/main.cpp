@@ -5,59 +5,27 @@
 #include <GLFW/glfw3.h>
 #include <emscripten.h>
 
-#include "../src/core/Screen.hpp"
-#include "../src/core/Shaders.hpp"
+#include "core/Screen/Screen.hpp"
+#include "core/Shaders.hpp"
+#include "core/RenderPipeline/RenderPipeline.hpp"
+#include "core/components/TriangleRenderer/TriangleRenderer.hpp"
 
-using namespace glm;
-
-// TODO these all need to be in their own object
-// This will identify our vertex buffer
-GLuint vertexbuffer;
-GLuint programID; // identifies shaders to use, I think
-
+RenderPipeline* pipeline;
 extern "C" void render() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(programID);
-
-    // 1st attribute buffer : vertices
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    glVertexAttribPointer(
-        0,                    // attribute 0. No particular reason for 0, but must match the layout in the shader.
-        3,                    // size
-        GL_FLOAT,             // type
-        GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
-    );
-    // Draw the triangle!
-    glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
-    glDisableVertexAttribArray(0);
+    pipeline->render();
 }
 
 extern "C" int main(int argc, char** argv) {
     Screen screen(900, 450);
+    pipeline = new RenderPipeline();
 
-    GLuint VertexArrayID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
-
-    static const GLfloat g_vertex_buffer_data[] = {
-       -1.0f, -1.0f, 0.0f,
-       1.0f, -1.0f, 0.0f,
-       0.0f,  1.0f, 0.0f,
-    };
-
-    // Generate 1 buffer, put the resulting identifier in vertexbuffer
-    glGenBuffers(1, &vertexbuffer);
-    // The following commands will talk about our 'vertexbuffer' buffer
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-    // Give our vertices to OpenGL.
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
-
-    programID = CreateProgram("/lib/data/shaders/SimpleVertexShader.vert", "/lib/data/shaders/SimpleFragmentShader.frag");
+    GLuint programID = CreateProgram("/lib/data/shaders/SimpleVertexShader.vert", "/lib/data/shaders/SimpleFragmentShader.frag");
+    pipeline->setProgram(programID);
 
     emscripten_set_main_loop(render, 0, 0);
+
+    TriangleRenderer* renderer = new TriangleRenderer();
+    pipeline->addRenderer(renderer);
 
     return 0;
 }

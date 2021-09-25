@@ -1,0 +1,6 @@
+class RenderPipeline {
+public:
+	RenderPipeline() {
+
+	}
+};
