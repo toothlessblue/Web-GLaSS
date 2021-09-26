@@ -2,8 +2,8 @@
 precision mediump float;
 
 attribute vec4 vertexPosition_modelspace;
+uniform mat4 MVP_matrix;
 
 void main() {
-	gl_Position.xyz = vertexPosition_modelspace.xyz / vec3(3,3,3);
-	gl_Position.w = 1.0;
+	gl_Position = vertexPosition_modelspace * MVP_matrix;
 }

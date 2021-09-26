@@ -9,4 +9,6 @@ public:
 	glm::vec3 scale;
 
 	Transform();
+
+	glm::mat4 getModelViewProjectionMatrix();
 };
