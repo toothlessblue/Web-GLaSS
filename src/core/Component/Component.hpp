@@ -9,3 +9,5 @@ public:
 private:
 
 };
+
+#include "../GameObject/GameObject.hpp"

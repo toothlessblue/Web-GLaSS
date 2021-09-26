@@ -1,8 +1,9 @@
 #pragma once
 
 #include <list>
-#include "../Component/Component.hpp"
-#include "../components/Transform/Transform.hpp"
+
+class Component;
+class Transform;
 
 class GameObject {
 private:
@@ -15,3 +16,6 @@ public:
 
 	Transform* transform;
 };
+
+#include "../Component/Component.hpp"
+#include "../components/Transform/Transform.hpp"
