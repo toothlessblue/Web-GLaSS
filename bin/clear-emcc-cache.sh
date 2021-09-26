@@ -1,0 +1,1 @@
+./emsdk/upstream/emscripten/emcc --clear-cache

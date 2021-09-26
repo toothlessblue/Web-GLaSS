@@ -12,7 +12,7 @@ Renderer::Renderer() {
 }
 
 void Renderer::preRenderCheck() {
-    if (!this->pipelineId) {
+    if (!this->pipelineId && this->pipelineId != 0) {
         throw new RenderPipelineNotAssignedException();
     }
 }

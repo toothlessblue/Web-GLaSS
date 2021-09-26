@@ -1,5 +1,5 @@
-#include "../Component/Component.hpp"
 #include "GameObject.hpp"
+#include "../Component/Component.hpp"
 #include "../components/Transform/Transform.hpp"
 
 GameObject::GameObject() {

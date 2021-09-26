@@ -1,5 +1,6 @@
 #pragma once
 
+#include <GL/glew.h>
 #include "../Renderer/Renderer.hpp"
 
 class TriangleRenderer : public Renderer {

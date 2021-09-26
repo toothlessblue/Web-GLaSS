@@ -20,7 +20,16 @@ echo ${CPP_FILEPATHS}
 echo ""
 
 echo "Running emcc..."
-./emsdk/upstream/emscripten/emcc ${CPP_FILEPATHS} -O0 -s LLD_REPORT_UNDEFINED -s WASM=1 -s USE_GLFW=3 -o ./lib/index.js --preload-file ./lib/data # Compile code
+./emsdk/upstream/emscripten/emcc ${CPP_FILEPATHS}   `# Compile all c++ files` \
+-fexceptions                                        `# Enable java script based c++ exceptions` \
+`#-fwasm-exceptions                                  # Enable wasm based c++ exceptions - Faster but lacks support - https://webassembly.org/roadmap/` \
+-O0                                                 `# The optimisation setting, O0 is slowest to run but fastest to compile, O3 is fastest to run but slowest to compile` \
+-s LLD_REPORT_UNDEFINED                             `# Report errors for undefined access to variables (I think? It's handy)` \
+-s WASM=1                                           `# Build to web assembly instead of pure js` \
+-s USE_GLFW=3                                       `# GL version to use` \
+-o ./lib/index.js                                   `# Output file, specifying .js outputs index.wasm and index.js files` \
+--preload-file ./lib/data                           `# Data files to include in the virtual file system, adds index.data to output` \
+ 
 
 echo ""
 echo "Compilation complete"

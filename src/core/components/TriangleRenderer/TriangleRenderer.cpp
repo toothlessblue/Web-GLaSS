@@ -14,8 +14,6 @@ TriangleRenderer::TriangleRenderer() {
 void TriangleRenderer::render() {
     glBindVertexArray(this->vertexArrayID);
 
-    // glUseProgram(this->programID; // TODO allow renderers to have seperate programs for unique shaders each
-
     glEnableVertexAttribArray(0); // TODO understand further
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexbuffer);
     glVertexAttribPointer(

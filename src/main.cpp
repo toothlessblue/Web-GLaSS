@@ -25,11 +25,12 @@ extern "C" int main(int argc, char** argv) {
     pipeline->setProgram(programID);
 
     emscripten_set_main_loop(render, 0, 0);
-        
-    GameObject* gameObject = new GameObject();
+    
     TriangleRenderer* triangleRenderer = new TriangleRenderer();
+    GameObject* gameObject = new GameObject();
     gameObject->addComponent(triangleRenderer);
     pipeline->addRenderer(triangleRenderer);
+
 
     return 0;
 }

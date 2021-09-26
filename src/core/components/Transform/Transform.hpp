@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../../Component/Component.hpp"
 #include "../../../../include/glm/glm.hpp"
 
