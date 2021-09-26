@@ -9,8 +9,10 @@
 #include "core/Shaders.hpp"
 #include "core/RenderPipeline/RenderPipeline.hpp"
 #include "core/components/TriangleRenderer/TriangleRenderer.hpp"
+#include "core/GameObject/GameObject.hpp"
 
 RenderPipeline* pipeline;
+
 extern "C" void render() {
     pipeline->render();
 }
@@ -23,9 +25,11 @@ extern "C" int main(int argc, char** argv) {
     pipeline->setProgram(programID);
 
     emscripten_set_main_loop(render, 0, 0);
-
-    TriangleRenderer* renderer = new TriangleRenderer();
-    pipeline->addRenderer(renderer);
+        
+    GameObject* gameObject = new GameObject();
+    TriangleRenderer* triangleRenderer = new TriangleRenderer();
+    gameObject->addComponent(triangleRenderer);
+    pipeline->addRenderer(triangleRenderer);
 
     return 0;
 }

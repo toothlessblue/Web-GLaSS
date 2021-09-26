@@ -19,6 +19,6 @@ void Renderer::preRenderCheck() {
 
 void Renderer::render() { }
 
-void Renderer::setPipelineId(unsigned int id) {
+void Renderer::setId(unsigned int id) {
     this->pipelineId = id;
 }

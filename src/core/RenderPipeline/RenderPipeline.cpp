@@ -1,7 +1,7 @@
 #include "RenderPipeline.hpp"
 
 RenderPipeline::RenderPipeline() {
-
+    
 }
 
 void RenderPipeline::setProgram(GLuint programID) {
@@ -21,5 +21,8 @@ void RenderPipeline::render() {
 
 unsigned int RenderPipeline::addRenderer(Renderer* renderer) {
     this->renderers.push_back(renderer);
-    return this->renderers.size() - 1;
+
+    unsigned int index = this->renderers.size() - 1;
+    renderer->setId(index);
+    return index;
 }

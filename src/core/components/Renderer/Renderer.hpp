@@ -10,8 +10,7 @@ public:
 	virtual void preRenderCheck();
 	virtual void render();
 
-	void setPipelineId(unsigned int id);
-
+	void setId(unsigned int id);
 private:
 	unsigned int pipelineId;
 };

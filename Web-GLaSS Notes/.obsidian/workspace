@@ -4,14 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "debd25a4347192ee",
+        "id": "700bde6458494847",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "Web GL Notes/Matrices/Matrix Math.md",
-            "mode": "preview"
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -68,7 +65,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Web GL Notes/Matrices/Matrix Math.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -86,7 +82,7 @@
     "width": 300,
     "collapsed": true
   },
-  "active": "debd25a4347192ee",
+  "active": "700bde6458494847",
   "lastOpenFiles": [
     "Web GL Notes/Matrices/Matrix Math.md",
     "Web GL Notes/Matrices/Model Matrix.md",

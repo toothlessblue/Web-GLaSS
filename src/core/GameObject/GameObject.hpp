@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../components/Transform/Transform.hpp"
-#include "../Component/Component.hpp"
 #include <list>
 
 class GameObject {
@@ -12,4 +11,6 @@ public:
 	GameObject();
 	void updateComponents();
 	void addComponent(Component* component);
+
+	Transform* transform;
 };
