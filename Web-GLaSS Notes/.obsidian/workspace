@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "C++ Notes/Template Functions.md",
+            "file": "GLSL/in-out and varying.md",
             "mode": "source"
           }
         }
@@ -68,7 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "C++ Notes/Template Functions.md",
+                "file": "GLSL/in-out and varying.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,6 +88,7 @@
   },
   "active": "700bde6458494847",
   "lastOpenFiles": [
+    "GLSL/Untitled.md",
     "C++ Notes/Template Functions.md",
     "C++ Notes/Untitled.md",
     "Web GL Notes/Matrices/Matrix Math.md",
@@ -96,7 +97,6 @@
     "C++ Notes/Lists.md",
     "Engine Documentation/Transform.md",
     "Engine Documentation/GameObject.md",
-    "Web GL Notes/Matrices/Projection Matrix.md",
-    "Engine Documentation/Untitled.md"
+    "Web GL Notes/Matrices/Projection Matrix.md"
   ]
 }
