@@ -7,6 +7,8 @@
 class RenderPipeline {
 public:
     GLuint programID;
+    GLuint mvpMatrixId;
+
     std::list<Renderer*> renderers;
 
 	RenderPipeline();

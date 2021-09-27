@@ -17,7 +17,7 @@ public:
     Camera(float fieldOfView, float ratio, float nearClipPlane, float farClipPlane);
 
     glm::mat4 getProjectionMatrix();
-    glm::mat4 getCameraMatrix();
+    glm::mat4 getViewMatrix();
 private:
 
 };

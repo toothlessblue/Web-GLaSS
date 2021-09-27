@@ -33,3 +33,7 @@ Screen::Screen(int width, int height) {
         throw "Failed to initialize GLEW\n";
     }
 }
+
+float Screen::getRatio() {
+    return (float)this->width / (float)this->height;
+}

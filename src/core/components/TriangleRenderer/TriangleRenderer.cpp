@@ -26,6 +26,6 @@ void TriangleRenderer::render() {
     );
 
     // Draw the triangle!
-    glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
+    glDrawArrays(GL_TRIANGLES, 0, (int)(sizeof(this->g_vertex_buffer_data)/sizeof(*this->g_vertex_buffer_data)) / 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
     glDisableVertexAttribArray(0); // TODO understand further
 }

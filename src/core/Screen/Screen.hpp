@@ -6,4 +6,5 @@ public:
     int height;
 
     Screen(int width, int height);
+    float getRatio();
 };

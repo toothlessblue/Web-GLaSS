@@ -7,8 +7,11 @@
         "id": "700bde6458494847",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "markdown",
+          "state": {
+            "file": "C++ Notes/Template Functions.md",
+            "mode": "source"
+          }
         }
       }
     ],
@@ -65,6 +68,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "C++ Notes/Template Functions.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -84,15 +88,15 @@
   },
   "active": "700bde6458494847",
   "lastOpenFiles": [
+    "C++ Notes/Template Functions.md",
+    "C++ Notes/Untitled.md",
     "Web GL Notes/Matrices/Matrix Math.md",
     "Web GL Notes/Matrices/Model Matrix.md",
     "Web GL Notes/Matrices/Camera or View Matrix.md",
     "C++ Notes/Lists.md",
-    "C++ Notes/Untitled.md",
     "Engine Documentation/Transform.md",
     "Engine Documentation/GameObject.md",
     "Web GL Notes/Matrices/Projection Matrix.md",
-    "Engine Documentation/Untitled.md",
-    "Web GL Notes/Matrices/Untitled.md"
+    "Engine Documentation/Untitled.md"
   ]
 }

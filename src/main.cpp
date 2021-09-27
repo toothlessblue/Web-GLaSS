@@ -7,6 +7,7 @@
 
 #include "core/Screen/Screen.hpp"
 #include "core/Shaders.hpp"
+#include "core/components/Camera/Camera.hpp"
 #include "core/RenderPipeline/RenderPipeline.hpp"
 #include "core/components/TriangleRenderer/TriangleRenderer.hpp"
 #include "core/GameObject/GameObject.hpp"
@@ -18,7 +19,7 @@ extern "C" void render() {
 }
 
 extern "C" int main(int argc, char** argv) {
-    Screen screen(900, 450);
+    Screen* screen = new Screen(900, 450);
     pipeline = new RenderPipeline();
 
     GLuint programID = CreateProgram("/lib/data/shaders/SimpleVertexShader.vert", "/lib/data/shaders/SimpleFragmentShader.frag");
@@ -26,11 +27,11 @@ extern "C" int main(int argc, char** argv) {
 
     emscripten_set_main_loop(render, 0, 0);
     
-    TriangleRenderer* triangleRenderer = new TriangleRenderer();
+    Camera* camera = new Camera(90, screen->getRatio(), 0.1, 100);
+    
     GameObject* gameObject = new GameObject();
-    gameObject->addComponent(triangleRenderer);
-    pipeline->addRenderer(triangleRenderer);
-
+    TriangleRenderer* triangleRenderer = gameObject->createComponent<TriangleRenderer>();
+    pipeline->addRenderer(triangleRenderer); // TODO find a good way to do this automatically
 
     return 0;
 }

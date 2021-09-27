@@ -2,10 +2,14 @@
 #include "../../../../include/glm/glm.hpp"
 #include "../../../../include/glm/gtx/transform.hpp"
 
-Transform::Transform() { }
+Transform::Transform() {
+    this->scale = glm::vec3(1,1,1);
+    this->position = glm::vec3(0,0,0);
+    this->rotation = glm::vec3(0,0,0);
+}
 
 glm::mat4 Transform::getTranslationMatrix() {
-    return glm::translate(glm::mat4(), this->position);
+    return glm::translate(glm::mat4(1.0f), this->position);
 }
 
 glm::mat4 Transform::getScaleMatrix() {
@@ -13,7 +17,7 @@ glm::mat4 Transform::getScaleMatrix() {
 }
 
 glm::mat4 Transform::getRotationMatrix() {
-    return glm::mat4(); // TODO oh boy is this bit complex :D gotta learn quaternions and what not
+    return glm::mat4(1.0f); // For now just returning identity // TODO oh boy is this bit complex :D gotta learn quaternions and what not
 }
 
 glm::mat4 Transform::getModelMatrix() {
