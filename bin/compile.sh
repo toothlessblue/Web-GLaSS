@@ -19,7 +19,7 @@ echo "Compiling files: "
 echo ${CPP_FILEPATHS}
 echo ""
 
-// TODO use make instead, should compile faster
+# TODO use make instead, should compile faster
 
 echo "Running emcc..."
 ./emsdk/upstream/emscripten/emcc ${CPP_FILEPATHS}   `# Compile all c++ files` \

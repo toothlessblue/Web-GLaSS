@@ -5,8 +5,8 @@
 #include "../../../include/glm/gtc/matrix_transform.hpp"
 
 RenderPipeline::RenderPipeline() {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    // glEnable(GL_DEPTH_TEST);
+    // glDepthFunc(GL_LESS);
 }
 
 // TODO program class to handle that sort of information
