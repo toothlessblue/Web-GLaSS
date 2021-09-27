@@ -1,6 +1,8 @@
 #include "Screen.hpp"
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
+#include <math.h>
+#include "../../../include/glm/glm.hpp"
 
 Screen::Screen(int width, int height) {
     this->width = width;
@@ -36,4 +38,8 @@ Screen::Screen(int width, int height) {
 
 float Screen::getRatio() {
     return (float)this->width / (float)this->height;
+}
+
+float Screen::horizontalFieldOfViewDegreesToVerticalRadians(float horizontalFieldOfViewDegrees) {
+    return glm::radians(2 * atan(tan(horizontalFieldOfViewDegrees / 2) * this->getRatio()));
 }

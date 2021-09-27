@@ -1,5 +1,7 @@
 [[Matrix Math]]
 
+Defines where the [[Camera]] is and the direction it's pointing in.
+
 Every vertex in the scene should be multiplied by this matrix to simulate the camera position and rotation
 
 ```cpp

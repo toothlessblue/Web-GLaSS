@@ -17,3 +17,5 @@ void GameObject::addComponent(Component* component) {
     this->components.push_back(component);
     component->gameObject = this;
 }
+
+// Also has GameObject::createComponent, but this is defined in hpp instead

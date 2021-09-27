@@ -1,0 +1,1 @@
+A base class that contains a reference to the [[GameObject]] it belongs too, and provides a virtual `update` function to be called by the [[GameObject]]

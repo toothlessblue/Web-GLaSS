@@ -1,4 +1,4 @@
-The cool bit TM
+I declare this "The Cool Bit™"
 
 ```cpp
 // Generates a really hard-to-read matrix, but a normal, standard 4x4 matrix nonetheless 
@@ -9,4 +9,5 @@ glm::mat4 projectionMatrix = glm::perspective(
 	100.0f // Far clipping plane. Keep as little as possible.
 );
 ```
-This matrix gives the camera perspective
+
+This matrix gives the [[Camera]] perspective

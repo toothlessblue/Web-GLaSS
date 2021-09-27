@@ -7,4 +7,5 @@ public:
 
     Screen(int width, int height);
     float getRatio();
+    float horizontalFieldOfViewDegreesToVerticalRadians(float horizontalFieldOfViewDegrees);
 };

@@ -7,11 +7,8 @@
         "id": "700bde6458494847",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "GLSL/in-out and varying.md",
-            "mode": "source"
-          }
+          "type": "graph",
+          "state": {}
         }
       }
     ],
@@ -68,7 +65,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "GLSL/in-out and varying.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -88,15 +84,15 @@
   },
   "active": "700bde6458494847",
   "lastOpenFiles": [
-    "GLSL/Untitled.md",
     "C++ Notes/Template Functions.md",
-    "C++ Notes/Untitled.md",
-    "Web GL Notes/Matrices/Matrix Math.md",
-    "Web GL Notes/Matrices/Model Matrix.md",
-    "Web GL Notes/Matrices/Camera or View Matrix.md",
     "C++ Notes/Lists.md",
-    "Engine Documentation/Transform.md",
-    "Engine Documentation/GameObject.md",
-    "Web GL Notes/Matrices/Projection Matrix.md"
+    "GLSL/Keywords/in-out and varying.md",
+    "GLSL/Basic shader requirements.md",
+    "GLSL/Keywords/Layout.md",
+    "GLSL/in-out and varying.md",
+    "GLSL/Layout.md",
+    "Web GL Notes/Matrices/Translation Matrix.md",
+    "Web GL Notes/Matrices/Scale Matrix.md",
+    "Web GL Notes/Matrices/Rotation Matrix.md"
   ]
 }
