@@ -109,5 +109,9 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp"
+    },
+    "search.exclude": {
+        "**/.vshistory": true,
+        "**/include": true
     }
 }
