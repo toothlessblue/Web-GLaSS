@@ -14,6 +14,8 @@ public:
     std::list<Renderer*> renderers;
 
 	RenderPipeline();
+	~RenderPipeline();
+    
     void setProgram(GLuint programID);
 	void render();
 

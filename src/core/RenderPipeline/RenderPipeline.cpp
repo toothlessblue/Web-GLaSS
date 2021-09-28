@@ -9,6 +9,12 @@ RenderPipeline::RenderPipeline() {
     // glDepthFunc(GL_LESS);    // OpenGL ES 1.0
 }
 
+RenderPipeline::~RenderPipeline() {
+    for (Renderer *renderer : this->renderers) {
+        delete renderer;
+    }
+}
+
 // TODO program class to handle that sort of information
 
 void RenderPipeline::setProgram(GLuint programID) {
