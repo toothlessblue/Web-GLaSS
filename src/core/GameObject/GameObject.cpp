@@ -7,6 +7,14 @@ GameObject::GameObject() {
     this->addComponent(this->transform);
 }
 
+GameObject::~GameObject() {
+    for (Component *component : this->components) {
+        delete component;
+    }
+
+    this->transform = NULL;
+}
+
 void GameObject::updateComponents() {
     for (Component *component : this->components) {
         component->update();

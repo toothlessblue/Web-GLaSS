@@ -1,4 +1,5 @@
 #include "Renderer.hpp"
+#include "../../GameEngine/GameEngine.hpp"
 #include <exception>
 
 struct RenderPipelineNotAssignedException: public std::exception {
@@ -8,7 +9,7 @@ struct RenderPipelineNotAssignedException: public std::exception {
 };
 
 Renderer::Renderer() {
-
+    GameEngine::renderPipeline->addRenderer(this);
 }
 
 void Renderer::preRenderCheck() {

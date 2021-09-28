@@ -2,6 +2,7 @@
 
 #include <list>
 
+// Forward declarations
 class Component;
 class Transform;
 
@@ -10,7 +11,10 @@ private:
 	std::list<Component*> components;
 
 public:
+	Transform* transform;
+
 	GameObject();
+	~GameObject();
 	void updateComponents();
 
 	/**
@@ -32,8 +36,6 @@ public:
 
 		return newComponent;
 	}
-
-	Transform* transform;
 };
 
 #include "../Component/Component.hpp"

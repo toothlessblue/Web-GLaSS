@@ -2,7 +2,9 @@
 
 #include <GL/glew.h>
 #include <list>
-#include "../components/Renderer/Renderer.hpp"
+
+// Forward declarations
+class Renderer;
 
 class RenderPipeline {
 public:
@@ -20,3 +22,5 @@ public:
     */
     unsigned int addRenderer(Renderer* renderer);
 };
+
+#include "../components/Renderer/Renderer.hpp"
