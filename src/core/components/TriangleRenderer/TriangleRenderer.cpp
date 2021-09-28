@@ -2,11 +2,6 @@
 #include <GL/glew.h>
 
 #include "TriangleRenderer.hpp"
-#include "../Renderer/Renderer.hpp"
-
-TriangleRenderer::TriangleRenderer() : Renderer() {
-    
-}
 
 TriangleRenderer::TriangleRenderer() {
     glGenVertexArrays(1, &this->vertexArrayID);

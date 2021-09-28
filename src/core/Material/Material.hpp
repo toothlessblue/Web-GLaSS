@@ -1,8 +1,19 @@
-class Material
-{
+#pragma once
+
+#include <GL/glew.h>
+#include <string>
+
+class Material {
 public:
-    Material();
-    ~Material();
+    GLuint shaderProgramId;
+
+    Material(char* vertexShaderPath, char* fragmentShaderPath);
     
+    void setFloat();
+    void setInt();
+
+    void setVec3();
+    void setVec4();
 private:
+
 };
