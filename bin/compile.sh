@@ -20,7 +20,11 @@ echo "Compiling files: "
 echo ${CPP_FILEPATHS}
 echo ""
 
-# TODO use make instead, should compile faster
+# TODO use make instead, will compile faster and lets us use a better incremental compiler
+#  Keep trying to complete this todo but always give up cause make looks like such a pain
+
+# Uses WebGL 2, this is newer and has less support but gives us access to a bunch of fun tools
+#  like compute and geometry shaders
 
 echo "Running emcc..."
 ./emsdk/upstream/emscripten/emcc ${CPP_FILEPATHS}   `# Compile all c++ files` \

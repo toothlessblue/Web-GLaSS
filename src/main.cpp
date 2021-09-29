@@ -15,7 +15,8 @@
 extern "C" void gameLoop() {
     Time::frameStart();
     
-    GameEngine::renderPipeline->render();
+    GameEngine::renderPipeline.render();
+    GameEngine::worldSpace.updateGameObjects();
 
     Time::frameEnd();
     Time::incrementFrameCounter();
@@ -25,14 +26,14 @@ extern "C" int main(int argc, char** argv) {
     GameEngine::Initialise();
 
     GLuint programID = Shaders::CreateProgram("/lib/data/shaders/SimpleVertexShader.vert", "/lib/data/shaders/SimpleFragmentShader.frag");
-    GameEngine::renderPipeline->setProgram(programID);
+    GameEngine::renderPipeline.setProgram(programID);
 
     emscripten_set_main_loop(gameLoop, 0, 0);
 
-    Camera* camera = new Camera(90, GameEngine::screen->getRatio(), 0.1, 100);
+    Camera* camera = new Camera(90, GameEngine::screen.getRatio(), 0.1, 100);
     
     GameObject* gameObject = GameEngine::CreateGameObject();
-    TriangleRenderer* triangleRenderer = gameObject->createComponent<TriangleRenderer>();
+    gameObject->createComponent<TriangleRenderer>();
 
     return 0;
 }

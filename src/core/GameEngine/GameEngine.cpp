@@ -3,16 +3,18 @@
 #include "../Screen/Screen.hpp"
 #include "../GameObject/GameObject.hpp"
 
-RenderPipeline* GameEngine::renderPipeline;
-Screen* GameEngine::screen;
+RenderPipeline GameEngine::renderPipeline;
+Screen GameEngine::screen;
+WorldSpace GameEngine::screen;
 
 void GameEngine::Initialise() {
-    GameEngine::renderPipeline = new RenderPipeline();
-    GameEngine::screen = new Screen(900, 450);
+    GameEngine::renderPipeline = RenderPipeline();
+    GameEngine::screen = Screen(900, 450);
+    GameEngine::worldSpace = WorldSpace();
 }
 
 GameObject* GameEngine::CreateGameObject() {
     GameObject* newObject = new GameObject();
-
+    GameEngine::worldSpace.addGameObject(newObject);
     return newObject;
 }

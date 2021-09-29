@@ -1,13 +1,15 @@
 #pragma once
 
 #include "../RenderPipeline/RenderPipeline.hpp"
+#include "../WorldSpace/WorldSpace.hpp"
 #include "../Screen/Screen.hpp"
 
 class GameObject;
 
 namespace GameEngine {
-    extern RenderPipeline* renderPipeline;
-    extern Screen* screen;
+    extern WorldSpace worldSpace;
+    extern RenderPipeline renderPipeline;
+    extern Screen screen;
 
     void Initialise();
     GameObject* CreateGameObject();
