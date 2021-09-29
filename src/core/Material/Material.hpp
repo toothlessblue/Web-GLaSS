@@ -3,17 +3,19 @@
 #include <GL/glew.h>
 #include <string>
 
+#include "../../../include/glm/glm.hpp"
+
 class Material {
 public:
     GLuint shaderProgramId;
 
     Material(char* vertexShaderPath, char* fragmentShaderPath);
     
-    void setFloat();
-    void setInt();
+    void setFloat(char* name, float* value);
+    void setInt(char* name, int* value);
 
-    void setVec3();
-    void setVec4();
+    void setVec3(char* name, glm::vec3* value);
+    void setVec4(char* name, glm::vec4* value);
 private:
 
 };

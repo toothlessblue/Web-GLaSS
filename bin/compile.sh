@@ -9,6 +9,7 @@ echo "- Shaders"
 cp -R ./src/shaders ./lib/data # Copy shaders
 echo "- WebPage"
 cp -R ./src/WebPage/* ./lib
+echo "  - Copying favicon for reasons beyond your understanding"
 
                # Find all cpp files in   # Exclude any file             # Replace newlines
                # src/                    # in a .vshistory folder       # with space
