@@ -6,13 +6,19 @@
 #include <emscripten.h>
 
 #include "core/GameEngine/GameEngine.hpp"
+#include "core/Time/Time.hpp"
 #include "core/Shaders/Shaders.hpp"
 #include "core/components/Camera/Camera.hpp"
 #include "core/components/TriangleRenderer/TriangleRenderer.hpp"
 #include "core/GameObject/GameObject.hpp"
 
 extern "C" void render() {
+    Time::frameStart();
+    
     GameEngine::renderPipeline->render();
+
+    Time::frameEnd();
+    Time::incrementFrameCounter();
 }
 
 extern "C" int main(int argc, char** argv) {
