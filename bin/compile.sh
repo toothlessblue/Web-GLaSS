@@ -9,7 +9,7 @@ echo "- Shaders"
 cp -R ./src/shaders ./lib/data # Copy shaders
 echo "- WebPage"
 cp -R ./src/WebPage/* ./lib
-echo "  - Copying favicon for reasons beyond your understanding"
+echo "  - Copying favicon for reasons far beyond your understanding"
 
                # Find all cpp files in   # Exclude any file             # Replace newlines
                # src/                    # in a .vshistory folder       # with space
@@ -36,7 +36,7 @@ echo "Running emcc..."
 -s MAX_WEBGL_VERSION=2                              `# Use WebGL 2 - Compute shaders + optimised` \
 -s USE_GLFW=3                                       `# GL version to use` \
 -o ./lib/index.js                                   `# Output file, specifying .js outputs index.wasm and index.js files` \
---preload-file ./lib/data                           `# Data files to include in the virtual file system, adds index.data to output` \
+--preload-file ./lib/data@/                         `# Data files to include in the virtual file system, adds index.data to output` \
  
 
 echo ""

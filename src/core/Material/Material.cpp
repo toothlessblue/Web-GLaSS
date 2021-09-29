@@ -1,6 +1,8 @@
 #include <GL/glew.h>
 #include <map>
 #include <string>
+#include <iostream>
+#include <functional>
 
 #include "Material.hpp"
 #include "../Shaders/Shaders.hpp"
@@ -12,27 +14,51 @@ Material::Material(const char* vertexShaderPath, const char* fragmentShaderPath)
 
 void Material::setFloat(const char* name, float value) {
     GLint index = this->getAttributeIndex(name);
-    glProgramUniform1f(this->shaderProgramId, index, value);
+
+    this->toExecuteOnUse.push_back([index, value] {
+        glUniform1f(index, value);
+    });
 }
 
 void Material::setInt(const char* name, int value) {
     GLint index = this->getAttributeIndex(name);
-    glProgramUniform1i(this->shaderProgramId, index, value);
+
+    this->toExecuteOnUse.push_back([index, value] {
+        glUniform1i(index, value);
+    });
 }
 
 void Material::setVec3(const char* name, glm::vec3 value) {
     GLint index = this->getAttributeIndex(name);
-    glProgramUniform3f(this->shaderProgramId, index, value.x, value.y, value.z);
+
+    this->toExecuteOnUse.push_back([index, value] {
+        glUniform3fv(index, 1, &value[0]);
+    });
 }
 
 void Material::setVec4(const char* name, glm::vec4 value) {
     GLint index = this->getAttributeIndex(name);
-    glProgramUniform4f(this->shaderProgramId, index, value.x, value.y, value.z, value.w);
+    
+    this->toExecuteOnUse.push_back([index, value] {
+        glUniform4fv(index, 1, &value[0]);
+    });
 }
 
 void Material::setMat4(const char* name, glm::mat4 value) {
     GLint index = this->getAttributeIndex(name);
-    glProgramUniformMatrix4fv(this->shaderProgramId, index, 1, GL_FALSE, &value[0][0]);
+
+    this->toExecuteOnUse.push_back([index, value] {
+        glUniformMatrix4fv(index, 1, GL_FALSE, &value[0][0]);
+    });
+}
+
+void Material::use() {
+    glUseProgram(this->shaderProgramId);
+
+    for (std::function<void()> call : this->toExecuteOnUse) {
+        call();
+    }
+    this->toExecuteOnUse.clear();
 }
 
 GLint Material::getAttributeIndex(const char* name) {
@@ -40,7 +66,7 @@ GLint Material::getAttributeIndex(const char* name) {
     GLint location;
 
     if (!this->attributeIndexCache.count(string)) {
-        location = glGetAttribLocation(this->shaderProgramId, name);
+        location = glGetUniformLocation(this->shaderProgramId, name);
         this->attributeIndexCache[string] = location;
     } else {
         location = this->attributeIndexCache[string];

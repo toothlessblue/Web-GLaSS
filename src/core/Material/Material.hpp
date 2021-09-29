@@ -3,6 +3,9 @@
 #include <GL/glew.h>
 #include <string>
 #include <map>
+#include <iostream>
+#include <list>
+#include <functional>
 
 #include "../../../include/glm/glm.hpp"
 
@@ -19,7 +22,11 @@ public:
     void setVec4(const char* name, glm::vec4 value);
 
     void setMat4(const char* name, glm::mat4 value);
+
+    void use();
 private:
     GLint getAttributeIndex(const char* name);
+
     std::map<std::string, GLint> attributeIndexCache;
+    std::list<std::function<void()>> toExecuteOnUse;
 };

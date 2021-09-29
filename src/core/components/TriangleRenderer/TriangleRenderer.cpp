@@ -12,6 +12,8 @@ TriangleRenderer::TriangleRenderer() {
 }
 
 void TriangleRenderer::render() {
+    this->material->use();
+
     glBindVertexArray(this->vertexArrayID);
 
     glEnableVertexAttribArray(0); // TODO understand further

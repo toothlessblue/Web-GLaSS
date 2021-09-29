@@ -4,7 +4,7 @@
 #include "../../../include/glm/gtx/transform.hpp"
 #include "../../../include/glm/gtc/matrix_transform.hpp"
 
-RenderPipeline::RenderPipeline(int openGLESVersion = 2) {
+RenderPipeline::RenderPipeline(int openGLESVersion) {
     if (openGLESVersion == 1) {
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
@@ -17,17 +17,8 @@ RenderPipeline::~RenderPipeline() {
     }
 }
 
-// TODO program class to handle that sort of information
-
-void RenderPipeline::setProgram(GLuint programID) {
-    this->programID = programID;
-    this->mvpMatrixId = glGetUniformLocation(this->programID, "MVP_matrix");
-}
-
 void RenderPipeline::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clears the screen and depth buffer
-
-    glUseProgram(this->programID); // TODO place this in render function of each renderer to allow seperate shaders for different renderers
 
     // TODO get view and projection matrices from active camera component
     glm::mat4 view = glm::lookAt(
@@ -45,7 +36,7 @@ void RenderPipeline::render() {
         );
 
         // TODO this->currentProgram->mvpMatrixId
-        glUniformMatrix4fv(this->mvpMatrixId, 1, GL_FALSE, &mvpMatrix[0][0]);
+        renderer->material->setMat4("MVP_matrix", mvpMatrix);
 
         renderer->preRenderCheck();
         renderer->render();

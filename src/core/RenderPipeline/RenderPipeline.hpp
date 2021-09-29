@@ -8,15 +8,13 @@ class Renderer;
 
 class RenderPipeline {
 public:
-    GLuint programID;
     GLuint mvpMatrixId;
 
     std::list<Renderer*> renderers;
 
-	RenderPipeline(int openGLESVersion);
+	RenderPipeline(int openGLESVersion = 2);
 	~RenderPipeline();
-    
-    void setProgram(GLuint programID);
+
 	void render();
 
     /**
