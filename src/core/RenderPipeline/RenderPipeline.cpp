@@ -4,9 +4,11 @@
 #include "../../../include/glm/gtx/transform.hpp"
 #include "../../../include/glm/gtc/matrix_transform.hpp"
 
-RenderPipeline::RenderPipeline() {
-    // glEnable(GL_DEPTH_TEST); // OpenGL ES 1.0
-    // glDepthFunc(GL_LESS);    // OpenGL ES 1.0
+RenderPipeline::RenderPipeline(int openGLESVersion = 2) {
+    if (openGLESVersion == 1) {
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+    }
 }
 
 RenderPipeline::~RenderPipeline() {

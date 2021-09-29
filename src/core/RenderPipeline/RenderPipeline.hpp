@@ -13,7 +13,7 @@ public:
 
     std::list<Renderer*> renderers;
 
-	RenderPipeline();
+	RenderPipeline(int openGLESVersion);
 	~RenderPipeline();
     
     void setProgram(GLuint programID);

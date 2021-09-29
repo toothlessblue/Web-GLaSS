@@ -9,7 +9,7 @@ struct RenderPipelineNotAssignedException: public std::exception {
 };
 
 Renderer::Renderer() {
-    GameEngine::renderPipeline->addRenderer(this);
+    GameEngine::renderPipeline.addRenderer(this);
 }
 
 void Renderer::preRenderCheck() {

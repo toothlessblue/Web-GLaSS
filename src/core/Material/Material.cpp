@@ -6,32 +6,36 @@
 #include "../Shaders/Shaders.hpp"
 #include "../../../include/glm/glm.hpp"
 
-Material::Material(char* vertexShaderPath, char* fragmentShaderPath)
-{
+Material::Material(const char* vertexShaderPath, const char* fragmentShaderPath) {
     this->shaderProgramId = Shaders::CreateProgram(vertexShaderPath, fragmentShaderPath);
 }
 
-void Material::setFloat(char* name, float* value) {
+void Material::setFloat(const char* name, float value) {
     GLint index = this->getAttributeIndex(name);
-    // TODO 
+    glProgramUniform1f(this->shaderProgramId, index, value);
 }
 
-void Material::setInt(char* name, int* value) {
+void Material::setInt(const char* name, int value) {
     GLint index = this->getAttributeIndex(name);
-    // TODO 
+    glProgramUniform1i(this->shaderProgramId, index, value);
 }
 
-void Material::setVec3(char* name, glm::vec3* value) {
+void Material::setVec3(const char* name, glm::vec3 value) {
     GLint index = this->getAttributeIndex(name);
-    // TODO 
+    glProgramUniform3f(this->shaderProgramId, index, value.x, value.y, value.z);
 }
 
-void Material::setVec4(char* name, glm::vec4* value) {
+void Material::setVec4(const char* name, glm::vec4 value) {
     GLint index = this->getAttributeIndex(name);
-    // TODO 
+    glProgramUniform4f(this->shaderProgramId, index, value.x, value.y, value.z, value.w);
 }
 
-GLint Material::getAttributeIndex(char* name) {
+void Material::setMat4(const char* name, glm::mat4 value) {
+    GLint index = this->getAttributeIndex(name);
+    glProgramUniformMatrix4fv(this->shaderProgramId, index, 1, GL_FALSE, &value[0][0]);
+}
+
+GLint Material::getAttributeIndex(const char* name) {
     std::string string(name);
     GLint location;
 
