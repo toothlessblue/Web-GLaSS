@@ -1,15 +1,17 @@
 echo "Clearing data"
 rm -rf ./lib/data
 
-echo "Copying data:"
+echo "Copying data"
 mkdir -p ./lib/ # Make sure lib dir exists
 mkdir -p ./lib/data # Make sure data dir exists
 
-echo "- Shaders"
-cp -R ./src/shaders ./lib/data # Copy shaders
-echo "- WebPage"
-cp -R ./src/WebPage/* ./lib
-echo "  - Copying favicon for reasons far beyond your understanding"
+echo "- shaders"
+cp -R ./src/data/shaders ./lib/data/shaders
+echo "- webpage"
+echo "- favicon"
+cp -R ./src/WebPage/* ./lib/
+echo "- textures"
+cp -R ./src/data/textures ./lib/data/textures
 
                # Find all cpp files in   # Exclude any file             # Replace newlines
                # src/                    # in a .vshistory folder       # with space

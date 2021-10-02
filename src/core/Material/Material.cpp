@@ -7,6 +7,7 @@
 #include "Material.hpp"
 #include "../Shaders/Shaders.hpp"
 #include "../../../include/glm/glm.hpp"
+#include "../Texture/Texture.hpp"
 
 Material::Material(const char* vertexShaderPath, const char* fragmentShaderPath) {
     this->shaderProgramId = Shaders::CreateProgram(vertexShaderPath, fragmentShaderPath);
@@ -52,12 +53,25 @@ void Material::setMat4(const char* name, glm::mat4 value) {
     });
 }
 
+void Material::setTexture(const char* name, Texture* value) {
+    GLint index = this->getAttributeIndex(name);
+
+    this->toExecuteOnUse.push_back([index, value, this] {
+        glUniform1i(index, this->textureUnitCounter);
+        glActiveTexture(GL_TEXTURE0 + this->textureUnitCounter);
+        glBindTexture(GL_TEXTURE_2D, value->id);
+
+        this->textureUnitCounter++;
+    });
+}
+
 void Material::use() {
     glUseProgram(this->shaderProgramId);
 
     for (std::function<void()> call : this->toExecuteOnUse) {
         call();
     }
+
     this->toExecuteOnUse.clear();
 }
 

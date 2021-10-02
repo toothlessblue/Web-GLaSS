@@ -1,9 +1,13 @@
 #include <string>
 #include <GL/glew.h>
 #include "Texture.hpp"
-#include "../include/glm/glm.hpp"
+#include "../../../include/glm/glm.hpp"
 #include <GLFW/glfw3.h>
-#include <gli/gli.hpp>
+#include <iostream>
+
+#define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
+#define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
+#define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
 Texture::Texture(const char* filepath, TextureType type) {
     switch (type) {
@@ -43,12 +47,11 @@ void Texture::loadDDS(const char* filepath) {
     unsigned int mipMapCount = *(unsigned int*)&(header[24]);
     unsigned int fourCC      = *(unsigned int*)&(header[80]);
 
-    unsigned char * buffer;
     unsigned int bufsize;
     /* how big is it going to be including all mipmaps? */
     bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
-    buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
-    fread(buffer, 1, bufsize, fp);
+    this->buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
+    fread(this->buffer, 1, bufsize, fp);
     /* close the file pointer */
     fclose(fp);
 
@@ -66,8 +69,34 @@ void Texture::loadDDS(const char* filepath) {
         format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
         break;
     default:
-        free(buffer);
+        free(this->buffer);
         this->id = 0;
         return;
     }
+
+    // Create one OpenGL texture
+    glGenTextures(1, &this->id);
+
+    // "Bind" the newly created texture : all future texture functions will modify this texture
+    glBindTexture(GL_TEXTURE_2D, this->id);
+
+    unsigned int blockSize = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
+    unsigned int offset = 0;
+
+    /* load the mipmaps */
+    for (unsigned int level = 0; level < mipMapCount && (width || height); ++level)
+    {
+        unsigned int size = ((width+3)/4)*((height+3)/4)*blockSize;
+        glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 
+            0, size, this->buffer + offset);
+
+        offset += size;
+        width  /= 2;
+        height /= 2;
+    }
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    free(this->buffer);
 }

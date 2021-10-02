@@ -8,6 +8,7 @@
 #include <functional>
 
 #include "../../../include/glm/glm.hpp"
+#include "../Texture/Texture.hpp"
 
 class Material {
 public:
@@ -23,9 +24,13 @@ public:
 
     void setMat4(const char* name, glm::mat4 value);
 
+    void setTexture(const char* name, Texture* texture);
+
     void use();
 private:
     GLint getAttributeIndex(const char* name);
+
+    GLuint textureUnitCounter = 0;
 
     std::map<std::string, GLint> attributeIndexCache;
     std::list<std::function<void()>> toExecuteOnUse;

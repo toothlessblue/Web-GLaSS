@@ -35,7 +35,6 @@ void RenderPipeline::render() {
             projection
         );
 
-        // TODO this->currentProgram->mvpMatrixId
         renderer->material->setMat4("MVP_matrix", mvpMatrix);
 
         renderer->preRenderCheck();

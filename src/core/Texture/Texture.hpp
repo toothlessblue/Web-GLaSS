@@ -1,13 +1,16 @@
-#include "../include/glm/glm.hpp"
+#pragma once
+#include "../../../include/glm/glm.hpp"
 #include <GL/glew.h>
 
 enum TextureType {
-    DDS,
-}
+    DDS
+};
 
 class Texture {
 public:
+
     GLuint id;
+    unsigned char* buffer;
 
     Texture(const char* filepath, TextureType type);
 

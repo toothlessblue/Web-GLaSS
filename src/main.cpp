@@ -12,6 +12,7 @@
 #include "core/components/TriangleRenderer/TriangleRenderer.hpp"
 #include "core/GameObject/GameObject.hpp"
 #include "core/Material/Material.hpp"
+#include "core/Texture/Texture.hpp"
 
 extern "C" void gameLoop() {
     Time::frameStart();
@@ -27,11 +28,15 @@ extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
 
     Camera* camera = new Camera(90, GameEngine::screen.getRatio(), 0.1, 100);
-    
+
     GameObject* gameObject = GameEngine::CreateGameObject();
     TriangleRenderer* renderer = gameObject->createComponent<TriangleRenderer>();
-    renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
+    renderer->material = new Material("/shaders/SimpleTextureShader.vert", "/shaders/SimpleTextureShader.frag");
 
+    Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
+    renderer->material->setTexture("myTextureSampler", texture);
+
+    delete camera;
 
     return 0;
 }
