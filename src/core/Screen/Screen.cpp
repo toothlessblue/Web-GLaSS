@@ -22,14 +22,13 @@ Screen::Screen(int width, int height) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL 
 
     // Open a window and create its OpenGL context
-    GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow(this->width, this->height, "Tutorial 01", NULL, NULL);
-    if (window == NULL) {
+    this->window = glfwCreateWindow(this->width, this->height, "Tutorial 01", NULL, NULL);
+    if (this->window == NULL) {
         throw "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version.\n";
         glfwTerminate();
     }
 
-    glfwMakeContextCurrent(window); // Initialize GLEW
+    glfwMakeContextCurrent(this->window); // Initialize GLEW
     glewExperimental = true; // Needed in core profile
     if (glewInit() != GLEW_OK) {
         throw "Failed to initialize GLEW\n";
