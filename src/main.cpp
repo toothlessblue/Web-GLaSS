@@ -6,6 +6,7 @@
 #include <emscripten.h>
 
 #include "core/GameEngine/GameEngine.hpp"
+#include "core/Input/Input.hpp"
 #include "core/Time/Time.hpp"
 #include "core/Shaders/Shaders.hpp"
 #include "core/components/Camera/Camera.hpp"
@@ -17,8 +18,9 @@
 extern "C" void gameLoop() {
     Time::frameStart();
     
+    Input::Mouse::doLoop();
     GameEngine::renderPipeline.render();
-    GameEngine::worldSpace.updateGameObjects();
+    GameEngine::worldSpace.updateGameObjects();    
 
     Time::frameEnd();
     Time::incrementFrameCounter();

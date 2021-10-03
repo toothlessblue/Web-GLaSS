@@ -20,8 +20,6 @@ void GameObject::updateComponents() {
     for (Component *component : this->components) {
         component->update();
     }
-
-    this->transform->rotation *= glm::quat(glm::vec3(Time::getDeltaTime() * 0.25f, Time::getDeltaTime(), 0));
 }
 
 void GameObject::addComponent(Component* component) {

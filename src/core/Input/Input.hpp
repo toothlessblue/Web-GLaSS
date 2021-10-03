@@ -1,12 +1,11 @@
+#pragma once
 #include "../../../include/glm/glm.hpp"
 #include "../Screen/Screen.hpp"
 
 namespace Input {
-    class Mouse {
-    public:
-        float sensitivity;
-
-        Mouse(float sensitivity);
+    namespace Mouse {
+        extern float sensitivity;
+        extern bool locked;
 
         void doLoop();
 
@@ -14,12 +13,11 @@ namespace Input {
         void unlock(); // inverse of lock
         void toggleLock();
 
-    private:
-        bool locked = false;
+        glm::quat getMotionRotation();
 
-        glm::vec2 latePosition;  // Most up to date position
-        glm::vec2 earlyPosition; // Last position
-        glm::vec2 delta;         // delta between late and early positions
-        glm::vec2 motion;        // delta multiplied by sensitivity
-    };
+        extern glm::vec2 latePosition;  // Most up to date position
+        extern glm::vec2 earlyPosition; // Last position
+        extern glm::vec2 delta;         // delta between late and early positions
+        extern glm::vec2 motion;        // delta multiplied by sensitivity
+    }
 }
