@@ -18,6 +18,8 @@ TriangleRenderer::TriangleRenderer() {
 void TriangleRenderer::render() {
     this->material->use();
 
+    // Bind the vertexes of the triangles to render
+
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexbuffer);
     glVertexAttribPointer(
@@ -28,6 +30,8 @@ void TriangleRenderer::render() {
         0,                    // stride
         (void*)0              // array buffer offset
     );
+
+    // Bind the UVs of the triangles to render
 
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, this->uvbuffer);

@@ -2,11 +2,13 @@
 
 #include "../../Component/Component.hpp"
 #include "../../../../include/glm/glm.hpp"
+#include "../../../../include/glm/gtc/quaternion.hpp"
+#include "../../../../include/glm/gtx/quaternion.hpp"
 
 class Transform : public Component {
 public:
 	glm::vec3 position;
-	glm::vec3 rotation;
+	glm::quat rotation;
 	glm::vec3 scale;
 
 	Transform();

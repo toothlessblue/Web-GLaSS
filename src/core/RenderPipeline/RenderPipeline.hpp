@@ -12,7 +12,7 @@ public:
 
     std::list<Renderer*> renderers;
 
-	RenderPipeline(int openGLESVersion = 2);
+	RenderPipeline();
 	~RenderPipeline();
 
 	void render();

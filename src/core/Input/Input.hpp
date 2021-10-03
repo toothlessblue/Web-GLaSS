@@ -1,4 +1,4 @@
-#include "../../include/glm/glm.hpp"
+#include "../../../include/glm/glm.hpp"
 #include "../Screen/Screen.hpp"
 
 namespace Input {
