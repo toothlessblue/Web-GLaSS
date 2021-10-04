@@ -42,7 +42,7 @@ extern "C" int main(int argc, char** argv) {
 
     player->createComponent<CameraMouseController>();
 
-    player->transform->position = glm::vec3(3.0f,0.0f,-3.0f);
+    player->transform->position = glm::vec3(-3.0f,2.0f,3.0f);
 
     TriangleRenderer* renderer = cube->createComponent<TriangleRenderer>();
 

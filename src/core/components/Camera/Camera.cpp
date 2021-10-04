@@ -17,7 +17,7 @@ glm::mat4 Camera::getProjectionMatrix() {
 }
 
 glm::mat4 Camera::getViewMatrix() {
-    return glm::toMat4(this->gameObject->transform->rotation) * glm::translate(glm::mat4(1.0f), this->gameObject->transform->position);
+    return glm::toMat4(this->gameObject->transform->rotation) * glm::translate(glm::mat4(1.0f), -this->gameObject->transform->position);
 }
 
 void Camera::setAsActiveCamera() {
