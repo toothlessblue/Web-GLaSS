@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "../Renderer/Renderer.hpp"
+#include "../../Mesh/Mesh.hpp"
 
 /**
  * Renders a hardcoded list of vertices
@@ -12,53 +13,41 @@ public:
 
     void render() override;
 private:
-    GLuint vertexArrayID;
-    GLuint uvArrayID;
-    
-    GLuint vertexbuffer;
-    GLuint uvbuffer;
+    Mesh* mesh;
 
-    const GLfloat g_vertex_buffer_data[108] = {
-       -1.0f,-1.0f,-1.0f, // triangle 1 : begin
-        -1.0f,-1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f, // triangle 1 : end
-        1.0f, 1.0f,-1.0f, // triangle 2 : begin
-        -1.0f,-1.0f,-1.0f,
-        -1.0f, 1.0f,-1.0f, // triangle 2 : end
-        1.0f,-1.0f, 1.0f,
-        -1.0f,-1.0f,-1.0f,
-        1.0f,-1.0f,-1.0f,
-        1.0f, 1.0f,-1.0f,
-        1.0f,-1.0f,-1.0f,
-        -1.0f,-1.0f,-1.0f,
-        -1.0f,-1.0f,-1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f,-1.0f,
-        1.0f,-1.0f, 1.0f,
-        -1.0f,-1.0f, 1.0f,
-        -1.0f,-1.0f,-1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f,-1.0f, 1.0f,
-        1.0f,-1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f,-1.0f,-1.0f,
-        1.0f, 1.0f,-1.0f,
-        1.0f,-1.0f,-1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f,-1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f,-1.0f,
-        -1.0f, 1.0f,-1.0f,
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f,-1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f,-1.0f, 1.0f
+    unsigned int g_triangle_buffer_data[36] = { // Anticlockwise triangles
+        0, 1, 2, // Bottom face
+        0, 2, 3,
+    
+        4, 5, 6, // Top face
+        4, 6, 7,
+
+        1, 2, 5, // Left
+        2, 6, 5,
+
+        0, 3, 4, // Right
+        3, 7, 4,
+
+        0, 1, 5, // Forward
+        0, 5, 4,
+
+        3, 2, 6, // Back
+        6, 7, 3,
+    };
+
+    GLfloat g_vertex_buffer_data[24] = {
+        -1.0, -1.0, -1.0,
+        -1.0, -1.0, 1.0,
+        1.0, -1.0, 1.0,
+        1.0, -1.0, -1.0,
+        -1.0, 1.0, -1.0,
+        -1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0,
+        1.0, 1.0, -1.0,
     };
 
     // Two UV coordinates for each vertex.
-    const GLfloat g_uv_buffer_data[72] = {
+    GLfloat g_uv_buffer_data[72] = {
         0.000059f, 0.000004f,
         0.000103f, 0.336048f,
         0.335973f, 0.335903f,

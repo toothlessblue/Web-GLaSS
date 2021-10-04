@@ -6,7 +6,7 @@
 #include "../components/Camera/Camera.hpp"
 
 RenderPipeline::RenderPipeline() {
-    
+
 }
 
 RenderPipeline::~RenderPipeline() {
