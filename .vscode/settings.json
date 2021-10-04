@@ -111,7 +111,8 @@
         "xutility": "cpp",
         "stop_token": "cpp",
         "__memory": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "__functional_base_03": "cpp"
     },
     "search.exclude": {
         "**/.vshistory": true,
