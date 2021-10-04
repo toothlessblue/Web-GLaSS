@@ -37,3 +37,15 @@ glm::mat4 Transform::getModelMatrix() {
 glm::mat4 Transform::getModelViewProjectionMatrix(glm::mat4 viewMatrix, glm::mat4 projectionMatrix) {
     return projectionMatrix * viewMatrix * this->getModelMatrix();
 }
+
+glm::vec3 Transform::getForwards() {
+    return glm::rotate(this->rotation, glm::vec3(0, 0, 1));
+}
+
+glm::vec3 Transform::getLeft() {
+    return glm::rotate(this->rotation, glm::vec3(1, 0, 0));
+}
+
+glm::vec3 Transform::getUp() {
+    return glm::rotate(this->rotation, glm::vec3(0, 1, 0));
+}
