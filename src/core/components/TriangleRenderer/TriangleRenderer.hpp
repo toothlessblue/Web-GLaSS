@@ -15,7 +15,7 @@ public:
 private:
     Mesh* mesh;
 
-    unsigned int g_triangle_buffer_data[36] = { // Anticlockwise triangles
+    unsigned int g_triangle_buffer_data[36] = { // Anticlockwise triangles, these triangles are wrong
         0, 1, 2, // Bottom face
         0, 2, 3,
     

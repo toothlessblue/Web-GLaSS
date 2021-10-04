@@ -1,10 +1,13 @@
 #include "Mesh.hpp"
 
 Mesh::Mesh() {
-    glGenBuffers(1, &this->vertexBuffer);
-    glGenBuffers(1, &this->uvBuffer);
-    glGenBuffers(1, &this->normalsBuffer);
-    glGenBuffers(1, &this->trianglesBuffer);
+    GLuint ids[4];
+    glGenBuffers(4, &ids[0]);
+
+    this->vertexBuffer = ids[0];
+    this->uvBuffer = ids[1];
+    this->normalsBuffer = ids[2];
+    this->trianglesBuffer = ids[3];
 }
 
 // TODO learning this may be a pain
