@@ -20,4 +20,8 @@ namespace Input {
         extern glm::vec2 delta;         // delta between late and early positions
         extern glm::vec2 motion;        // delta multiplied by sensitivity
     }
+
+    namespace Keyboard {
+        bool getKey();
+    }
 }

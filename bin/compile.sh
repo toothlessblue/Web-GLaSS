@@ -23,7 +23,8 @@ echo ${CPP_FILEPATHS}
 echo ""
 
 # TODO use make instead, will compile faster and lets us use a better incremental compiler
-#  Keep trying to complete this todo but always give up cause make looks like such a pain
+#   This will also allow disabling warnings like "warning: nested namespace definition is a C++17 extension; define each namespace separately"
+#   Keep trying to complete this todo but always give up cause make looks like such a pain
 
 # Uses WebGL 2, this is newer and has less support but gives us access to a bunch of fun tools
 #  like compute and geometry shaders
