@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/glm/glm.hpp"
+#include "../include/glm/gtc/quaternion.hpp"
+#include "../include/glm/gtx/quaternion.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <emscripten.h>
@@ -15,7 +17,8 @@
 #include "core/Material/Material.hpp"
 #include "core/Texture/Texture.hpp"
 
-#include "core/components/CameraMouseController/CameraMouseController.hpp"
+#include "assets/CameraMouseController/CameraMouseController.hpp"
+#include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
 
 extern "C" void gameLoop() {
     Time::frameStart();
@@ -34,6 +37,7 @@ extern "C" int main(int argc, char** argv) {
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();
     Camera* camera = player->createComponent<Camera>();
+    player->createComponent<FloatingCameraKeyboardController>();
     camera->setAsActiveCamera();
 
     player->createComponent<CameraMouseController>();

@@ -1,7 +1,5 @@
 #pragma once
-#include "../../Component/Component.hpp"
-#include "../../Input/Input.hpp"
-#include "../../../../include/glm/glm.hpp"
+#include "../../core/Component/Component.hpp"
 
 class CameraMouseController : public Component {
 public:

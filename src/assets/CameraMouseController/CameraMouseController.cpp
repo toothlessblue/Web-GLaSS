@@ -1,9 +1,6 @@
-#include "../../Input/Input.hpp"
 #include "CameraMouseController.hpp"
-#include "../../../../include/glm/glm.hpp"
-#include "../../../../include/glm/gtc/quaternion.hpp"
-#include "../../../../include/glm/gtx/quaternion.hpp"
-#include "../../Time/Time.hpp"
+#include "../../core/Input/Input.hpp"
+#include "../../core/Time/Time.hpp"
 
 void CameraMouseController::update() {
     this->lookVector.x -= Input::Mouse::motion.x;

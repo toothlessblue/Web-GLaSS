@@ -1,6 +1,4 @@
 #include "Input.hpp"
-#include "../GameEngine/GameEngine.hpp"
-#include <GLFW/glfw3.h>
 
 namespace Input::Keyboard {
     bool getKey(int key) {
@@ -14,19 +12,19 @@ namespace Input::Keyboard {
         glm::vec3 movement;
         
         if (getKey(forward)) {
-            movement.z += 1;
-        }
-
-        if (getKey(back)) {
             movement.z -= 1;
         }
 
+        if (getKey(back)) {
+            movement.z += 1;
+        }
+
         if (getKey(left)) {
-            movement.x += 1;
+            movement.x -= 1;
         }
 
         if (getKey(right)) {
-            movement.x -= 1;
+            movement.x += 1;
         }
 
         return movement;

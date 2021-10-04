@@ -1,11 +1,4 @@
 #include "Input.hpp"
-#include "../../../include/glm/glm.hpp"
-#include <GLFW/glfw3.h>
-#include "../GameEngine/GameEngine.hpp"
-#include "../../../include/glm/gtc/quaternion.hpp"
-#include "../../../include/glm/gtx/quaternion.hpp"
-#include "../Time/Time.hpp"
-#include <emscripten.h>
 
 namespace Input::Mouse {
     bool locked = false;
@@ -25,27 +18,14 @@ namespace Input::Mouse {
         latePosition = glm::vec2(xPos, yPos);
         delta = latePosition - earlyPosition;
         motion = delta * sensitivity * Time::getDeltaTime();
-
-        if (locked) { // TODO doesn't work, look into
-            // Reset cursor to center of the screen
-            glfwSetCursorPos(GameEngine::screen.window, GameEngine::screen.width / 2, GameEngine::screen.height / 2);
-        }
     }
 
     void lock() {
-        locked = true;
-        
         // TODO implement call to JS to hide the mouse
     }
 
     void unlock() {
-        locked = false;
-        
         // TODO implement call to JS to show the mouse
-    }
-
-    void toggleLock() {
-        locked ? unlock() : lock();
     }
 
     glm::quat getMotionRotation() {

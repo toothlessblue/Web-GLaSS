@@ -1,17 +1,22 @@
 #pragma once
 #include "../../../include/glm/glm.hpp"
+#include "../../../include/glm/gtc/quaternion.hpp"
+#include "../../../include/glm/gtx/quaternion.hpp"
+#include <GLFW/glfw3.h>
+#include <emscripten.h>
+#include "../GameEngine/GameEngine.hpp"
 #include "../Screen/Screen.hpp"
+#include "../Time/Time.hpp"
+#include "../components/Transform/Transform.hpp"
 
 namespace Input {
     namespace Mouse {
         extern float sensitivity;
-        extern bool locked;
 
         void doLoop();
 
         void lock(); // Hides the mouse and locks it to the center of the screen
         void unlock(); // inverse of lock
-        void toggleLock();
 
         glm::quat getMotionRotation();
 
@@ -23,5 +28,6 @@ namespace Input {
 
     namespace Keyboard {
         bool getKey();
+        glm::vec3 get4KeyVector3d(int forward, int back, int left, int right);
     }
 }
