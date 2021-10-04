@@ -39,9 +39,9 @@ Screen::Screen(int width, int height) {
 }
 
 float Screen::getRatio() {
-    return (float)this->width / (float)this->height;
+    return (float)(this->width) / (float)(this->height);
 }
 
 float Screen::horizontalFieldOfViewDegreesToVerticalRadians(float horizontalFieldOfViewDegrees) {
-    return glm::radians(2 * atan(tan(horizontalFieldOfViewDegrees / 2) * this->getRatio()));
+    return atan(tan(glm::radians(horizontalFieldOfViewDegrees) / 2) * this->getRatio());
 }

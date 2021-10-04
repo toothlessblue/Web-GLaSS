@@ -1,5 +1,4 @@
 #pragma once
-
 #include "../RenderPipeline/RenderPipeline.hpp"
 #include "../WorldSpace/WorldSpace.hpp"
 #include "../Screen/Screen.hpp"

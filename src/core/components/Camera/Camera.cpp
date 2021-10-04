@@ -2,13 +2,14 @@
 #include "../../../../include/glm/glm.hpp"
 #include "../../../../include/glm/gtx/transform.hpp"
 #include "../../../../include/glm/gtc/matrix_transform.hpp"
+#include "../../GameEngine/GameEngine.hpp"
 #include "Camera.hpp"
 
-Camera::Camera(float fieldOfView, float ratio, float nearClipPlane, float farClipPlane) {
-    this->fieldOfView = glm::radians(fieldOfView);
-    this->ratio = ratio;
-    this->nearClipPlane = nearClipPlane;
-    this->farClipPlane = farClipPlane;
+Camera::Camera() {
+    this->fieldOfView = GameEngine::screen.horizontalFieldOfViewDegreesToVerticalRadians(70.0f);                      
+    this->ratio = GameEngine::screen.getRatio();
+    this->nearClipPlane = 0.1f;
+    this->farClipPlane = 100.0f;
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
@@ -16,9 +17,9 @@ glm::mat4 Camera::getProjectionMatrix() {
 }
 
 glm::mat4 Camera::getViewMatrix() {
-    return glm::lookAt(
-        this->gameObject->transform->position,
-        glm::vec3(0, 0, 0),
-        glm::vec3(0, 1, 0)
-    );
+    return glm::toMat4(this->gameObject->transform->rotation) * glm::translate(glm::mat4(1.0f), this->gameObject->transform->position);
+}
+
+void Camera::setAsActiveCamera() {
+    GameEngine::renderPipeline.setActiveCamera(this);
 }

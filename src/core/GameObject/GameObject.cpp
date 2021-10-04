@@ -2,6 +2,7 @@
 #include "../Component/Component.hpp"
 #include "../components/Transform/Transform.hpp"
 #include "../Time/Time.hpp"
+#include "../Input/Input.hpp"
 
 GameObject::GameObject() {
     this->transform = new Transform();

@@ -4,12 +4,13 @@
 #include "../GameEngine/GameEngine.hpp"
 #include "../../../include/glm/gtc/quaternion.hpp"
 #include "../../../include/glm/gtx/quaternion.hpp"
+#include "../Time/Time.hpp"
 #include <emscripten.h>
 
 namespace Input {
     namespace Mouse {
         bool locked = false;
-        float sensitivity = 0.005f;
+        float sensitivity = 0.05f;
 
         glm::vec2 latePosition;
         glm::vec2 earlyPosition;
@@ -24,9 +25,9 @@ namespace Input {
             
             latePosition = glm::vec2(xPos, yPos);
             delta = latePosition - earlyPosition;
-            motion = delta * sensitivity;
+            motion = delta * sensitivity * Time::getDeltaTime();
 
-            if (locked) {
+            if (locked) { // TODO doesn't work, look into
                 // Reset cursor to center of the screen
                 glfwSetCursorPos(GameEngine::screen.window, GameEngine::screen.width / 2, GameEngine::screen.height / 2);
             }
