@@ -11,7 +11,13 @@ Transform::Transform() {
 }
 
 glm::mat4 Transform::getTranslationMatrix() {
-    return glm::translate(glm::mat4(1.0f), this->position);
+    glm::mat4 translation = glm::translate(glm::mat4(1.0f), this->position);
+    
+    if (this->parent) {
+        translation *= this->parent->getTranslationMatrix();
+    }
+
+    return translation;
 }
 
 glm::mat4 Transform::getScaleMatrix() {

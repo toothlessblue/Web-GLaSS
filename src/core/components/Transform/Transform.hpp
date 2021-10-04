@@ -7,6 +7,8 @@
 
 class Transform : public Component {
 public:
+	Transform* parent;
+
 	glm::vec3 position;
 	glm::quat rotation;
 	glm::vec3 scale;
