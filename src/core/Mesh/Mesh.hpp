@@ -21,6 +21,8 @@ public:
 
     void draw();
 private:
+    GLuint vertexArray;
+
     GLuint vertexBuffer;
     GLuint uvBuffer;
     GLuint trianglesBuffer;
