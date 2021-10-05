@@ -29,8 +29,7 @@ private:
     GLuint normalsBuffer;
 
     std::vector<glm::vec3> vertices;
-    std::vector<unsigned int> triangles;
-
     std::vector<glm::vec2> uvs;
     std::vector<glm::vec3> normals;
+    std::vector<unsigned int> triangles;
 };

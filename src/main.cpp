@@ -37,18 +37,17 @@ extern "C" int main(int argc, char** argv) {
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();
     Camera* camera = player->createComponent<Camera>();
-    player->createComponent<FloatingCameraKeyboardController>();
     camera->setAsActiveCamera();
 
+    player->createComponent<FloatingCameraKeyboardController>();
     player->createComponent<CameraMouseController>();
-
     player->transform->position = glm::vec3(-3.0f,2.0f,3.0f);
 
     TriangleRenderer* renderer = cube->createComponent<TriangleRenderer>();
-    renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
+    renderer->material = new Material("/shaders/SimpleTextureShader.vert", "/shaders/SimpleTextureShader.frag");
 
-    // Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
-    // renderer->material->setTexture("myTextureSampler", texture);
+    Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
+    renderer->material->setTexture("myTextureSampler", texture);
 
     return 0;
 }

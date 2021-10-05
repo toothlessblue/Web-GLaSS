@@ -103,7 +103,7 @@ namespace VBOIndexer {
         std::map<PackedVertex,unsigned short> VertexToOutIndex;
 
         // For each input vertex
-        for ( unsigned int i=0; i<in_vertices.size(); i++ ){
+        for (unsigned int i=0; i<in_vertices.size(); i++) {
 
             PackedVertex packed = {in_vertices[i], in_uvs[i], in_normals[i]};
             

@@ -14,7 +14,9 @@ namespace ModelLoader {
         Mesh* loadMesh(const char* filepath);
     }
 
-    namespace WebModel { // TODO implement
+    namespace WebModel {
+        // TODO seperate program and compile step to convert all OBJs to easy to load WebModels
+
         // Custom format similar to OBJ that ONLY contains vertices, uvs, and normals
         // OBJs should be processed into WebModels for quicker loading, as it only has
         //    one index buffer and therefore doesn't need to be processed before being rendered
