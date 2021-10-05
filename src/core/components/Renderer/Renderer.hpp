@@ -12,6 +12,7 @@ public:
 
 	virtual void preRenderCheck();
 	virtual void render();
+    virtual void update() override;
 
 	void setId(unsigned int id);
 private:

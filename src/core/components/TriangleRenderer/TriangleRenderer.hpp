@@ -14,6 +14,7 @@ public:
     TriangleRenderer();
 
     void render() override;
+    void update() override;
 private:
     Mesh* mesh;
 };

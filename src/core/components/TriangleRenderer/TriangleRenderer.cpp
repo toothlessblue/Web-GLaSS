@@ -8,3 +8,7 @@ void TriangleRenderer::render() {
     this->material->use();
     this->mesh->draw();
 }
+
+void TriangleRenderer::update() {
+
+}

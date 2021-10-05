@@ -23,3 +23,7 @@ void Renderer::render() { }
 void Renderer::setId(unsigned int id) {
     this->pipelineId = id;
 }
+
+void Renderer::update() {
+    
+}
