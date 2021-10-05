@@ -45,11 +45,10 @@ extern "C" int main(int argc, char** argv) {
     player->transform->position = glm::vec3(-3.0f,2.0f,3.0f);
 
     TriangleRenderer* renderer = cube->createComponent<TriangleRenderer>();
+    renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
 
-    renderer->material = new Material("/shaders/SimpleTextureShader.vert", "/shaders/SimpleTextureShader.frag");
-
-    Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
-    renderer->material->setTexture("myTextureSampler", texture);
+    // Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
+    // renderer->material->setTexture("myTextureSampler", texture);
 
     return 0;
 }

@@ -15,49 +15,48 @@ void Mesh::recalculateNormals() {
 
 }
 
-void Mesh::setVertices(GLfloat* vertices, int size) {
+void Mesh::setVertices(std::vector<glm::vec3> vertices) {
     this->vertices = vertices;
-    this->triangleCount = size / sizeof(GLfloat);
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, size, this->vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &this->vertices[0], GL_STATIC_DRAW);
 }
 
-void Mesh::setUVs(GLfloat* uvs, int size) {
+void Mesh::setUVs(std::vector<glm::vec2> uvs) {
     this->uvs = uvs;
 
     glBindBuffer(GL_ARRAY_BUFFER, this->uvBuffer);
-    glBufferData(GL_ARRAY_BUFFER, size, this->uvs, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &this->uvs[0], GL_STATIC_DRAW);
 }
 
-void Mesh::setNormals(GLfloat* normals, int size) {
+void Mesh::setNormals(std::vector<glm::vec3> normals) {
     this->normals = normals;
 
     glBindBuffer(GL_ARRAY_BUFFER, this->normalsBuffer);
-    glBufferData(GL_ARRAY_BUFFER, size, this->normals, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &this->normals[0], GL_STATIC_DRAW);
 }
 
-void Mesh::setTriangles(unsigned int* triangles, int size) {
+void Mesh::setTriangles(std::vector<unsigned int> triangles) {
     this->triangles = triangles;
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->trianglesBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, this->triangles, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * sizeof(unsigned int), &this->triangles[0], GL_STATIC_DRAW);
 }
 
 
-GLfloat* Mesh::getVertices() {
+std::vector<glm::vec3> Mesh::getVertices() {
     return this->vertices;
 }
 
-GLfloat* Mesh::getUVs() {
+std::vector<glm::vec2> Mesh::getUVs() {
     return this->uvs;
 }
 
-GLfloat* Mesh::getNormals() {
+std::vector<glm::vec3> Mesh::getNormals() {
     return this->normals;
 }
 
-unsigned int* Mesh::getTriangles() {
+std::vector<unsigned int> Mesh::getTriangles() {
     return this->triangles;
 }
 
@@ -82,11 +81,12 @@ void Mesh::draw() {
         2,                    // attribute 2
         3,                    // size - vec3
         GL_FLOAT,             // type
-        GL_FALSE,              // normalized?
+        GL_FALSE,             // normalized?
         0,                    // stride
         (void*)0              // array buffer offset
     );
 
+    // Bind the vertices of the triangles to render
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
     glVertexAttribPointer(
@@ -102,9 +102,9 @@ void Mesh::draw() {
 
     // Draw the triangles !
     glDrawElements(
-        GL_TRIANGLES,             // mode
-        this->triangleCount,      // count
-        GL_UNSIGNED_INT,          // type
-        (void*)0                  // element array buffer offset
+        GL_TRIANGLES,               // mode
+        this->triangles.size(),     // count
+        GL_UNSIGNED_INT,            // type
+        (void*)0                    // element array buffer offset
     );
 }

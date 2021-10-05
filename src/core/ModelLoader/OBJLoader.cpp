@@ -11,8 +11,9 @@ namespace ModelLoader::OBJ {
         }
 
         std::string currentObjectName;
-        std::list<glm::vec3> vertices;
-        std::list<unsigned int> triangles;
+        std::vector<glm::vec3> vertices;
+        std::vector<glm::vec3> normals;
+        std::vector<glm::vec2> uvs;
 
         for (std::string line; std::getline(file, line); ) {
             std::istringstream in(line);
@@ -34,15 +35,38 @@ namespace ModelLoader::OBJ {
             } else if (command == "s") {
                 // controls smooth shading, maybe not ignore in the future
 
-            } else if (command == "f") {
-                int a, b, c;
-                in >> a >> b >> c;
-                triangles.push_back(a);
-                triangles.push_back(b);
-                triangles.push_back(c);
+            } else if (command == "f") { 
+                // Faces, ignore these, we construct them after loading the rest of the info
+
+            } else if (command == "vt") { // vertex texture? This is a UV
+                float u, v;
+                in >> u >> v;
+                uvs.push_back(glm::vec2(u, v));
+
+            } else if (command == "vn") { // vertex normal
+                float x, y, z;
+                in >> x >> y >> z;
+                normals.push_back(glm::vec3(x, y, z));
+
             }
         }
 
         file.close();
+
+        std::vector<unsigned int> outIndices;
+        std::vector<glm::vec3> outVertices;
+        std::vector<glm::vec2> outUvs;
+        std::vector<glm::vec3> outNormals;
+
+        VBOIndexer::indexVBO(vertices, uvs, normals, outIndices, outVertices, outUvs, outNormals);
+        
+        Mesh* mesh = new Mesh();
+        
+        mesh->setTriangles(outIndices);
+        mesh->setVertices(outVertices);
+        mesh->setNormals(outNormals);
+        mesh->setUVs(outUvs);
+
+        return mesh;
     }
 }

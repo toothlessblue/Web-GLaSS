@@ -5,13 +5,11 @@ echo "Copying data"
 mkdir -p ./lib/ # Make sure lib dir exists
 mkdir -p ./lib/data # Make sure data dir exists
 
-echo "- shaders"
-cp -R ./src/data/shaders ./lib/data/shaders
 echo "- webpage"
 echo "- favicon"
 cp -R ./src/WebPage/* ./lib/
-echo "- textures"
-cp -R ./src/data/textures ./lib/data/textures
+echo "- data"
+cp -R ./src/data/ ./lib/
 
                # Find all cpp files in   # Exclude any file             # Replace newlines
                # src/                    # in a .vshistory folder       # with space
