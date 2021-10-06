@@ -9,6 +9,8 @@ public:
 
 	Component();
 	virtual void update();
+
+	bool enabled = true;
 private:
 
 };

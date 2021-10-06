@@ -7,7 +7,7 @@ Mesh::Mesh() {
     this->vertexBuffer = ids[0];
     this->uvBuffer = ids[1];
     this->normalsBuffer = ids[2];
-    this->trianglesBuffer = ids[3];
+    this->indexesBuffer = ids[3];
 
     glGenVertexArrays(1, &this->vertexArray);
     glBindVertexArray(this->vertexArray);
@@ -47,9 +47,39 @@ Mesh::Mesh() {
     glEnableVertexAttribArray(2);
 }
 
-// TODO learning this may be a pain
 void Mesh::recalculateNormals() {
+    std::vector<std::vector<glm::vec3>> vertexToTriangleNormalMap;
 
+    // Loop through every triangle
+    for (int i = 0; i < this->indexes.size(); i += 3) {
+        // Get each vertex for the triangle
+        glm::vec3 a = this->vertices[this->indexes[i    ]];
+        glm::vec3 b = this->vertices[this->indexes[i + 1]];
+        glm::vec3 c = this->vertices[this->indexes[i + 2]];
+
+        // Calculate the surface normal
+        glm::vec3 edge1 = b - a;
+        glm::vec3 edge2 = c - a;
+
+        glm::vec3 normal = glm::normalize(glm::cross(edge1, edge2));
+        vertexToTriangleNormalMap[this->indexes[i    ]].push_back(normal);
+        vertexToTriangleNormalMap[this->indexes[i + 1]].push_back(normal);
+        vertexToTriangleNormalMap[this->indexes[i + 2]].push_back(normal);
+    }
+
+    this->normals.clear();
+
+    for (int i = 0; i < this->vertices.size()) {
+        glm::vec3 totalNormal;
+
+        for (glm::vec3 normal : vertexToTriangleNormalMap[i]) {
+            totalNormal += normal;
+        }
+
+        glm::vec3 vertexNormal = glm::normalize(totalNormal);
+
+        this->normals.push_back(vertexNormal);
+    }
 }
 
 void Mesh::setVertices(std::vector<glm::vec3> vertices) {
@@ -76,12 +106,12 @@ void Mesh::setNormals(std::vector<glm::vec3> normals) {
     glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &this->normals[0], GL_STATIC_DRAW);
 }
 
-void Mesh::setTriangles(std::vector<unsigned int> triangles) {
-    this->triangles = triangles;
+void Mesh::setIndexes(std::vector<unsigned int> indexes) {
+    this->indexes = indexes;
 
     glBindVertexArray(this->vertexArray);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->trianglesBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * sizeof(unsigned int), &this->triangles[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexesBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(unsigned int), &this->indexes[0], GL_STATIC_DRAW);
 }
 
 
@@ -97,20 +127,20 @@ std::vector<glm::vec3> Mesh::getNormals() {
     return this->normals;
 }
 
-std::vector<unsigned int> Mesh::getTriangles() {
-    return this->triangles;
+std::vector<unsigned int> Mesh::getIndexes() {
+    return this->indexes;
 }
 
 
 void Mesh::draw() {
     glBindVertexArray(this->vertexArray);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->trianglesBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexesBuffer);
 
     // Draw the triangles !
     glDrawElements(
         GL_TRIANGLES,               // mode
-        this->triangles.size(),     // count
+        this->indexes.size(),     // count
         GL_UNSIGNED_INT,            // type
         (void*)0                    // element array buffer offset
     );

@@ -1,21 +1,31 @@
 #pragma once
 #include "../Component/Component.hpp"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <list>
 
 namespace Lighting {
+    /**
+     * Asbtract base class, do not construct
+     */
     class Light : public Component {
     public:
         Light();
         
-        bool enabled = true;
+        float intensity = 1.0f;
+        int type = -1; // Default value, immediately overriden in the constructors of other light classes.
     };
 
+    /**
+     * Lights up objects within a distance around it, good for things like lamps
+     */
     class PointLight : public Light {
     public:
         PointLight();
         
-        // If true, light power is divided by (distance), if false, light power is divided by (distance * distance)
-        bool linearlyDiminishLight = false; 
+        // If true, light intensity is divided by (distance), if false, light intensity is divided by (distance * distance)
+        bool linearlyDiminishLight = false;
+        float maxDistance;
     };
 
     /**
@@ -36,4 +46,5 @@ namespace Lighting {
     };
 
     extern std::list<Light*> lights;
+    extern GLuint lightsBufferId;
 }

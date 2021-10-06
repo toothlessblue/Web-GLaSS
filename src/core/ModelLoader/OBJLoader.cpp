@@ -92,10 +92,10 @@ namespace ModelLoader::OBJ {
         
         Mesh* mesh = new Mesh();
         
-        mesh->setTriangles(outIndices);
+        mesh->setIndexes(outIndices);
         mesh->setVertices(outVertices);
-        mesh->setNormals(outNormals);
         mesh->setUVs(outUvs);
+        mesh->recalculateNormals();
 
         return mesh;
     }
