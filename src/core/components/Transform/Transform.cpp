@@ -14,6 +14,7 @@ glm::mat4 Transform::getTranslationMatrix() {
     glm::mat4 translation = glm::translate(glm::mat4(1.0f), this->position);
     
     if (this->parent) {
+        // TODO recursive call is computationally inefficient, replace with while loop
         translation *= this->parent->getTranslationMatrix();
     }
 

@@ -13,8 +13,8 @@ GameObject::~GameObject() {
     for (Component *component : this->components) {
         delete component;
     }
-
-    this->transform = NULL;
+    
+    // Transform* GameObject::transform is in the component list, no need to call delete on it seperately
 }
 
 void GameObject::updateComponents() {
