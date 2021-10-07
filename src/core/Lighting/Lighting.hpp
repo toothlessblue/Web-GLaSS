@@ -46,10 +46,8 @@ namespace Lighting {
         OmnidirectionalLight();
     };
 
-    extern std::list<Light*> lights;
+    extern std::vector<Light*> lights;
     extern GLuint lightsBufferId;
 
-    void pushLightsToShaderProgram() {
-        
-    }
+    void pushLightsToShaderProgram();
 }

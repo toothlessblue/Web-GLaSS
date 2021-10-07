@@ -24,11 +24,9 @@ namespace Lighting {
         this->type = 2;
     }
 
-    void sendLightsToCurrentShader() {
+    void pushLightsToShaderProgram() {
         for (int i = 0; i < Lighting::lights.size(); i++) {
-            Light* light = Lighting::lights[i];
-
-            // TODO push lights to uniform array
+            // TODO 
         }
     }
 }

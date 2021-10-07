@@ -9,9 +9,6 @@ Mesh::Mesh() {
     this->normalsBuffer = ids[2];
     this->indexesBuffer = ids[3];
 
-    glGenVertexArrays(1, &this->vertexArray);
-    glBindVertexArray(this->vertexArray);
-
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
     glVertexAttribPointer(
         0,                    // attribute 0. No particular reason for 0, but must match the layout in the shader.
@@ -85,7 +82,6 @@ void Mesh::recalculateNormals() {
 void Mesh::setVertices(std::vector<glm::vec3> vertices) {
     this->vertices = vertices;
 
-    glBindVertexArray(this->vertexArray);
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &this->vertices[0], GL_STATIC_DRAW);
 }
@@ -93,7 +89,6 @@ void Mesh::setVertices(std::vector<glm::vec3> vertices) {
 void Mesh::setUVs(std::vector<glm::vec2> uvs) {
     this->uvs = uvs;
 
-    glBindVertexArray(this->vertexArray);
     glBindBuffer(GL_ARRAY_BUFFER, this->uvBuffer);
     glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &this->uvs[0], GL_STATIC_DRAW);
 }
@@ -101,7 +96,6 @@ void Mesh::setUVs(std::vector<glm::vec2> uvs) {
 void Mesh::setNormals(std::vector<glm::vec3> normals) {
     this->normals = normals;
 
-    glBindVertexArray(this->vertexArray);
     glBindBuffer(GL_ARRAY_BUFFER, this->normalsBuffer);
     glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(glm::vec3), &this->normals[0], GL_STATIC_DRAW);
 }
@@ -109,7 +103,6 @@ void Mesh::setNormals(std::vector<glm::vec3> normals) {
 void Mesh::setIndexes(std::vector<unsigned int> indexes) {
     this->indexes = indexes;
 
-    glBindVertexArray(this->vertexArray);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexesBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(unsigned int), &this->indexes[0], GL_STATIC_DRAW);
 }
@@ -133,8 +126,6 @@ std::vector<unsigned int> Mesh::getIndexes() {
 
 
 void Mesh::draw() {
-    glBindVertexArray(this->vertexArray);
-
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexesBuffer);
 
     // Draw the triangles !

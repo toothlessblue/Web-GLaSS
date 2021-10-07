@@ -1,7 +1,15 @@
 #pragma once
 
-#include <GL/glew.h>
 #include <list>
+#include <GL/glew.h>
+#include <iostream>
+#include "../../../include/glm/glm.hpp"
+#include "../../../include/glm/gtx/transform.hpp"
+#include "../../../include/glm/gtc/matrix_transform.hpp"
+#include "../components/Camera/Camera.hpp"
+#include "../GameEngine/GameEngine.hpp"
+#include "../Lighting/Lighting.hpp"
+#include "../Shaders/Shaders.hpp"
 
 // Forward declarations
 class Renderer;
@@ -26,9 +34,10 @@ public:
 
     void setActiveCamera(Camera* camera);
 private:
-    GLuint geometryBuffer, depthBuffer;
+    GLuint vertexArray;
+    GLuint geometryBuffer, depthBuffer, quadVertexBuffer;
     GLuint gPosition, gNormal, gColorSpec;
-    GLuint lightingProgram;
+    GLuint quadProgram;
 };
 
 #include "../components/Renderer/Renderer.hpp"

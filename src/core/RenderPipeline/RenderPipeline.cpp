@@ -1,17 +1,26 @@
 #include "RenderPipeline.hpp"
-#include <GL/glew.h>
-#include "../../../include/glm/glm.hpp"
-#include "../../../include/glm/gtx/transform.hpp"
-#include "../../../include/glm/gtc/matrix_transform.hpp"
-#include "../components/Camera/Camera.hpp"
-#include "../GameEngine/GameEngine.hpp"
-#include "../Lighting/Lighting.hpp"
-#include "../Shaders/Shaders.hpp"
 
 RenderPipeline::RenderPipeline() {
-    this->lightingProgram = Shaders::CreateProgram("LightingPass.frag");
+    std::cout << "Creating render pipeline" << std::endl;
+
+    glGenVertexArrays(1, &this->vertexArray);
+    glBindVertexArray(this->vertexArray);
+    
+    glm::vec3 quadVertices[6] = {
+        glm::vec3(1, 0, 0),
+        glm::vec3(0, 1, 0),
+        glm::vec3(0, 0, 0),
+        glm::vec3(1, 0, 0),
+        glm::vec3(1, 1, 0),
+        glm::vec3(0, 1, 0),
+    };
+
+    glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(glm::vec3), &quadVertices[0], GL_STATIC_DRAW);
+    this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/RenderQuad.frag");
 
     glGenFramebuffers(1, &this->geometryBuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, this->geometryBuffer);
 
     // - position color buffer
     glGenTextures(1, &this->gPosition);
@@ -22,8 +31,8 @@ RenderPipeline::RenderPipeline() {
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->gPosition, 0);
     
     // - normal color buffer
-    glBindTexture(GL_TEXTURE_2D, this->gNormal);
     glGenTextures(1, &this->gNormal);
+    glBindTexture(GL_TEXTURE_2D, this->gNormal);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, GameEngine::screen.width, GameEngine::screen.height, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -53,6 +62,7 @@ void RenderPipeline::render() {
     glBindFramebuffer(GL_FRAMEBUFFER, this->geometryBuffer); // Bind the geometry buffer
     glClearColor(0.0, 0.0, 0.0, 1.0); // keep it black so it doesn't leak into g-buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 
     glm::mat4 view = this->activeCamera->getViewMatrix();
     glm::mat4 projection = this->activeCamera->getProjectionMatrix();
@@ -67,24 +77,17 @@ void RenderPipeline::render() {
         renderer->preRenderCheck();
         renderer->render();
     }
-
-    // Then, the lighting pass
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, this->gPosition);
-
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, this->gNormal);
-
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, this->gColorSpec);
-    // also send light relevant uniforms
-    glUseProgram(this->lightingProgram);
-    Lighting::pushLightsToShaderProgram();
-    glUniform3fv(glGetUniformLocation(this->lightingProgram, "viewPos"), 1, &this->activeCamera->gameObject->transform->position[0]);
     
+    // second pass
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); 
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    glUseProgram(this->quadProgram);
+    glBindVertexArray(this->vertexArray);
+    glDisable(GL_DEPTH_TEST);
+    glBindTexture(GL_TEXTURE_2D, this->gColorSpec);
+    glDrawArrays(GL_TRIANGLES, 0, 6);  
 }
 
 unsigned int RenderPipeline::addRenderer(Renderer* renderer) {

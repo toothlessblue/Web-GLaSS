@@ -15,7 +15,7 @@ glm::mat4 Transform::getTranslationMatrix() {
     
     if (this->parent) {
         // TODO recursive call is computationally inefficient, replace with while loop
-        translation *= this->parent->getTranslationMatrix();
+        // translation *= this->parent->getTranslationMatrix(); This appears to be calling infinitely?
     }
 
     return translation;
