@@ -25,6 +25,10 @@ public:
     unsigned int addRenderer(Renderer* renderer);
 
     void setActiveCamera(Camera* camera);
+private:
+    GLuint geometryBuffer, depthBuffer;
+    GLuint gPosition, gNormal, gColorSpec;
+    GLuint lightingProgram;
 };
 
 #include "../components/Renderer/Renderer.hpp"

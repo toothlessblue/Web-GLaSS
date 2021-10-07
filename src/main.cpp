@@ -16,6 +16,7 @@
 #include "core/GameObject/GameObject.hpp"
 #include "core/Material/Material.hpp"
 #include "core/Texture/Texture.hpp"
+#include "core/Lighting/Lighting.hpp"
 
 #include "assets/CameraMouseController/CameraMouseController.hpp"
 #include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
@@ -36,6 +37,8 @@ extern "C" int main(int argc, char** argv) {
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();
+    GameObject* lamp = GameEngine::CreateGameObject();
+
     Camera* camera = player->createComponent<Camera>();
     camera->setAsActiveCamera();
 
@@ -44,10 +47,12 @@ extern "C" int main(int argc, char** argv) {
     player->transform->position = glm::vec3(-3.0f,2.0f,3.0f);
 
     TriangleRenderer* renderer = cube->createComponent<TriangleRenderer>();
-    renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/LitFragment.frag");
-
     Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
+    renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleGeometry.frag");
     renderer->material->setTexture("myTextureSampler", texture);
+
+    lamp->transform->position = glm::vec3(-3.0f, -2.0f, 3.0f);
+    Lighting::PointLight* light = lamp->createComponent<Lighting::PointLight>();
 
     return 0;
 }

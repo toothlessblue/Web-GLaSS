@@ -69,7 +69,7 @@ void Mesh::recalculateNormals() {
 
     this->normals.clear();
 
-    for (int i = 0; i < this->vertices.size()) {
+    for (int i = 0; i < this->vertices.size(); i++) {
         glm::vec3 totalNormal;
 
         for (glm::vec3 normal : vertexToTriangleNormalMap[i]) {
@@ -140,7 +140,7 @@ void Mesh::draw() {
     // Draw the triangles !
     glDrawElements(
         GL_TRIANGLES,               // mode
-        this->indexes.size(),     // count
+        this->indexes.size(),       // count
         GL_UNSIGNED_INT,            // type
         (void*)0                    // element array buffer offset
     );

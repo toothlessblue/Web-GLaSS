@@ -1,8 +1,9 @@
 #pragma once
+#define MAX_LIGHTS 128
 #include "../Component/Component.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <list>
+#include <vector>
 
 namespace Lighting {
     /**
@@ -12,7 +13,7 @@ namespace Lighting {
     public:
         Light();
         
-        float intensity = 1.0f;
+        glm::vec3 colour;
         int type = -1; // Default value, immediately overriden in the constructors of other light classes.
     };
 
@@ -47,4 +48,8 @@ namespace Lighting {
 
     extern std::list<Light*> lights;
     extern GLuint lightsBufferId;
+
+    void pushLightsToShaderProgram() {
+        
+    }
 }

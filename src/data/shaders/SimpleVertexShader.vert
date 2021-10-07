@@ -9,13 +9,17 @@ layout(location = 2) in vec3 vNormal;
 // Output data ; will be interpolated for each fragment.
 out vec2 fUv;
 out vec3 fNormal;
+out vec3 fragPos;
 
 // Values that stay constant for the whole mesh.
-uniform mat4 MVP_matrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 
 void main(){
-	gl_Position = MVP_matrix * vec4(vVertex, 1);
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vVertex, 1);
 
     fUv = vUv;
     fNormal = vNormal;
+    fragPos = vec3(modelMatrix * vec4(vVertex, 1));
 }
