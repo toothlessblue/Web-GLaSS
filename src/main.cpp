@@ -48,8 +48,8 @@ extern "C" int main(int argc, char** argv) {
 
     TriangleRenderer* renderer = cube->createComponent<TriangleRenderer>();
     Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
-    renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleGeometry.frag");
-    renderer->material->setTexture("myTextureSampler", texture);
+    renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
+    renderer->material->setTexture("albedoTexture", texture);
 
     lamp->transform->position = glm::vec3(-3.0f, -2.0f, 3.0f);
     Lighting::PointLight* light = lamp->createComponent<Lighting::PointLight>();

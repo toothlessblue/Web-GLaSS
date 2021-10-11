@@ -8,44 +8,13 @@ Mesh::Mesh() {
     this->uvBuffer = ids[1];
     this->normalsBuffer = ids[2];
     this->indexesBuffer = ids[3];
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
-    glVertexAttribPointer(
-        0,                    // attribute 0. No particular reason for 0, but must match the layout in the shader.
-        3,                    // size - vec3
-        GL_FLOAT,             // type
-        GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
-    );
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->uvBuffer);
-    glVertexAttribPointer(
-        1,                    // attribute 1
-        2,                    // size - vec2
-        GL_FLOAT,             // type
-        GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
-    );
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->normalsBuffer);
-    glVertexAttribPointer(
-        2,                    // attribute 2
-        3,                    // size - vec3
-        GL_FLOAT,             // type
-        GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
-    );
-
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
 }
 
 void Mesh::recalculateNormals() {
-    std::vector<std::vector<glm::vec3>> vertexToTriangleNormalMap;
+    std::vector<std::vector<glm::vec3>> vertexToTriangleNormalMap(
+        this->indexes.size(),
+        std::vector<glm::vec3>()
+    );
 
     // Loop through every triangle
     for (int i = 0; i < this->indexes.size(); i += 3) {
@@ -59,6 +28,9 @@ void Mesh::recalculateNormals() {
         glm::vec3 edge2 = c - a;
 
         glm::vec3 normal = glm::normalize(glm::cross(edge1, edge2));
+
+        vertexToTriangleNormalMap[this->indexes[i]] = *(new std::vector<glm::vec3>());
+
         vertexToTriangleNormalMap[this->indexes[i    ]].push_back(normal);
         vertexToTriangleNormalMap[this->indexes[i + 1]].push_back(normal);
         vertexToTriangleNormalMap[this->indexes[i + 2]].push_back(normal);
@@ -77,6 +49,8 @@ void Mesh::recalculateNormals() {
 
         this->normals.push_back(vertexNormal);
     }
+
+    this->setNormals(this->normals);
 }
 
 void Mesh::setVertices(std::vector<glm::vec3> vertices) {
@@ -122,17 +96,4 @@ std::vector<glm::vec3> Mesh::getNormals() {
 
 std::vector<unsigned int> Mesh::getIndexes() {
     return this->indexes;
-}
-
-
-void Mesh::draw() {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexesBuffer);
-
-    // Draw the triangles !
-    glDrawElements(
-        GL_TRIANGLES,               // mode
-        this->indexes.size(),       // count
-        GL_UNSIGNED_INT,            // type
-        (void*)0                    // element array buffer offset
-    );
 }

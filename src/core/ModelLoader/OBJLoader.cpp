@@ -44,7 +44,7 @@ namespace ModelLoader::OBJ {
                 unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
                 int matches = sscanf(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
                 if (matches != 9){
-                    printf("File can't be read OBJLoader :( Make sure you export with UVs and normals, and have triangulate mesh checked\n");
+                    printf("File can't be read OBJLoader :( Make sure you export with UVs and normals, and have triangulate mesh checked");
                     return NULL;
                 }
 

@@ -1,7 +1,7 @@
 #version 300 es
 precision mediump float;
+
 out vec4 color;
-  
 in vec2 fUv;
 
 uniform sampler2D gPosition;
@@ -28,7 +28,7 @@ void main()
     
     // then calculate lighting as usual
     vec3 lighting = albedo * 0.1; // hard-coded ambient component
-    // vec3 viewDir = normalize(viewPos - fragPos);
+    vec3 viewDir = normalize(viewPos - fragPos);
 
     for(int i = 0; i < NR_LIGHTS; ++i)
     {
@@ -38,5 +38,5 @@ void main()
         lighting += diffuse;
     }
     
-    color = vec4(lighting, 1.0);
+    color = vec4(albedo, 1.0);
 } 

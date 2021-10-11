@@ -35,9 +35,29 @@ public:
     void setActiveCamera(Camera* camera);
 private:
     GLuint vertexArray;
-    GLuint geometryBuffer, depthBuffer, quadVertexBuffer;
-    GLuint gPosition, gNormal, gColorSpec;
-    GLuint quadProgram;
+    GLuint geometryBuffer, depthBuffer;
+    GLuint gPosition, gNormal, gAlbedo;
+    GLuint rbo;
+
+    GLuint quadProgram, quadVertexBuffer, quadUvBuffer;
+
+    const GLfloat quadVertices[18] = {
+         1.0f,  1.0f,  0.0f,
+        -1.0f, -1.0f,  0.0f,
+        -1.0f,  1.0f,  0.0f,
+         1.0f,  1.0f,  0.0f,
+         1.0f, -1.0f,  0.0f,
+        -1.0f, -1.0f,  0.0f,
+    };
+
+    const GLfloat quadUvs[12] = {
+        1.0f, 1.0f,
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+    };
 };
 
 #include "../components/Renderer/Renderer.hpp"

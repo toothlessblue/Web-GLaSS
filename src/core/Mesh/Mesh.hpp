@@ -19,8 +19,6 @@ public:
     std::vector<glm::vec3> getNormals();
     std::vector<unsigned int> getIndexes();
 
-    void draw();
-private:
     GLuint vertexBuffer;
     GLuint uvBuffer;
     GLuint indexesBuffer;
@@ -30,4 +28,6 @@ private:
     std::vector<glm::vec2> uvs;
     std::vector<glm::vec3> normals;
     std::vector<unsigned int> indexes;
+private:
+
 };

@@ -30,7 +30,7 @@ public:
 private:
     GLint getAttributeIndex(const char* name);
 
-    GLuint textureUnitCounter = 0;
+    GLuint textureUnitCounter = 6;
 
     std::map<std::string, GLint> attributeIndexCache;
     std::list<std::function<void()>> toExecuteOnUse;

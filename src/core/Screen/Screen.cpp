@@ -33,9 +33,6 @@ Screen::Screen(int width, int height) {
     if (glewInit() != GLEW_OK) {
         throw "Failed to initialize GLEW\n";
     }
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
 }
 
 float Screen::getRatio() {

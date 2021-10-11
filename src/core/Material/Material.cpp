@@ -57,13 +57,15 @@ void Material::setTexture(const char* name, Texture* value) {
     // TODO store and (maybe) dispose of texture here, so that a reference to the pointer is kept
 
     GLint index = this->getAttributeIndex(name);
+    GLint textureUnit = this->textureUnitCounter;
 
-    this->toExecuteOnUse.push_back([index, value, this] {
-        glUniform1i(index, this->textureUnitCounter);
-        glActiveTexture(GL_TEXTURE0 + this->textureUnitCounter);
+    this->textureUnitCounter++;
+
+    this->toExecuteOnUse.push_back([index, value, textureUnit] {
+        glUniform1i(index, textureUnit);
+        glActiveTexture(GL_TEXTURE0 + textureUnit);
         glBindTexture(GL_TEXTURE_2D, value->id);
-
-        this->textureUnitCounter++;
+        std::cout << "Bound texture to unit " << textureUnit << std::endl;
     });
 }
 

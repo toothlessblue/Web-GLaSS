@@ -16,7 +16,7 @@ GLuint Shaders::LoadShader(const char* filePath, int shaderType) {
         shaderStream.close();
     }
     else {
-        printf("Impossible to open %s\n", filePath);
+        printf("Impossible to open %s", filePath);
         getchar();
         return 0;
     }
@@ -41,7 +41,7 @@ GLuint Shaders::LoadShader(const char* filePath, int shaderType) {
 
 GLuint Shaders::CreateProgram(const GLuint vertexShaderID, const GLuint fragmentShaderID) {
     // Link the program
-    printf("Linking program\n");
+    printf("Linking program");
     GLuint ProgramID = glCreateProgram();
 
     glAttachShader(ProgramID, vertexShaderID);
@@ -78,7 +78,7 @@ GLuint Shaders::CreateProgram(const char* vertex_file_path, const char* fragment
 
 GLuint Shaders::CreateProgram(const GLuint fragmentShaderID) {
     // Link the program
-    printf("Linking program\n");
+    printf("Linking program");
     GLuint ProgramID = glCreateProgram();
 
     glAttachShader(ProgramID, fragmentShaderID);
