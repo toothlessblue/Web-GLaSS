@@ -2,31 +2,64 @@
 
 namespace Lighting {
     // TODO this list of pointers needs a check for any pointers to deleted objects
-    std::vector<Light*> lights;
+    std::vector<PointLight*> pointLights;
+    std::vector<DirectionalLight*> directionalLights;
+    std::vector<OmnidirectionalLight*> omniDirectionalLights;
     
-    Light::Light() {
-        if (Lighting::lights.size() >= MAX_LIGHTS) {
-            throw "Cannot add another light, light count is more than or equal to MAX_LIGHTS";
-        }
+    GLuint lightProgram;
+    GLuint lightUBO;
+    GLuint uniformLightBlock;
 
-        Lighting::lights.push_back(this);
+    Light::Light() {
+        
     }
 
     PointLight::PointLight() {
-        this->type = 0;
+        Lighting::pointLights.push_back(this);
     }
 
     DirectionalLight::DirectionalLight() {
-        this->type = 1;
+        Lighting::directionalLights.push_back(this);
     }
 
     OmnidirectionalLight::OmnidirectionalLight() {
-        this->type = 2;
+        Lighting::omniDirectionalLights.push_back(this);
     }
 
-    void pushLightsToShaderProgram() {
-        for (int i = 0; i < Lighting::lights.size(); i++) {
-            // TODO 
-        }
+    /**
+     * Compiles the lighting shader program
+     */
+    void load() {
+        Lighting::lightProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/LightingPass.frag");
+        Lighting::uniformLightBlock = glGetUniformBlockIndex(Lighting::lightProgram, "lights");
+        
+        glGenBuffers(1, &Lighting::lightUBO);
+    }
+
+    void constructLightingUBO() {
+        int maxLightsPerType = 50; // Must match array size within LightingPass.frag
+
+        int pointLightSize = sizeof(float) * 11;
+        int pointLightArraySize = pointLightSize * maxLightsPerType;
+
+        int spotLightSize = sizeof(float) * 14;
+        int spotLightArraySize = spotLightSize * maxLightsPerType;
+
+        int directionalLightSize = sizeof(float) * 7;
+        int directionalLightArraySize = directionalLightSize * maxLightsPerType;
+
+        glBindBuffer(GL_UNIFORM_BUFFER, Lighting::lightUBO);
+        glBufferData(
+            GL_UNIFORM_BUFFER,
+            pointLightArraySize + spotLightArraySize + directionalLightArraySize,
+            NULL,
+            GL_STREAM_DRAW
+        );
+
+        // TODO write lights to shader, keeping track of offset and skipping where neededs
+    }
+
+    void renderLights() {
+        glUseProgram(Lighting::lightProgram);
     }
 }

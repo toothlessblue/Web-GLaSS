@@ -75,32 +75,3 @@ GLuint Shaders::CreateProgram(const char* vertex_file_path, const char* fragment
 
     return Shaders::CreateProgram(vertexShaderID, fragmentShaderID);
 }
-
-GLuint Shaders::CreateProgram(const GLuint fragmentShaderID) {
-    // Link the program
-    printf("Linking program");
-    GLuint ProgramID = glCreateProgram();
-
-    glAttachShader(ProgramID, fragmentShaderID);
-    glLinkProgram(ProgramID);
-
-    // Check the program
-    glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-    glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-    if (InfoLogLength > 0) {
-        std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-        glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-        printf("%s\n", &ProgramErrorMessage[0]);
-    }
-
-    glDetachShader(ProgramID, fragmentShaderID);
-    glDeleteShader(fragmentShaderID);
-
-    return ProgramID;
-}
-
-GLuint Shaders::CreateProgram(const char* fragment_file_path) {
-    GLuint fragmentShaderID = Shaders::LoadShader(fragment_file_path, GL_FRAGMENT_SHADER);
-
-    return Shaders::CreateProgram(fragmentShaderID);
-}

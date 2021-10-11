@@ -17,7 +17,4 @@ namespace Shaders {
 	GLuint LoadShader(const char* filePath, int shaderType);
 	GLuint CreateProgram(const GLuint vertexShaderID, const GLuint fragmentShaderID);
 	GLuint CreateProgram(const char* vertex_file_path, const char* fragment_file_path);
-	
-	GLuint CreateProgram(const GLuint fragmentShaderID);
-	GLuint CreateProgram(const char* fragment_file_path);
 }

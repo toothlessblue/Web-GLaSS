@@ -1,6 +1,10 @@
 #include "RenderPipeline.hpp"
 
 RenderPipeline::RenderPipeline() {
+    std::cout << "Loading lighting" << std::endl;
+
+    Lighting::load();
+
     std::cout << "Creating render pipeline" << std::endl;
 
     glGenVertexArrays(1, &this->vertexArray); // TODO I need to understand what VAOs actually do 
@@ -14,7 +18,7 @@ RenderPipeline::RenderPipeline() {
     glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadUvs), &quadUvs[0], GL_STATIC_DRAW);
 
-    this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/LightingPass.frag");
+    this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/PointLightPass.frag");
     glUseProgram(this->quadProgram);
     glUniform1i(glGetUniformLocation(this->quadProgram, "gPosition"), 3);
     glUniform1i(glGetUniformLocation(this->quadProgram, "gNormal"), 4);
@@ -115,30 +119,17 @@ void RenderPipeline::render() {
     // TODO send lighting information to program
     // TODO send view position to program
 
+
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
-    glVertexAttribPointer(
-        0,                    // attribute 0
-        3,                    // size - vec3
-        GL_FLOAT,             // type
-        GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
-    );
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
     glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
-    glVertexAttribPointer(
-        1,                    // attribute 1
-        2,                    // size - vec2
-        GL_FLOAT,             // type
-        GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
-    );
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    Lighting::renderLights();
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);

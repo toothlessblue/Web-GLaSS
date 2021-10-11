@@ -1,6 +1,6 @@
 #pragma once
-#define MAX_LIGHTS 128
 #include "../Component/Component.hpp"
+#include "../Shaders/Shaders.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <vector>
@@ -39,15 +39,21 @@ namespace Lighting {
     };
 
     /**
-     * A PointLight that doesn't diminish over distance, useful for things like suns
+     * A global light source that points lights in all directions from its origin
      */
     class OmnidirectionalLight : public Light {
     public:
         OmnidirectionalLight();
     };
 
-    extern std::vector<Light*> lights;
-    extern GLuint lightsBufferId;
+    extern std::vector<PointLight*> pointLights;
+    extern std::vector<DirectionalLight*> directionalLights;
+    extern std::vector<OmnidirectionalLight*> omniDirectionalLights;
 
-    void pushLightsToShaderProgram();
+    extern GLuint lightProgram;
+    extern GLuint lightUBO;
+    extern GLuint uniformLightBlock;
+    
+    void load();
+    void renderLights();
 }
