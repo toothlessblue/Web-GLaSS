@@ -1,15 +1,15 @@
-echo "Clearing data"
-rm -rf ./lib/data
+echo "Clearing resources"
+rm -rf ./lib/resources
 
-echo "Copying data"
-mkdir -p ./lib/ # Make sure lib dir exists
-mkdir -p ./lib/data # Make sure data dir exists
+echo "Copying resources"
+mkdir -p ./lib/          # Make sure lib dir exists
+mkdir -p ./lib/resources # Make sure resources dir exists
 
 echo "- webpage"
-echo "- favicon"
+echo "- favicon for reasons beyond your understanding"
 cp -R ./src/WebPage/* ./lib/
-echo "- data"
-cp -R ./src/data/ ./lib/
+echo "- all resource folders"
+find . -wholename "**/resources/*" -type d -prune -exec cp -R "{}" "./lib/resources/" \;
 
                # Find all cpp files in   # Exclude any file             # Replace newlines
                # src/                    # in a .vshistory folder       # with space
@@ -38,7 +38,7 @@ echo "Running emcc..."
 -s USE_GLFW=3                                       `# GL version to use` \
 -o ./lib/index.js                                   `# Output file, specifying .js outputs index.wasm and index.js files` \
 -fsanitize=undefined                                `# More detailed error info` \
---preload-file ./lib/data@/                         `# Data files to include in the virtual file system, adds index.data to output` \
+--preload-file ./lib/resources@/                    `# Data files to include in the virtual file system, adds index.data to output` \
  
 
 echo ""

@@ -20,5 +20,5 @@ void main() {
     // and the diffuse per-fragment color
     gAlbedo.rgb = texture(albedoTexture, fUv).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
-    gAlbedo.a = texture(specularTexture, fUv).r;
+    gAlbedo.a = texture(specularTexture, fUv).a;
 }
