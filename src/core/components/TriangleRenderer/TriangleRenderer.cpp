@@ -2,16 +2,13 @@
 
 TriangleRenderer::TriangleRenderer() {
     this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
-}
 
-void TriangleRenderer::render() {
-    this->material->use();
-    
-    // TODO work out this instead https://stackoverflow.com/questions/42411310/do-i-have-to-call-glvertexattribpointer-each-frame-for-each-rendered-mesh
+    glGenVertexArrays(1, &this->vao);
+    glBindVertexArray(this->vao);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
+    for (int i = 0; i < 3; i++) {
+        glEnableVertexAttribArray(i);
+    }
 
     glBindBuffer(GL_ARRAY_BUFFER, this->mesh->vertexBuffer);
     glVertexAttribPointer(
@@ -43,18 +40,17 @@ void TriangleRenderer::render() {
         (void*)0              // array buffer offset
     );
 
-    // Draw the triangles !
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer);
-    glDrawElements(
-        GL_TRIANGLES,               // mode
-        this->mesh->indexes.size(), // count
-        GL_UNSIGNED_INT,            // type
-        (void*)0                    // element array buffer offset
-    );
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer); // Bind vbo    1
+    glBindVertexArray(0);                                            // unbind vao  2  This order matters
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);                        // unbind vbo  3
+}
 
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
+void TriangleRenderer::render() {
+    this->material->use();
+    
+    glBindVertexArray(this->vao);
+    glDrawElements(GL_TRIANGLES, this->mesh->indexes.size(), GL_UNSIGNED_INT, (void*)0);
+    glBindVertexArray(0);
 }
 
 void TriangleRenderer::update() {

@@ -17,4 +17,5 @@ public:
     void update() override;
 private:
     Mesh* mesh;
+    GLuint vao;
 };
