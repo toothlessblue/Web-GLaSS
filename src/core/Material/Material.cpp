@@ -16,7 +16,7 @@ Material::Material(const char* vertexShaderPath, const char* fragmentShaderPath)
 void Material::setFloat(const char* name, float value) {
     GLint index = this->getAttributeIndex(name);
 
-    this->toExecuteOnUse.push_back([index, value] {
+    this->executeOnUse([index, value] {
         glUniform1f(index, value);
     });
 }
@@ -24,7 +24,7 @@ void Material::setFloat(const char* name, float value) {
 void Material::setInt(const char* name, int value) {
     GLint index = this->getAttributeIndex(name);
 
-    this->toExecuteOnUse.push_back([index, value] {
+    this->executeOnUse([index, value] {
         glUniform1i(index, value);
     });
 }
@@ -32,7 +32,7 @@ void Material::setInt(const char* name, int value) {
 void Material::setVec3(const char* name, glm::vec3 value) {
     GLint index = this->getAttributeIndex(name);
 
-    this->toExecuteOnUse.push_back([index, value] {
+    this->executeOnUse([index, value] {
         glUniform3fv(index, 1, &value[0]);
     });
 }
@@ -40,7 +40,7 @@ void Material::setVec3(const char* name, glm::vec3 value) {
 void Material::setVec4(const char* name, glm::vec4 value) {
     GLint index = this->getAttributeIndex(name);
     
-    this->toExecuteOnUse.push_back([index, value] {
+    this->executeOnUse([index, value] {
         glUniform4fv(index, 1, &value[0]);
     });
 }
@@ -48,7 +48,7 @@ void Material::setVec4(const char* name, glm::vec4 value) {
 void Material::setMat4(const char* name, glm::mat4 value) {
     GLint index = this->getAttributeIndex(name);
 
-    this->toExecuteOnUse.push_back([index, value] {
+    this->executeOnUse([index, value] {
         glUniformMatrix4fv(index, 1, GL_FALSE, &value[0][0]);
     });
 }
@@ -61,12 +61,23 @@ void Material::setTexture(const char* name, Texture* value) {
 
     this->textureUnitCounter++;
 
-    this->toExecuteOnUse.push_back([index, value, textureUnit] {
+    this->executeOnUse([index, value, textureUnit] {
         glUniform1i(index, textureUnit);
         glActiveTexture(GL_TEXTURE0 + textureUnit);
         glBindTexture(GL_TEXTURE_2D, value->id);
         std::cout << "Bound texture to unit " << textureUnit << std::endl;
     });
+}
+
+void Material::executeOnUse(std::function<void()> toExecute) {
+    GLint id;
+    glGetIntegerv(GL_CURRENT_PROGRAM,&id);
+
+    if (id == this->shaderProgramId) {
+        toExecute();
+    } else {
+        this->toExecuteOnUse.push_back(toExecute);
+    }
 }
 
 void Material::use() {

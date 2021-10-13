@@ -1,10 +1,6 @@
 #include "RenderPipeline.hpp"
 
 RenderPipeline::RenderPipeline() {
-    std::cout << "Loading lighting" << std::endl;
-
-    Lighting::load();
-
     std::cout << "Creating render pipeline" << std::endl;
 
     glGenVertexArrays(1, &this->vertexArray); // TODO I need to understand what VAOs actually do 
@@ -18,7 +14,7 @@ RenderPipeline::RenderPipeline() {
     glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadUvs), &quadUvs[0], GL_STATIC_DRAW);
 
-    this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/PointLightPass.frag");
+    this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/LightingPass.frag");
     glUseProgram(this->quadProgram);
     glUniform1i(glGetUniformLocation(this->quadProgram, "gPosition"), 3);
     glUniform1i(glGetUniformLocation(this->quadProgram, "gNormal"), 4);
@@ -78,7 +74,7 @@ RenderPipeline::~RenderPipeline() {
 void RenderPipeline::render() {
     // Set up for drawing to the frame buffer
 
-    glBindFramebuffer(GL_FRAMEBUFFER, this->geometryBuffer); // Bind the geometry buffer
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->geometryBuffer); // Bind the geometry buffer
     glClearColor(0.0, 0.0, 0.0, 1.0); // keep it black so it doesn't leak into g-buffer
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -101,6 +97,7 @@ void RenderPipeline::render() {
     
     // Prepare lighting pass on default frame buffer
 
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, this->geometryBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -119,7 +116,6 @@ void RenderPipeline::render() {
     // TODO send lighting information to program
     // TODO send view position to program
 
-
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
@@ -129,7 +125,7 @@ void RenderPipeline::render() {
     glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-    Lighting::renderLights();
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);

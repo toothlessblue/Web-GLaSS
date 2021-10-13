@@ -4,6 +4,7 @@ GLint Shaders::Result = GL_FALSE;
 int Shaders::InfoLogLength;
 
 GLuint Shaders::LoadShader(const char* filePath, int shaderType) {
+    printf("Loading shader : %s\n", filePath);
     GLuint shaderId = glCreateShader(shaderType);
 
     // Read the Vertex Shader code from the file
@@ -22,7 +23,6 @@ GLuint Shaders::LoadShader(const char* filePath, int shaderType) {
     }
 
     // Compile Vertex Shader
-    printf("Compiling shader : %s\n", filePath);
     char const* sourcePointer = shaderCode.c_str();
     glShaderSource(shaderId, 1, &sourcePointer, NULL);
     glCompileShader(shaderId);

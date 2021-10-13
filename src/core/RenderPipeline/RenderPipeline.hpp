@@ -8,7 +8,6 @@
 #include "../../../include/glm/gtc/matrix_transform.hpp"
 #include "../components/Camera/Camera.hpp"
 #include "../GameEngine/GameEngine.hpp"
-#include "../Lighting/Lighting.hpp"
 #include "../Shaders/Shaders.hpp"
 
 // Forward declarations

@@ -28,6 +28,7 @@ public:
 
     void use();
 private:
+    void executeOnUse(std::function<void()>);
     GLint getAttributeIndex(const char* name);
 
     GLuint textureUnitCounter = 6;
