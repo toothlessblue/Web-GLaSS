@@ -15,7 +15,7 @@ namespace ModelLoader {
     }
 
     namespace WebModel {
-        // TODO seperate program and compile step to convert all OBJs to easy to load WebModels
+        // TODO convert all OBJs to easy to load WebModels
         //   Copy OBJ loader and have it export meshes as .webmodel files
 
         // Custom format similar to OBJ that ONLY contains vertices, uvs, and normals

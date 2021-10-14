@@ -54,8 +54,6 @@ void Material::setMat4(const char* name, glm::mat4 value) {
 }
 
 void Material::setTexture(const char* name, Texture* value) {
-    // TODO store and (maybe) dispose of texture here, so that a reference to the pointer is kept
-
     GLint index = this->getAttributeIndex(name);
     GLint textureUnit = this->textureUnitCounter;
 

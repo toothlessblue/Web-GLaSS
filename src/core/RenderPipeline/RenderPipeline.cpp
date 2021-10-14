@@ -3,16 +3,20 @@
 RenderPipeline::RenderPipeline() {
     std::cout << "Creating render pipeline" << std::endl;
 
-    glGenVertexArrays(1, &this->vertexArray); // TODO I need to understand what VAOs actually do 
-    glBindVertexArray(this->vertexArray);
-
-    glGenBuffers(1, &this->quadVertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices[0], GL_STATIC_DRAW);
+    glGenVertexArrays(1, &this->quadVao);
+    glBindVertexArray(this->quadVao);
 
     glGenBuffers(1, &this->quadUvBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadUvs), &quadUvs[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadUvs), &this->quadUvs[0], GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &this->quadVertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadVertices), &this->quadVertices[0], GL_STATIC_DRAW);
+
+    glBindVertexArray(0);
 
     this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/LightingPass.frag");
     glUseProgram(this->quadProgram);
@@ -84,7 +88,7 @@ void RenderPipeline::render() {
     glm::mat4 view = this->activeCamera->getViewMatrix();
     glm::mat4 projection = this->activeCamera->getProjectionMatrix();
 
-    for (Renderer *renderer : this->renderers) {
+    for (Renderer* renderer : this->renderers) {
         glm::mat4 modelMatrix = renderer->gameObject->transform->getModelMatrix();
 
         renderer->material->setMat4("projectionMatrix", projection);
@@ -97,12 +101,14 @@ void RenderPipeline::render() {
     
     // Prepare lighting pass on default frame buffer
 
+    glBindVertexArray(this->quadVao);
+    glUseProgram(this->quadProgram);
+
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     glBindFramebuffer(GL_READ_FRAMEBUFFER, this->geometryBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glUseProgram(this->quadProgram);
 
     // Apply textures
 
@@ -116,19 +122,9 @@ void RenderPipeline::render() {
     // TODO send lighting information to program
     // TODO send view position to program
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
+    glBindVertexArray(0);
 }
 
 unsigned int RenderPipeline::addRenderer(Renderer* renderer) {

@@ -21,8 +21,6 @@ public:
 
 	glm::mat4 getModelMatrix();
 
-	glm::mat4 getModelViewProjectionMatrix(glm::mat4 viewMatrix, glm::mat4 projectionMatrix);
-
 	glm::vec3 getForwards();
 	glm::vec3 getLeft();
 	glm::vec3 getUp();

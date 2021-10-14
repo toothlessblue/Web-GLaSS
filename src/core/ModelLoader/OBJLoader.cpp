@@ -1,7 +1,7 @@
 #include "ModelLoader.hpp"
 
 namespace ModelLoader::OBJ {
-    // TODO this rudimentary loader breaks if F commands appear before anything else
+    // Note: Breaks if format of obj file not properly configured, this is not a robust loader
     Mesh* loadMesh(const char* filepath) {
         std::ifstream file;
         file.open(filepath);
@@ -31,7 +31,7 @@ namespace ModelLoader::OBJ {
 
             } else if (command == "v") {
                 float x, y, z;
-                in >> x >> y >> z; // TODO understand this syntax
+                in >> x >> y >> z;
                 uniqueVertices.push_back(glm::vec3(x, y, z));
 
             } else if (command == "usemtl") {

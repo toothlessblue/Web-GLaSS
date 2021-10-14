@@ -33,12 +33,11 @@ public:
 
     void setActiveCamera(Camera* camera);
 private:
-    GLuint vertexArray;
     GLuint geometryBuffer, depthBuffer;
     GLuint gPosition, gNormal, gAlbedo;
     GLuint rbo;
 
-    GLuint quadProgram, quadVertexBuffer, quadUvBuffer;
+    GLuint quadProgram, quadVertexBuffer, quadUvBuffer, quadVao;
 
     const GLfloat quadVertices[18] = {
          1.0f,  1.0f,  0.0f,
