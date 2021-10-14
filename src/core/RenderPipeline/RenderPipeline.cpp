@@ -6,6 +6,9 @@ RenderPipeline::RenderPipeline() {
     glGenVertexArrays(1, &this->quadVao);
     glBindVertexArray(this->quadVao);
 
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
     glGenBuffers(1, &this->quadUvBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -17,6 +20,7 @@ RenderPipeline::RenderPipeline() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadVertices), &this->quadVertices[0], GL_STATIC_DRAW);
 
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/LightingPass.frag");
     glUseProgram(this->quadProgram);
