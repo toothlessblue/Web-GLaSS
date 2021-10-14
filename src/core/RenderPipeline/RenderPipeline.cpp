@@ -16,7 +16,7 @@ RenderPipeline::RenderPipeline() {
     
     glGenBuffers(1, &this->quadVertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
     glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadVertices), &this->quadVertices[0], GL_STATIC_DRAW);
 
     glBindVertexArray(0);
@@ -63,12 +63,15 @@ RenderPipeline::RenderPipeline() {
     glGenRenderbuffers(1, &this->rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, this->rbo); 
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, GameEngine::screen.width, GameEngine::screen.height);  
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, this->rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
     
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cerr << "Frame buffer incomplete" << std::endl;
     }
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     std::cout << "Render pipeline constructed" << std::endl;
 }

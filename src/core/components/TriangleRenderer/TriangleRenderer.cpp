@@ -41,8 +41,8 @@ TriangleRenderer::TriangleRenderer() {
     );
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer); // Bind vbo    1
-    glBindVertexArray(0);                                            // unbind vao  2  This order matters
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);                        // unbind vbo  3
+    glBindVertexArray(0);                                             // unbind vao  2  This order matters
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);                         // unbind vbo  3
 }
 
 void TriangleRenderer::render() {

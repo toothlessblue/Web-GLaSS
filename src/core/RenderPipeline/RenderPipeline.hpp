@@ -40,12 +40,12 @@ private:
     GLuint quadProgram, quadVertexBuffer, quadUvBuffer, quadVao;
 
     const GLfloat quadVertices[18] = {
-         1.0f,  1.0f,  0.0f,
-        -1.0f, -1.0f,  0.0f,
-        -1.0f,  1.0f,  0.0f,
-         1.0f,  1.0f,  0.0f,
-         1.0f, -1.0f,  0.0f,
-        -1.0f, -1.0f,  0.0f,
+         1.0f,  1.0f,
+        -1.0f, -1.0f,
+        -1.0f,  1.0f,
+         1.0f,  1.0f,
+         1.0f, -1.0f,
+        -1.0f, -1.0f,
     };
 
     const GLfloat quadUvs[12] = {
