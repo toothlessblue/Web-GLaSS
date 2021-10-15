@@ -37,7 +37,7 @@ echo "Running emcc..."
 -s MAX_WEBGL_VERSION=2                              `# Use WebGL 2 - Compute shaders + optimised` \
 -s USE_GLFW=3                                       `# GL version to use` \
 -o ./lib/index.js                                   `# Output file, specifying .js outputs index.wasm and index.js files` \
--fsanitize=undefined                                `# More detailed error info` \
+-fsanitize=undefined                                `# Much needed more detailed error info` \
 --preload-file ./lib/resources@/                    `# Data files to include in the virtual file system, adds index.data to output` \
  
 

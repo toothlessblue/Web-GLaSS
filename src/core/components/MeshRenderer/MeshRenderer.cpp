@@ -52,6 +52,14 @@ MeshRenderer::MeshRenderer() {
 }
 
 void MeshRenderer::render() {
+    if (!this->mesh) {
+        std::cerr << "MeshRenderer does not have a mesh assigned" << std::endl;
+    }
+    
+    if (!this->material) {
+        std::cerr << "MeshRenderer does not have a material assigned" << std::endl;
+    }
+
     this->material->use();
     
     glBindVertexArray(this->vao);
