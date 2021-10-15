@@ -12,7 +12,7 @@
 #include "core/Time/Time.hpp"
 #include "core/Shaders/Shaders.hpp"
 #include "core/components/Camera/Camera.hpp"
-#include "core/components/TriangleRenderer/TriangleRenderer.hpp"
+#include "core/components/MeshRenderer/MeshRenderer.hpp"
 #include "core/GameObject/GameObject.hpp"
 #include "core/Material/Material.hpp"
 #include "core/Texture/Texture.hpp"
@@ -44,7 +44,7 @@ extern "C" int main(int argc, char** argv) {
     player->createComponent<CameraMouseController>();
     player->transform->position = glm::vec3(-3.0f,2.0f,3.0f);
 
-    TriangleRenderer* renderer = cube->createComponent<TriangleRenderer>();
+    MeshRenderer* renderer = cube->createComponent<MeshRenderer>();
     Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
     renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
     renderer->material->setTexture("albedoTexture", texture);
