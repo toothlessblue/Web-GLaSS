@@ -120,6 +120,8 @@ namespace PrimitiveMeshes {
         int tris = 0;
         int vertex = -1;
 
+        std::vector<unsigned int> poleVertIndexes;
+
         for (int v = 0; v < verticalLines; v++) {
             for (int h = 0; h < horizontalLines; h++) {
                 vertex++;
@@ -135,7 +137,10 @@ namespace PrimitiveMeshes {
                     h / horizontalLines
                 ));
 
-                if (h == horizontalLines - 1) continue; // if last row, skip
+                if (h == horizontalLines - 1) { // remember index then skip
+                    poleVertIndexes.push_back(vertex);
+                    continue;
+                }
                 
                 if (v == verticalLines - 1) { // if last column, create triangles between first and last vertex columns
                     triangles.push_back(vertex);
@@ -158,7 +163,14 @@ namespace PrimitiveMeshes {
             }
         }
 
-        // TODO add triangles for the pole of the sphere
+        std::cout << poleVertIndexes.size() << std::endl;
+
+        unsigned int anchorVertex = poleVertIndexes[0];
+        for (int i = 1; i < poleVertIndexes.size() - 1; i++) {
+            triangles.push_back(anchorVertex);
+            triangles.push_back(poleVertIndexes[i + 1]);
+            triangles.push_back(poleVertIndexes[i]);
+        }
 
         Mesh* mesh = new Mesh();
         mesh->setVertices(vertices);
