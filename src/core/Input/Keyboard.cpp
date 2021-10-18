@@ -8,7 +8,7 @@ namespace Input::Keyboard {
     /**
      * Transforms 3 keys into a WASD like vector that can then be multiplied / rotated to create keyboard controlled movement
      */
-    glm::vec3 get4KeyVector3d(int forward, int back, int left, int right) {
+    glm::vec3 get6KeyVector3d(int forward, int back, int left, int right, int down, int up) {
         glm::vec3 movement(0.0f, 0.0f, 0.0f);
         
         if (getKey(forward)) {
@@ -25,6 +25,15 @@ namespace Input::Keyboard {
 
         if (getKey(right)) {
             movement.x -= 1.0f;
+        }
+        
+        // TODO figure out why Y seems to be inverted
+        if (getKey(down)) {
+            movement.y += 1.0f;
+        }
+
+        if (getKey(up)) {
+            movement.y -= 1.0f;
         }
 
         return movement;

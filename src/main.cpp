@@ -43,7 +43,7 @@ extern "C" int main(int argc, char** argv) {
 
     GameObject* light = GameEngine::CreateGameObject();
     light->createComponent<Lighting::PointLight>();
-    light->transform->position = glm::vec3(0, 4.0f, 0);
+    light->transform->position = glm::vec3(0, 2.0f, 0);
 
     player->createComponent<FloatingCameraKeyboardController>();
     player->createComponent<CameraMouseController>();

@@ -30,11 +30,11 @@ vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)
 
     vec3 lightDir = normalize(position - fragPos);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), albedoSpec.a);
+    vec3 spec = pow(max(dot(normal, halfwayDir), 0.0), albedoSpec.a) * colour;
     vec3 diffuse = max(dot(normal, lightDir), 0.0) * albedoSpec.rgb * colour;
     float attenuation = 1.0 / (constant + linear * dist + quadratic * (dist * dist)); 
     
-    return (diffuse * attenuation) + vec3(spec);
+    return (diffuse + spec) * attenuation;
 } 
 
 void main()

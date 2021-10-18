@@ -39,8 +39,8 @@ void MeshRenderer::bindMesh() {
 }
 
 MeshRenderer::MeshRenderer() {
-    this->mesh = PrimitiveMeshes::generateSphereMesh(20, 20, 1.0f);
-    // this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
+    // this->mesh = PrimitiveMeshes::generateSphereMesh(20, 20, 1.0f);
+    this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
 
     glGenVertexArrays(1, &this->vao);
     glBindVertexArray(this->vao);

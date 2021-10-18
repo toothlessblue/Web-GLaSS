@@ -28,6 +28,6 @@ namespace Input {
 
     namespace Keyboard {
         bool getKey();
-        glm::vec3 get4KeyVector3d(int forward, int back, int left, int right);
+        glm::vec3 get6KeyVector3d(int forward, int back, int left, int right, int down, int up);
     }
 }

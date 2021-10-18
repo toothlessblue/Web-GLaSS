@@ -5,7 +5,7 @@ FloatingCameraKeyboardController::FloatingCameraKeyboardController() {
 }
 
 void FloatingCameraKeyboardController::update() {
-    glm::vec3 movementVector = Input::Keyboard::get4KeyVector3d(GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D);
+    glm::vec3 movementVector = Input::Keyboard::get6KeyVector3d(GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_Q, GLFW_KEY_E);
 
     if (abs(glm::length(movementVector)) < 0.7f) return;
 
