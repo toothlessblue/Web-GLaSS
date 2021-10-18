@@ -120,8 +120,6 @@ namespace PrimitiveMeshes {
         int tris = 0;
         int vertex = -1;
 
-        std::vector<unsigned int> poleVertIndexes;
-
         for (int v = 0; v < verticalLines; v++) {
             for (int h = 0; h < horizontalLines; h++) {
                 vertex++;
@@ -137,8 +135,7 @@ namespace PrimitiveMeshes {
                     h / horizontalLines
                 ));
 
-                if (h == horizontalLines - 1) { // remember index then skip
-                    poleVertIndexes.push_back(vertex);
+                if (h == horizontalLines - 1) { // if last section, next triangles are invalid, skip
                     continue;
                 }
                 
@@ -163,13 +160,15 @@ namespace PrimitiveMeshes {
             }
         }
 
-        std::cout << poleVertIndexes.size() << std::endl;
+        unsigned int anchorVertex = horizontalLines - 1;
+        unsigned int currentVertex = anchorVertex;
 
-        unsigned int anchorVertex = poleVertIndexes[0];
-        for (int i = 1; i < poleVertIndexes.size() - 1; i++) {
+        for (int i = 1; i < verticalLines - 1; i++) {
+            currentVertex += horizontalLines;
+
             triangles.push_back(anchorVertex);
-            triangles.push_back(poleVertIndexes[i + 1]);
-            triangles.push_back(poleVertIndexes[i]);
+            triangles.push_back(currentVertex + horizontalLines);
+            triangles.push_back(currentVertex);
         }
 
         Mesh* mesh = new Mesh();
