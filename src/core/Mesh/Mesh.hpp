@@ -1,7 +1,9 @@
 #pragma once
+#include <iostream>
 #include <GL/glew.h>
 #include <vector>
 #include "../../../include/glm/glm.hpp"
+#define PI 3.14159265
 
 class Mesh {
 public:
@@ -33,3 +35,8 @@ public:
 private:
 
 };
+
+namespace PrimitiveMeshes {
+    Mesh* generateSphereMesh(int horizontalLines, int verticalLines, float radius);
+    Mesh* generateCubeMesh();
+}

@@ -1,34 +1,38 @@
 #include "RenderPipeline.hpp"
 
 RenderPipeline::RenderPipeline() {
+    std::cout << "initialising lighting" << std::endl;
+
+    Lighting::initialise();
+
     std::cout << "Creating render pipeline" << std::endl;
 
-    glGenVertexArrays(1, &this->quadVao);
-    glBindVertexArray(this->quadVao);
+    // glGenVertexArrays(1, &this->quadVao);
+    // glBindVertexArray(this->quadVao);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
+    // glEnableVertexAttribArray(0);
+    // glEnableVertexAttribArray(1);
 
-    glGenBuffers(1, &this->quadUvBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadUvs), &this->quadUvs[0], GL_STATIC_DRAW);
+    // glGenBuffers(1, &this->quadUvBuffer);
+    // glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
+    // glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    // glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadUvs), &this->quadUvs[0], GL_STATIC_DRAW);
     
-    glGenBuffers(1, &this->quadVertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadVertices), &this->quadVertices[0], GL_STATIC_DRAW);
+    // glGenBuffers(1, &this->quadVertexBuffer);
+    // glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
+    // glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    // glBufferData(GL_ARRAY_BUFFER, sizeof(this->quadVertices), &this->quadVertices[0], GL_STATIC_DRAW);
 
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // glBindVertexArray(0);
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/LightingPass.frag");
-    glUseProgram(this->quadProgram);
-    glUniform1i(glGetUniformLocation(this->quadProgram, "gPosition"), 3);
-    glUniform1i(glGetUniformLocation(this->quadProgram, "gNormal"), 4);
-    glUniform1i(glGetUniformLocation(this->quadProgram, "gAlbedo"), 5);
+    // this->quadProgram = Shaders::CreateProgram("/shaders/RenderQuad.vert", "/shaders/LightingPass.frag");
+    // glUseProgram(this->quadProgram);
+    // glUniform1i(glGetUniformLocation(this->quadProgram, "gPosition"), 3);
+    // glUniform1i(glGetUniformLocation(this->quadProgram, "gNormal"), 4);
+    // glUniform1i(glGetUniformLocation(this->quadProgram, "gAlbedo"), 5);
 
-    std::cout << "Created render quad" << std::endl;
+    // std::cout << "Created render quad" << std::endl;
 
     glGenFramebuffers(1, &this->geometryBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, this->geometryBuffer);
@@ -108,8 +112,8 @@ void RenderPipeline::render() {
     
     // Prepare lighting pass on default frame buffer
 
-    glBindVertexArray(this->quadVao);
-    glUseProgram(this->quadProgram);
+    //glBindVertexArray(this->quadVao);
+    //glUseProgram(this->quadProgram);
 
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     glBindFramebuffer(GL_READ_FRAMEBUFFER, this->geometryBuffer);
@@ -118,20 +122,18 @@ void RenderPipeline::render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // Apply textures
+    // glActiveTexture(GL_TEXTURE3);
+    // glBindTexture(GL_TEXTURE_2D, this->gPosition);
+    // glActiveTexture(GL_TEXTURE4);
+    // glBindTexture(GL_TEXTURE_2D, this->gNormal);
+    // glActiveTexture(GL_TEXTURE5);
+    // glBindTexture(GL_TEXTURE_2D, this->gAlbedo);
 
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, this->gPosition);
-    glActiveTexture(GL_TEXTURE4);
-    glBindTexture(GL_TEXTURE_2D, this->gNormal);
-    glActiveTexture(GL_TEXTURE5);
-    glBindTexture(GL_TEXTURE_2D, this->gAlbedo);
+    Lighting::renderPointLights(this->gPosition, this->gNormal, this->gAlbedo);
 
-    // TODO send lighting information to program
-    // TODO send view position to program
+    //glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glBindVertexArray(0);
+    //glBindVertexArray(0);
 }
 
 unsigned int RenderPipeline::addRenderer(Renderer* renderer) {

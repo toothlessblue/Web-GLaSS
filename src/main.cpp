@@ -1,16 +1,17 @@
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <emscripten.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/quaternion.hpp"
 #include "../include/glm/gtx/quaternion.hpp"
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <emscripten.h>
 
 #include "core/GameEngine/GameEngine.hpp"
 #include "core/Input/Input.hpp"
 #include "core/Time/Time.hpp"
 #include "core/Shaders/Shaders.hpp"
+#include "core/Lighting/Lighting.hpp"
 #include "core/components/Camera/Camera.hpp"
 #include "core/components/MeshRenderer/MeshRenderer.hpp"
 #include "core/GameObject/GameObject.hpp"
@@ -39,6 +40,10 @@ extern "C" int main(int argc, char** argv) {
 
     Camera* camera = player->createComponent<Camera>();
     camera->setAsActiveCamera();
+
+    GameObject* light = GameEngine::CreateGameObject();
+    light->createComponent<Lighting::PointLight>();
+    light->transform->position = glm::vec3(0, 4.0f, 0);
 
     player->createComponent<FloatingCameraKeyboardController>();
     player->createComponent<CameraMouseController>();

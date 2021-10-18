@@ -13,19 +13,9 @@ void MeshRenderer::bindMesh() {
         (void*)0              // array buffer offset
     );
 
-    glBindBuffer(GL_ARRAY_BUFFER, this->mesh->uvBuffer);
-    glVertexAttribPointer(
-        1,                    // attribute 1
-        2,                    // size - vec2
-        GL_FLOAT,             // type
-        GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
-    );
-
     glBindBuffer(GL_ARRAY_BUFFER, this->mesh->normalsBuffer);
     glVertexAttribPointer(
-        2,                    // attribute 2
+        1,                    // attribute 1
         3,                    // size - vec3
         GL_FLOAT,             // type
         GL_FALSE,             // normalized?
@@ -33,13 +23,24 @@ void MeshRenderer::bindMesh() {
         (void*)0              // array buffer offset
     );
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer); // Bind vbo    1
-    glBindVertexArray(0);                                             // unbind vao  2  This order matters
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);                         // unbind vbo  3
+    glBindBuffer(GL_ARRAY_BUFFER, this->mesh->uvBuffer);
+    glVertexAttribPointer(
+        2,                    // attribute 2
+        2,                    // size - vec2
+        GL_FLOAT,             // type
+        GL_FALSE,             // normalized?
+        0,                    // stride
+        (void*)0              // array buffer offset
+    );
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer); // Bind vbo   |1|
+    glBindVertexArray(0);                                             // unbind vao |2| This order matters
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);                         // unbind vbo |3|
 }
 
 MeshRenderer::MeshRenderer() {
-    this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
+    this->mesh = PrimitiveMeshes::generateSphereMesh(20, 20, 1.0f);
+    // this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
 
     glGenVertexArrays(1, &this->vao);
     glBindVertexArray(this->vao);
