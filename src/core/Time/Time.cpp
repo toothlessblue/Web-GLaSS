@@ -3,6 +3,7 @@
 
 std::chrono::steady_clock::time_point Time::start;
 std::chrono::steady_clock::time_point Time::end;
+float Time::deltaTime;
 
 int Time::frameCount = 0;
 
@@ -16,10 +17,5 @@ void Time::frameStart() {
 
 void Time::frameEnd() {
     Time::end = std::chrono::high_resolution_clock::now();
-}
-
-float Time::getDeltaTime() {
-    std::chrono::duration<float> elapsed = Time::end - Time::start;
-
-    return elapsed.count();
+    Time::deltaTime = (Time::end - Time::start).count();
 }
