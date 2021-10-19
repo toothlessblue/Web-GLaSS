@@ -25,8 +25,6 @@ public:
     GLuint uvBuffer;
     GLuint indexesBuffer;
     GLuint normalsBuffer;
-    
-    GLuint vao;
 
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec2> uvs;

@@ -1,8 +1,6 @@
 #include "MeshRenderer.hpp"
 
 void MeshRenderer::bindMesh() {
-    glBindVertexArray(this->vao);
-    
     glBindBuffer(GL_ARRAY_BUFFER, this->mesh->vertexBuffer);
     glVertexAttribPointer(
         0,                    // attribute 0
@@ -33,23 +31,17 @@ void MeshRenderer::bindMesh() {
         (void*)0              // array buffer offset
     );
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer); // Bind vbo   |1|
-    glBindVertexArray(0);                                             // unbind vao |2| This order matters
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);                         // unbind vbo |3|
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer);
+}
+
+void MeshRenderer::unbindMesh() {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 MeshRenderer::MeshRenderer() {
     // this->mesh = PrimitiveMeshes::generateSphereMesh(20, 20, 1.0f);
     this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
-
-    glGenVertexArrays(1, &this->vao);
-    glBindVertexArray(this->vao);
-
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-
-    this->bindMesh(); // unbinds vao
 }
 
 void MeshRenderer::render() {
@@ -63,9 +55,9 @@ void MeshRenderer::render() {
 
     this->material->use();
     
-    glBindVertexArray(this->vao);
+    this->bindMesh();
     glDrawElements(GL_TRIANGLES, this->mesh->indexes.size(), GL_UNSIGNED_INT, (void*)0);
-    glBindVertexArray(0);
+    this->unbindMesh();
 }
 
 void MeshRenderer::update() {
@@ -78,5 +70,4 @@ void MeshRenderer::deleteMesh() {
 
 void MeshRenderer::setMesh(Mesh* mesh) {
     this->mesh = mesh;
-    this->bindMesh();
 }

@@ -19,7 +19,7 @@ public:
     void setMesh(Mesh* mesh);
 private:
     void bindMesh();
+    void unbindMesh();
 
     Mesh* mesh;
-    GLuint vao;
 };

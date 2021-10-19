@@ -28,6 +28,5 @@ namespace Lighting {
 
     extern Mesh* pointLightMesh;
     extern Material* pointLightMaterial;
-    extern GLuint pointLightVAO;
     extern std::vector<PointLight*> pointLights;
 }
