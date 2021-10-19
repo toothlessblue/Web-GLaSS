@@ -3,6 +3,7 @@
 namespace Time {
     extern std::chrono::steady_clock::time_point start;
     extern std::chrono::steady_clock::time_point end;
+    extern float deltaTime;
 
     extern int frameCount;
 
@@ -10,6 +11,4 @@ namespace Time {
 
     void frameStart();
     void frameEnd();
-
-    float getDeltaTime();
 }

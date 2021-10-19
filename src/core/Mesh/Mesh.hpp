@@ -15,18 +15,15 @@ public:
     void setUVs(std::vector<glm::vec2> uvs);
     void setNormals(std::vector<glm::vec3> normals);
     void setIndexes(std::vector<unsigned int> indexes);
+    void constructVertexBuffer();
 
     std::vector<glm::vec3> getVertices();
     std::vector<glm::vec2> getUVs();
     std::vector<glm::vec3> getNormals();
     std::vector<unsigned int> getIndexes();
 
+    GLuint indexBuffer;
     GLuint vertexBuffer;
-    GLuint uvBuffer;
-    GLuint indexesBuffer;
-    GLuint normalsBuffer;
-    
-    GLuint vao;
 
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec2> uvs;
@@ -34,6 +31,7 @@ public:
     std::vector<unsigned int> indexes;
 private:
 
+    std::vector<float> bufferData;
 };
 
 namespace PrimitiveMeshes {

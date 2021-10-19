@@ -17,7 +17,7 @@ namespace Input::Mouse {
         
         latePosition = glm::vec2(xPos, yPos);
         delta = latePosition - earlyPosition;
-        motion = delta * sensitivity * Time::getDeltaTime();
+        motion = delta * sensitivity * Time::deltaTime;
     }
 
     void lock() {

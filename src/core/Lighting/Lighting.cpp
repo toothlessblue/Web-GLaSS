@@ -3,11 +3,10 @@
 namespace Lighting {
     Mesh* pointLightMesh;
     Material* pointLightMaterial;
-    GLuint pointLightVAO;
     std::vector<PointLight*> pointLights;
 
     void initialise() {
-        Lighting::pointLightMesh = PrimitiveMeshes::generateSphereMesh(20, 20, 1); // TODO scale matrix change related
+        Lighting::pointLightMesh = PrimitiveMeshes::generateSphereMesh(10, 10, 1);
         Lighting::pointLightMaterial = new Material("/shaders/PointLightShader.vert", "/shaders/PointLightShader.frag");
 
         Lighting::pointLightMaterial->use();
@@ -15,18 +14,6 @@ namespace Lighting {
         glUniform1i(glGetUniformLocation(Lighting::pointLightMaterial->shaderProgramId, "gNormal"), 4);
         glUniform1i(glGetUniformLocation(Lighting::pointLightMaterial->shaderProgramId, "gAlbedo"), 5);
         glUseProgram(0);
-
-        glGenVertexArrays(1, &Lighting::pointLightVAO);
-        glBindVertexArray(Lighting::pointLightVAO);
-
-        glEnableVertexAttribArray(0);
-
-        glBindBuffer(GL_ARRAY_BUFFER, Lighting::pointLightMesh->vertexBuffer);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0); // vertices
-        
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Lighting::pointLightMesh->indexesBuffer);
-        glBindVertexArray(0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
     PointLight::PointLight() {
@@ -41,8 +28,10 @@ namespace Lighting {
     }
 
     void renderPointLights(GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
-        glBindVertexArray(Lighting::pointLightVAO);
-        glEnable(GL_CULL_FACE);
+        glBindBuffer(GL_ARRAY_BUFFER, Lighting::pointLightMesh->vertexBuffer);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // vertices
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Lighting::pointLightMesh->indexBuffer);
+
         glCullFace(GL_FRONT);
 
         Lighting::pointLightMaterial->use();
@@ -60,7 +49,8 @@ namespace Lighting {
         for (PointLight* pointLight : Lighting::pointLights) {
             Lighting::pointLightMaterial->setMat4("modelMatrix", pointLight->gameObject->transform->getModelMatrix());
 
-            Lighting::pointLightMaterial->setFloat("radius", pointLight->radius); // TODO change scale matrix instead
+            // TODO use a uniform buffer, it'll be faster
+            Lighting::pointLightMaterial->setFloat("radius", pointLight->radius);
             Lighting::pointLightMaterial->setVec3("position", pointLight->gameObject->transform->position);
             Lighting::pointLightMaterial->setVec3("colour", pointLight->colour);
             Lighting::pointLightMaterial->setFloat("constant", pointLight->constant);
@@ -71,7 +61,6 @@ namespace Lighting {
         }
 
         glUseProgram(0);
-        glBindVertexArray(0);
-        glDisable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
     }
 }

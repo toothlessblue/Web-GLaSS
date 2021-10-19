@@ -38,7 +38,9 @@ private:
     GLuint gPosition, gNormal, gAlbedo;
     GLuint rbo;
 
-    GLuint quadProgram, quadVertexBuffer, quadUvBuffer, quadVao;
+    GLuint quadProgram, quadVertexBuffer, quadUvBuffer;
+
+    GLuint vao;
 
     const GLfloat quadVertices[18] = {
          1.0f,  1.0f,
