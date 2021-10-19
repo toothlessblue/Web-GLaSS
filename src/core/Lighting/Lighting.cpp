@@ -29,8 +29,8 @@ namespace Lighting {
 
     void renderPointLights(GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
         glBindBuffer(GL_ARRAY_BUFFER, Lighting::pointLightMesh->vertexBuffer);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0); // vertices
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Lighting::pointLightMesh->indexesBuffer);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0); // vertices
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Lighting::pointLightMesh->indexBuffer);
 
         glCullFace(GL_FRONT);
 
@@ -49,7 +49,7 @@ namespace Lighting {
         for (PointLight* pointLight : Lighting::pointLights) {
             Lighting::pointLightMaterial->setMat4("modelMatrix", pointLight->gameObject->transform->getModelMatrix());
 
-            // TODO use a uniform buffer, it'll be much faster
+            // TODO use a uniform buffer, it'll be faster
             Lighting::pointLightMaterial->setFloat("radius", pointLight->radius);
             Lighting::pointLightMaterial->setVec3("position", pointLight->gameObject->transform->position);
             Lighting::pointLightMaterial->setVec3("colour", pointLight->colour);

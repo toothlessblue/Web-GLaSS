@@ -7,36 +7,34 @@ void MeshRenderer::bindMesh() {
         3,                    // size - vec3
         GL_FLOAT,             // type
         GL_FALSE,             // normalized?
-        0,                    // stride
+        8 * sizeof(float),    // stride
         (void*)0              // array buffer offset
     );
 
-    glBindBuffer(GL_ARRAY_BUFFER, this->mesh->normalsBuffer);
     glVertexAttribPointer(
         1,                    // attribute 1
         3,                    // size - vec3
         GL_FLOAT,             // type
         GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
+        8 * sizeof(float),    // stride
+        (void*)(3 * sizeof(float)) // array buffer offset
     );
 
-    glBindBuffer(GL_ARRAY_BUFFER, this->mesh->uvBuffer);
     glVertexAttribPointer(
         2,                    // attribute 2
         2,                    // size - vec2
         GL_FLOAT,             // type
         GL_FALSE,             // normalized?
-        0,                    // stride
-        (void*)0              // array buffer offset
+        8 * sizeof(float),    // stride
+        (void*)(6 * sizeof(float)) // array buffer offset
     );
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexesBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->mesh->indexBuffer);
 }
 
 void MeshRenderer::unbindMesh() {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 MeshRenderer::MeshRenderer() {

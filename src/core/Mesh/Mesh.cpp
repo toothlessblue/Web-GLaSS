@@ -1,13 +1,11 @@
 #include "Mesh.hpp"
 
 Mesh::Mesh() {
-    GLuint ids[4];
-    glGenBuffers(4, &ids[0]);
+    GLuint ids[2];
+    glGenBuffers(2, &ids[0]);
 
     this->vertexBuffer = ids[0];
-    this->uvBuffer = ids[1];
-    this->normalsBuffer = ids[2];
-    this->indexesBuffer = ids[3];
+    this->indexBuffer = ids[1];
 }
 
 void Mesh::recalculateNormals() {
@@ -55,26 +53,14 @@ void Mesh::recalculateNormals() {
 
 void Mesh::setVertices(std::vector<glm::vec3> vertices) {
     this->vertices = vertices;
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(glm::vec3), &this->vertices[0], GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Mesh::setUVs(std::vector<glm::vec2> uvs) {
     this->uvs = uvs;
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->uvBuffer);
-    glBufferData(GL_ARRAY_BUFFER, this->uvs.size() * sizeof(glm::vec2), &this->uvs[0], GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Mesh::setNormals(std::vector<glm::vec3> normals) {
     this->normals = normals;
-
-    glBindBuffer(GL_ARRAY_BUFFER, this->normalsBuffer);
-    glBufferData(GL_ARRAY_BUFFER, this->normals.size() * sizeof(glm::vec3), &this->normals[0], GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void Mesh::setIndexes(std::vector<unsigned int> indexes) {
@@ -84,11 +70,31 @@ void Mesh::setIndexes(std::vector<unsigned int> indexes) {
 
     this->indexes = indexes;
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexesBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indexes.size() * sizeof(unsigned int), &this->indexes[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+void Mesh::constructVertexBuffer() {
+    this->bufferData.clear();
+
+    for (int i = 0; i < this->vertices.size(); i++) { // In theory, same number of normals and uvs as vertices
+        this->bufferData.push_back(this->vertices[i].x);
+        this->bufferData.push_back(this->vertices[i].y);
+        this->bufferData.push_back(this->vertices[i].z);
+
+        this->bufferData.push_back(this->normals[i].x);
+        this->bufferData.push_back(this->normals[i].y);
+        this->bufferData.push_back(this->normals[i].z);
+
+        this->bufferData.push_back(this->uvs[i].x);
+        this->bufferData.push_back(this->uvs[i].y);
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, bufferData.size() * sizeof(float), &bufferData[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
 std::vector<glm::vec3> Mesh::getVertices() {
     return this->vertices;
@@ -176,6 +182,7 @@ namespace PrimitiveMeshes {
         mesh->setUVs(uvs);
         mesh->setIndexes(triangles);
         mesh->recalculateNormals();
+        mesh->constructVertexBuffer();
         return mesh;
     }
 

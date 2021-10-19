@@ -96,6 +96,7 @@ namespace ModelLoader::OBJ {
         mesh->setVertices(outVertices);
         mesh->setUVs(outUvs);
         mesh->recalculateNormals();
+        mesh->constructVertexBuffer();
 
         return mesh;
     }
