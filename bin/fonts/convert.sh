@@ -1,0 +1,1 @@
+python3 bin/fonts/process-font.py "$@"
