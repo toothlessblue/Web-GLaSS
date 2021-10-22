@@ -5,7 +5,8 @@ echo "- pip install --upgrade pip"
 echo ""
 echo "Installs:"
 echo "- python3"
-# echo "- fonttools (py)"
+echo "- python3-pip"
+echo "- fonttools (py)"
 echo "- Pillow (py)"
 echo ""
 read -p "Continue? " -n 1 -r
@@ -17,7 +18,8 @@ fi
 
 sudo apt update
 sudo apt install python3
-# pip3 install fonttools
+sudo apt install python3-pip
+pip3 install fonttools
 
 python3 -m pip install --upgrade pip
 python3 -m pip install --upgrade Pillow
