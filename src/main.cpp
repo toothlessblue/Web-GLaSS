@@ -8,6 +8,7 @@
 #include "../include/glm/gtx/quaternion.hpp"
 
 #include "core/GameEngine/GameEngine.hpp"
+#include "core/Font/Font.hpp"
 #include "core/Input/Input.hpp"
 #include "core/Time/Time.hpp"
 #include "core/Shaders/Shaders.hpp"
@@ -34,6 +35,8 @@ extern "C" void gameLoop() {
 
 extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
+
+    Font::init();
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();

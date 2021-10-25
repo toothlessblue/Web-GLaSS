@@ -44,13 +44,13 @@ class Kern0Table():
         self.oldIndex = glyphIndex
         if self.swap:
             return {
-                x: 0,
-                y: x
+                'x': 0,
+                'y': x
             }
         else:
             return {
-                x: x,
-                y: 0
+                'x': x,
+                'y': 0
             }
 
 class TrueTypeCmap0():
@@ -219,7 +219,7 @@ class TTFReader():
         return (self.getUint8() << 8) | self.getUint8()
 
     def getUint32(self):
-       return self.getInt32()
+        return self.getInt32()
 
     def getInt16(self):
         result = self.getUint16()
@@ -558,7 +558,7 @@ class TTFReader():
                         'onCurve': (flag & ON_CURVE) > 0
                     })
 
-        def readCoords(name, byteFlag, deltaFlag, min, max):
+        def readCoords(name, byteFlag, deltaFlag, vMin, vMax):
             value = 0
 
             for i in range(len(glyph['points'])):
@@ -572,7 +572,7 @@ class TTFReader():
                 elif ~flag & deltaFlag:
                     value += self.getInt16()
 
-                glyph['points'][i][name] = value
+                glyph['points'][i][name] = min(value, vMax) - vMin
 
                 if 'x' not in glyph['points'][i]:
                     print(glyph['points'][i])
@@ -665,27 +665,34 @@ class TTFReader():
             self.seek(self.getUint16() + self.position)
 
 class GlyphDrawer():
-    def __init__(self, glyphs):
+    def __init__(self, glyphs, targetResolution = None):
         self.glyphs = glyphs
-        self.scale = 1/12
+        self.scale = 1/37
+        self.maxI = 3200
 
-        self.resolution = self.calculateResolution(self.scale)
+        self.resolution = self.calculateResolution(self.scale, targetResolution)
         self.positions = self.calculatePositions(self.scale)
         
-    def calculateResolution(self, scale):
-        print('calculating resolution')
+    def calculateResolution(self, scale, targetResolution = None):
+        print('calculating resolution: ', end='', flush=True)
 
         complete = False
         targetResolution = 1
         rowWidth = 0
         rowHeight = 0
         currentY = 0
+        counter = 0
 
         while not complete:
             complete = True
             for glyph in self.glyphs:
+                if counter >= self.maxI:
+                    break
+
+                counter += 1
+
                 width = (glyph['xMax'] - glyph['xMin']) * scale
-                height = (glyph['yMax'] - glyph['yMin']) * scale
+                height = ((glyph['yMax'] - glyph['yMin']) * scale) + 1
 
                 if height > rowHeight:
                     rowHeight = height
@@ -704,20 +711,25 @@ class GlyphDrawer():
 
                 rowWidth += width
 
-        print('GlyphDrawer got resolution: ', end='')
         print(targetResolution)
 
         return targetResolution
 
     def calculatePositions(self, scale):
-        print('calculating positions')
+        print('calculating positions... ', end='', flush=True)
         rowWidth = 0
         rowHeight = 0
         currentY = 0
+        counter = 0
 
         glyphPositions = []
 
         for glyph in self.glyphs:
+            if counter >= self.maxI:
+                break
+                
+            counter += 1
+
             width = (glyph['xMax'] - glyph['xMin']) * scale
             height = (glyph['yMax'] - glyph['yMin']) * scale
 
@@ -732,10 +744,10 @@ class GlyphDrawer():
             glyphPositions.append((rowWidth, currentY))
             rowWidth += width
 
-        print('got glyph positions')
+        print('done')
         return glyphPositions
 
-    def drawLine(self, glyphTex, fromPos, toPos, xOffset, yOffset, topLeft, glyphWidth, glyphHeight):
+    def drawLine(self, glyphTex, fromPos, toPos, topLeft, glyphWidth, glyphHeight):
         try:
             dx = fromPos['x'] - toPos['x']
             dy = fromPos['y'] - toPos['y']
@@ -759,8 +771,8 @@ class GlyphDrawer():
 
             v += increment
 
-            pixelX = math.floor((x + xOffset) * self.scale + topLeft[0])
-            pixelY = math.floor((glyphHeight - (y + yOffset)) * self.scale + topLeft[1])
+            pixelX = math.floor(x * self.scale + topLeft[0])
+            pixelY = math.floor((glyphHeight - y) * self.scale + topLeft[1])
 
             if pixelX >= self.resolution or pixelY >= self.resolution or pixelX < 0 or pixelY < 0:
                 continue
@@ -780,46 +792,28 @@ class GlyphDrawer():
         width = glyph['xMax'] - glyph['xMin']
         height = glyph['yMax'] - glyph['yMin']
 
-        xOffset = -glyph['xMin']
-        yOffset = -glyph['yMin']
-
-        nextContourIndex = 0
-        contourStart = 0
+        contourStartIndex = 0
+        lastPointContourEnd = False
 
         for pointI in range(1, len(glyph['points'])):
             lastPoint = glyph['points'][pointI - 1]
             currentPoint = glyph['points'][pointI]
 
-            if not lastPoint['onCurve']:
-                if currentPoint['onCurve']:
-                    #TODO quadratic curve drawing here
-                    self.drawLine(glyphTex, lastPoint, currentPoint, xOffset, yOffset, position, width, height)
-                else:
-                    #TODO slightly different quadratic curve drawing here
-                    self.drawLine(glyphTex, lastPoint, currentPoint, xOffset, yOffset, position, width, height)
-
-            elif currentPoint['onCurve']:
-                self.drawLine(glyphTex, lastPoint, currentPoint, xOffset, yOffset, position, width, height)
+            if not lastPointContourEnd:
+                self.drawLine(glyphTex, lastPoint, currentPoint, position, width, height)
             
+            if pointI in glyph['contourEnds']: # if current point is a contour end
+                contourStartPoint = glyph['points'][contourStartIndex]
+                self.drawLine(glyphTex, currentPoint, contourStartPoint, position, width, height)
+                contourStartIndex = pointI + 1
+                lastPointContourEnd = True
 
-
-            if nextContourIndex < len(glyph['contourEnds']) and glyph['contourEnds'][nextContourIndex] == pointI: # if current point is a contour end
-                if not currentPoint['onCurve']:
-                    contourStartPoint = glyph['points'][contourStart]
-
-                    if contourStartPoint['onCurve']:
-                        #TODO quadratic curve drawing here
-                        self.drawLine(glyphTex, currentPoint, contourStartPoint, xOffset, yOffset, position, width, height)
-                    else:
-                        #TODO slightly different quadratic curve drawing here
-                        self.drawLine(glyphTex, currentPoint, contourStartPoint, xOffset, yOffset, position, width, height)
-                
-                nextContourIndex += 1
-                contourStart = pointI + 1
+            else:
+                lastPointContourEnd = False
 
     def drawGlyphs(self, glyphTex):
         print('Drawing glyphs')
-        for i in tqdm(range(len(self.glyphs))):
+        for i in tqdm(range(min(len(self.glyphs), self.maxI))):
             self.drawGlyph(i, glyphTex)
 
     def drawTexture(self, filepath):
@@ -834,6 +828,7 @@ parser.add_argument('inputFilePath', metavar='Input file', nargs=1, help='TTF fi
 parser.add_argument('-o', dest='outputFilePath', nargs=1, help='Where to save the output directory')
 parser.add_argument('-r', '--resolution', default=1024, dest='resolution', nargs=1, help='Resolution of the output texture')
 parser.add_argument('-O', '--overwrite', dest='overwrite', nargs='?', const=True, help='Delete the output directory if it already exists')
+parser.add_argument('-t', '--targetResolution', nargs='?', help='Target a resolution instead of a font scale')
 
 args = parser.parse_args()
 
@@ -844,7 +839,6 @@ dirPath = outputPath + args.inputFilePath[0].split('/')[-1] + '/';
 if os.path.isdir(dirPath):
     if args.overwrite:
         print('Output directory already exists, overwriting')
-        shutil.rmtree(dirPath)
     else:
         print('Output directory already exists, run with -O to override')
         sys.exit(os.EX_OSFILE)
@@ -866,5 +860,9 @@ ttf = TTFReader(fontData)
 print('Num glyphs: ' + str(ttf.numGlyphs))
 
 glyphDrawer = GlyphDrawer([ttf.readGlyph(i) for i in range(ttf.numGlyphs)])
+
+if os.path.isdir(dirPath):
+    shutil.rmtree(dirPath)
+
 os.makedirs(dirPath)
 glyphDrawer.drawTexture(dirPath + 'texture.png')
