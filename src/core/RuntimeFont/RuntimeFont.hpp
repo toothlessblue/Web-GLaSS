@@ -1,10 +1,13 @@
-#include "../include/glm/glm.hpp"
+#pragma once
+#include "../../../include/glm/glm.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <ft2build.h>
 #include <iostream>
 #include <map>
-#include FT_FREETYPE_H  
+#include <math.h>
+#include <vector>
+#include FT_FREETYPE_H
 
 struct cmp_str
 {
@@ -15,24 +18,39 @@ struct cmp_str
 };
 
 namespace RuntimeFont {
-    struct FontFace {
-        char* filepath;
-        FT_Face face;
-        std::map<char, Character> characters;
-        int fontSize;
-        bool loaded;
+    struct AtlasCharacterPositionInfo {
+        float ax; // advance.x
+        float ay; // advance.y
 
-        Character loadCharacter(char character);
-        void cacheManyCharacters(unsigned char range);
-        void clearResources();
-        void load();
+        float bw; // bitmap.width;
+        float bh; // bitmap.rows;
+
+        float bl; // bitmap_left;
+        float bt; // bitmap_top;
+
+        float tx; // x offset of glyph in texture coordinates
     };
 
-    struct Character {
-        unsigned int TextureID;  // ID handle of the glyph texture
-        glm::ivec2   Size;       // Size of glyph
-        glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
-        unsigned int Advance;    // Offset to advance to next glyph
+    class FontFace {
+    public:
+        FontFace(char* filepath, int fontSize);
+
+        GLuint atlasTexture;
+        AtlasCharacterPositionInfo atlasInfo[128];
+
+        unsigned int atlasWidth;
+        unsigned int atlasHeight;
+
+        void clearResources();
+        void load();
+        void generateFontAtlas(unsigned int glyphStartIndex, unsigned int glyphEndIndex);
+        void renderText(const char *text, float x, float y, float sx, float sy);
+
+    private:
+        char* filepath;
+        FT_Face face;
+        int fontSize;
+        bool loaded = false;
     };
 
     extern FT_Library freeTypeLibrary;

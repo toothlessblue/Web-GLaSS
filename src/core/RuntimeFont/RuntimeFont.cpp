@@ -11,19 +11,18 @@ namespace RuntimeFont {
         }
     }
 
+    FontFace::FontFace(char* filepath, int fontSize) {
+        this->filepath = filepath;
+        this->fontSize = fontSize;
+    }
+
     FontFace loadFont(char* filepath) {
         if (!RuntimeFont::faceCache.count(filepath)) {
-            FT_Face face;
-            
-            FontFace fontFace = {
-                filepath,
-                NULL,
-                std::map<char, Character>(),
-                48, // Font size
-                false,
-            };
+            FontFace fontFace(filepath, 48);
 
             fontFace.load();
+            fontFace.generateFontAtlas();
+            fontFace.clearResources();
 
             RuntimeFont::faceCache.insert(std::pair<char*, FontFace>(filepath, fontFace));
         }
@@ -32,74 +31,95 @@ namespace RuntimeFont {
     }
 
     void FontFace::load() {
-        this->loaded = true;
         if (FT_New_Face(RuntimeFont::freeTypeLibrary, this->filepath, 0, &this->face))
         {
             std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+            return;
         }
+        
+        FT_Set_Pixel_Sizes(this->face, 0, this->fontSize);
+        this->loaded = true;
     }
 
     void FontFace::clearResources() {
         FT_Done_Face(this->face);
-        this->loaded = true;
+        this->loaded = false;
     }
 
-    void FontFace::cacheManyCharacters(unsigned char range) {
-        for (unsigned char c = 0; c < range; c++) {
-            this->loadCharacter(c);
+    void FontFace::generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128) {
+        // Get combined width of all glyphs, and max height
+
+        FT_GlyphSlot glyph = this->face->glyph;
+        this->atlasWidth = 0;
+        this->atlasHeight = 0;
+
+        for(int i = glyphStartIndex; i < glyphEndIndex; i++) {
+            if(FT_Load_Char(this->face, i, FT_LOAD_RENDER)) {
+                fprintf(stderr, "Loading character %c failed!\n", i);
+                continue;
+            }
+
+            this->atlasWidth += glyph->bitmap.width;
+            this->atlasHeight = std::max(this->atlasHeight, glyph->bitmap.rows);
+        }
+
+        glActiveTexture(GL_TEXTURE0);
+        glGenTextures(1, &this->atlasTexture);
+        glBindTexture(GL_TEXTURE_2D, this->atlasTexture);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, this->atlasWidth, this->atlasHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
+
+        int x = 0;
+        for(int i = glyphStartIndex; i < glyphEndIndex; i++) {
+            if(FT_Load_Char(face, i, FT_LOAD_RENDER))
+                continue;
+
+            glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, glyph->bitmap.width, glyph->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, glyph->bitmap.buffer);
+
+            x += glyph->bitmap.width;
+
+           this->atlasInfo[i].ax = glyph->advance.x >> 6;
+           this->atlasInfo[i].ay = glyph->advance.y >> 6;
+
+           this->atlasInfo[i].bw = glyph->bitmap.width;
+           this->atlasInfo[i].bh = glyph->bitmap.rows;
+
+           this->atlasInfo[i].bl = glyph->bitmap_left;
+           this->atlasInfo[i].bt = glyph->bitmap_top;
+
+           this->atlasInfo[i].tx = (float)x / this->atlasWidth;
         }
     }
 
-    Character FontFace::loadCharacter(char c) {
-        if (!this->characters.count(c)) {
-            if (!this->loaded) { // need to reload in order to load uncached character
-                std::cout << "Reloading cleared FontFace" << std::endl;
-                this->load();
-                this->loaded = false;
-            }
+    void FontFace::renderText(const char *text, float x, float y, float sx, float sy) {
+        std::vector<glm::vec4> coords;
 
-            glPixelStorei(GL_UNPACK_ALIGNMENT, 1); 
+        int n = 0;
 
-            FT_Set_Pixel_Sizes(this->face, 0, this->fontSize);
-            if (FT_Load_Char(this->face, c, FT_LOAD_RENDER)) {
-                std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-            }
+        for(const char *character = text; *character; character++) { 
+            float x2 =  x + this->atlasInfo[*character].bl * sx;
+            float y2 = -y - this->atlasInfo[*character].bt * sy;
+            float w = this->atlasInfo[*character].bw * sx;
+            float h = this->atlasInfo[*character].bh * sy;
 
-            // generate texture
-            unsigned int texture;
-            glGenTextures(1, &texture);
-            glBindTexture(GL_TEXTURE_2D, texture);
+            /* Advance the cursor to the start of the next character */
+            x += this->atlasInfo[*character].ax * sx;
+            y += this->atlasInfo[*character].ay * sy;
 
-            glTexImage2D(
-                GL_TEXTURE_2D,
-                0,
-                GL_RED,
-                this->face->glyph->bitmap.width,
-                this->face->glyph->bitmap.rows,
-                0,
-                GL_RED,
-                GL_UNSIGNED_BYTE,
-                this->face->glyph->bitmap.buffer
-            );
+            /* Skip glyphs that have no pixels */
+            if(!w || !h)
+                continue;
 
-            // set texture options
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-            Character character = {
-                texture, 
-                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                face->glyph->advance.x
-            };
-
-            this->characters.insert(std::pair<char, Character>(c, character));
-
-            glBindTexture(GL_TEXTURE_2D, 0);
+            coords[n++] = glm::vec4(x2, -y2, this->atlasInfo[*character].tx, 0);
+            coords[n++] = glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0);
+            coords[n++] = glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight); //remember: each glyph occupies a different amount of vertical space
+            coords[n++] = glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0);
+            coords[n++] = glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight);
+            coords[n++] = glm::vec4(x2 + w, -y2 - h, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight);
         }
 
-        return this->characters[c];
+        glBufferData(GL_ARRAY_BUFFER, sizeof coords, &coords[0], GL_DYNAMIC_DRAW);
+        glDrawArrays(GL_TRIANGLES, 0, n);
     }
 };

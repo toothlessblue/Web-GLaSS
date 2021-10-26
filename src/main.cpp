@@ -8,7 +8,7 @@
 #include "../include/glm/gtx/quaternion.hpp"
 
 #include "core/GameEngine/GameEngine.hpp"
-#include "core/Font/Font.hpp"
+#include "core/RuntimeFont/RuntimeFont.hpp"
 #include "core/Input/Input.hpp"
 #include "core/Time/Time.hpp"
 #include "core/Shaders/Shaders.hpp"
@@ -22,12 +22,16 @@
 #include "assets/CameraMouseController/CameraMouseController.hpp"
 #include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
 
+extern RuntimeFont::FontFace face;
+
 extern "C" void gameLoop() {
     Time::frameStart();
     
     Input::Mouse::doLoop();
     GameEngine::renderPipeline.render();
     GameEngine::worldSpace.updateGameObjects();    
+
+    face.renderText("Hello world!", 0, 0, 10, 10);
 
     Time::frameEnd();
     Time::incrementFrameCounter();
@@ -36,7 +40,8 @@ extern "C" void gameLoop() {
 extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
 
-    Font::init();
+    RuntimeFont::init();
+    face = RuntimeFont::loadFont("/fonts/Robot-Black.ttf");
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();
