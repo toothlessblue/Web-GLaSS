@@ -25,7 +25,7 @@ echo ""
 #   Keep trying to complete this todo but always give up cause make looks like such a pain
 
 # Uses WebGL 2, this is newer and has less support but gives us access to a bunch of fun tools
-#  like compute and geometry shaders
+#  like compute shaders
 
 echo "Running emcc..."
 ./emsdk/upstream/emscripten/emcc ${CPP_FILEPATHS}   `# Compile all c++ files` \

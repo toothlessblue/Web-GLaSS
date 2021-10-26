@@ -1,4 +1,3 @@
-
 if [ ! -d "./emsdk" ]; then
     echo "installing emsdk:"
     echo "- cloning repo"

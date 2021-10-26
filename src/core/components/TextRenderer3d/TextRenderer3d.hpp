@@ -1,14 +1,14 @@
 #pragma once
 #include <GL/glew.h>
-#include <ft2build.h>
 #include <GLFW/glfw3.h>
-#include FT_FREETYPE_H
 #include "../Renderer/Renderer.hpp"
 #include "../../../../include/glm/glm.hpp"
 #include "../../RuntimeFont/RuntimeFont.hpp"
+#include "../../../../include/ft2build.h"
+#include "../../../../include/freetype/freetype.h"
 
-class TextRenderer : public Renderer {
-    TextRenderer();
+class TextRenderer3d : public Renderer {
+    TextRenderer3d();
 
     void setFont(char* filepath);
     void setFont(RuntimeFont::FontFace fontFace);
@@ -23,4 +23,3 @@ private:
     
 
 };
-

@@ -1,21 +1,21 @@
 #include "TextRenderer3d.hpp"
 
-TextRenderer::TextRenderer() {
+TextRenderer3d::TextRenderer3d() {
     this->material = new Material("/shaders/BasicFont.vert", "/shaders/BasicFont.frag");
 
     glGenBuffers(1, &this->vbo);
 }
 
-void TextRenderer::setFont(char* filepath) {
+void TextRenderer3d::setFont(char* filepath) {
     RuntimeFont::FontFace face = RuntimeFont::loadFont(filepath);
     this->setFont(face);
 }
 
-void TextRenderer::setFont(RuntimeFont::FontFace face) {
+void TextRenderer3d::setFont(RuntimeFont::FontFace face) {
     this->face = face;
 }
 
-void TextRenderer::setText(char* text) {
+void TextRenderer3d::setText(char* text) {
     delete this->text;
     this->text = text;
     
@@ -23,7 +23,7 @@ void TextRenderer::setText(char* text) {
     // TODO generate UVs
 }
 
-void TextRenderer::render() {
+void TextRenderer3d::render() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

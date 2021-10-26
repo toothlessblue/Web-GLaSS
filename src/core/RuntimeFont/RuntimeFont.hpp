@@ -2,12 +2,12 @@
 #include "../../../include/glm/glm.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <ft2build.h>
 #include <iostream>
 #include <map>
 #include <math.h>
 #include <vector>
-#include FT_FREETYPE_H
+#include "../../../include/ft2build.h"
+#include "../../../include/freetype/freetype.h"
 
 struct cmp_str
 {
@@ -34,6 +34,7 @@ namespace RuntimeFont {
     class FontFace {
     public:
         FontFace(char* filepath, int fontSize);
+        FontFace();
 
         GLuint atlasTexture;
         AtlasCharacterPositionInfo atlasInfo[128];
@@ -43,7 +44,7 @@ namespace RuntimeFont {
 
         void clearResources();
         void load();
-        void generateFontAtlas(unsigned int glyphStartIndex, unsigned int glyphEndIndex);
+        void generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128);
         void renderText(const char *text, float x, float y, float sx, float sy);
 
     private:

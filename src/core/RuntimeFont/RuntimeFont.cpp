@@ -16,6 +16,8 @@ namespace RuntimeFont {
         this->fontSize = fontSize;
     }
 
+    FontFace::FontFace() {}
+
     FontFace loadFont(char* filepath) {
         if (!RuntimeFont::faceCache.count(filepath)) {
             FontFace fontFace(filepath, 48);
@@ -46,7 +48,7 @@ namespace RuntimeFont {
         this->loaded = false;
     }
 
-    void FontFace::generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128) {
+    void FontFace::generateFontAtlas(unsigned int glyphStartIndex, unsigned int glyphEndIndex) {
         // Get combined width of all glyphs, and max height
 
         FT_GlyphSlot glyph = this->face->glyph;
