@@ -3,16 +3,25 @@
 namespace Lighting {
     Mesh* pointLightMesh;
     Material* pointLightMaterial;
+    Material* ambientMaterial;
     std::vector<PointLight*> pointLights;
 
     void initialise() {
         Lighting::pointLightMesh = PrimitiveMeshes::generateSphereMesh(10, 10, 1);
+        Lighting::ambientMaterial = new Material("/shaders/RenderQuad.vert", "/shaders/AmbientLighting.frag");
         Lighting::pointLightMaterial = new Material("/shaders/PointLightShader.vert", "/shaders/PointLightShader.frag");
 
         Lighting::pointLightMaterial->use();
-        glUniform1i(glGetUniformLocation(Lighting::pointLightMaterial->shaderProgramId, "gPosition"), 3);
-        glUniform1i(glGetUniformLocation(Lighting::pointLightMaterial->shaderProgramId, "gNormal"), 4);
-        glUniform1i(glGetUniformLocation(Lighting::pointLightMaterial->shaderProgramId, "gAlbedo"), 5);
+        Lighting::pointLightMaterial->setInt("gPosition", 3);
+        Lighting::pointLightMaterial->setInt("gNormal", 4);
+        Lighting::pointLightMaterial->setInt("gAlbedo", 5);
+        
+        Lighting::ambientMaterial->use();
+        Lighting::ambientMaterial->setInt("gPosition", 3);
+        Lighting::ambientMaterial->setInt("gNormal", 4);
+        Lighting::ambientMaterial->setInt("gAlbedo", 5);
+        Lighting::ambientMaterial->setFloat("power", 0.2f);
+
         glUseProgram(0);
     }
 
@@ -62,5 +71,21 @@ namespace Lighting {
 
         glUseProgram(0);
         glCullFace(GL_BACK);
+    }
+
+    void renderAmbient(GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
+        Lighting::ambientMaterial->use();
+        
+        glActiveTexture(GL_TEXTURE3);
+        glBindTexture(GL_TEXTURE_2D, gPosition);
+        glActiveTexture(GL_TEXTURE4);
+        glBindTexture(GL_TEXTURE_2D, gNormal);
+        glActiveTexture(GL_TEXTURE5);
+        glBindTexture(GL_TEXTURE_2D, gAlbedo);
+
+        GameEngine::renderPipeline.bindRenderQuad();
+        glEnable(GL_BLEND);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDisable(GL_BLEND);
     }
 }

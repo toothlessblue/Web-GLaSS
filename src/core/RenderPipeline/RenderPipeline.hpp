@@ -33,6 +33,8 @@ public:
     unsigned int addRenderer(Renderer* renderer);
 
     void setActiveCamera(Camera* camera);
+
+    void bindRenderQuad();
 private:
     GLuint geometryBuffer, depthBuffer;
     GLuint gPosition, gNormal, gAlbedo;
@@ -43,12 +45,12 @@ private:
     GLuint vao;
 
     const GLfloat quadVertices[18] = {
-         1.0f,  1.0f,
-        -1.0f, -1.0f,
-        -1.0f,  1.0f,
-         1.0f,  1.0f,
-         1.0f, -1.0f,
-        -1.0f, -1.0f,
+         1.0f,  1.0f, 0.0f,
+        -1.0f,  1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f,
+         1.0f,  1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,
     };
 
     const GLfloat quadUvs[12] = {

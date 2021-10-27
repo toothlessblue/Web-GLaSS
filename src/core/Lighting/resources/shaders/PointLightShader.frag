@@ -7,6 +7,7 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 
+// TODO use uniform layout
 // layout (std140) uniform LightData {
 //     vec4 position;
 //     vec4 colour;

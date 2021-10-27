@@ -49,6 +49,8 @@ namespace RuntimeFont {
     }
 
     void FontFace::generateFontAtlas(unsigned int glyphStartIndex, unsigned int glyphEndIndex) {
+        std::cout << "Generating atlas for " << this->filepath << std::endl;
+        
         // Get combined width of all glyphs, and max height
 
         FT_GlyphSlot glyph = this->face->glyph;
@@ -70,14 +72,14 @@ namespace RuntimeFont {
         glBindTexture(GL_TEXTURE_2D, this->atlasTexture);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, this->atlasWidth, this->atlasHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, this->atlasWidth, this->atlasHeight, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
 
         int x = 0;
         for(int i = glyphStartIndex; i < glyphEndIndex; i++) {
             if(FT_Load_Char(face, i, FT_LOAD_RENDER))
                 continue;
 
-            glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, glyph->bitmap.width, glyph->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, glyph->bitmap.buffer);
+            glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, glyph->bitmap.width, glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, glyph->bitmap.buffer);
 
             x += glyph->bitmap.width;
 
@@ -92,14 +94,22 @@ namespace RuntimeFont {
 
            this->atlasInfo[i].tx = (float)x / this->atlasWidth;
         }
+
+        std::cout << "Generated atlas" << std::endl;
     }
 
-    void FontFace::renderText(const char *text, float x, float y, float sx, float sy) {
-        std::vector<glm::vec4> coords;
+    Mesh FontFace::generateMesh(const char *text, float sx, float sy) {
+        std::vector<glm::vec3> verts;
+        std::vector<glm::vec2> uvs;
+        std::vector<unsigned int> triangles;
 
         int n = 0;
 
-        for(const char *character = text; *character; character++) { 
+        float x = 0;
+        float y = 0;
+
+        int tris = 0;
+        for (const char *character = text; *character; character++) { 
             float x2 =  x + this->atlasInfo[*character].bl * sx;
             float y2 = -y - this->atlasInfo[*character].bt * sy;
             float w = this->atlasInfo[*character].bw * sx;
@@ -113,15 +123,38 @@ namespace RuntimeFont {
             if(!w || !h)
                 continue;
 
-            coords[n++] = glm::vec4(x2, -y2, this->atlasInfo[*character].tx, 0);
-            coords[n++] = glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0);
-            coords[n++] = glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight); //remember: each glyph occupies a different amount of vertical space
-            coords[n++] = glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0);
-            coords[n++] = glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight);
-            coords[n++] = glm::vec4(x2 + w, -y2 - h, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight);
+            verts.push_back(glm::vec3(x2    , -y2    , 0));
+            verts.push_back(glm::vec3(x2 + w, -y2    , 0));
+            verts.push_back(glm::vec3(x2    , -y2 - h, 0));
+            verts.push_back(glm::vec3(x2 + w, -y2 - h, 0));
+
+            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, 0));
+            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
+            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight));
+            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight));
+
+            triangles.push_back(tris);
+            triangles.push_back(tris + 2);
+            triangles.push_back(tris + 1);
+            triangles.push_back(tris + 2);
+            triangles.push_back(tris + 3);
+            triangles.push_back(tris + 1);
+
+            //coords.push_back(glm::vec4(x2, -y2, this->atlasInfo[*character].tx, 0));
+            //coords.push_back(glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
+            //coords.push_back(glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight)); //remember: each glyph occupies a different amount of vertical space
+            //coords.push_back(glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
+            //coords.push_back(glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight));
+            //coords.push_back(glm::vec4(x2 + w, -y2 - h, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight));
         }
 
-        glBufferData(GL_ARRAY_BUFFER, sizeof coords, &coords[0], GL_DYNAMIC_DRAW);
-        glDrawArrays(GL_TRIANGLES, 0, n);
+        Mesh mesh;
+
+        mesh.setVertices(verts);
+        mesh.setUVs(uvs);
+        mesh.setIndexes(triangles);
+        // Text usually doesn't use normals
+
+        return mesh;
     }
 };

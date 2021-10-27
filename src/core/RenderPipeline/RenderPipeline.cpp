@@ -5,6 +5,19 @@ RenderPipeline::RenderPipeline() {
 
     Lighting::initialise();
 
+    std::cout << "Creating render quad" << std::endl;
+
+    glGenBuffers(1, &this->quadVertexBuffer);
+    glGenBuffers(1, &this->quadUvBuffer);
+
+    glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * 6, &this->quadVertices[0], GL_STATIC_DRAW);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * 6, &this->quadUvs[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     std::cout << "Creating render pipeline" << std::endl;
 
     glGenVertexArrays(1, &this->vao);
@@ -99,6 +112,7 @@ void RenderPipeline::render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     Lighting::renderPointLights(this->gPosition, this->gNormal, this->gAlbedo);
+    Lighting::renderAmbient(this->gPosition, this->gNormal, this->gAlbedo);
 }
 
 unsigned int RenderPipeline::addRenderer(Renderer* renderer) {
@@ -111,4 +125,30 @@ unsigned int RenderPipeline::addRenderer(Renderer* renderer) {
 
 void RenderPipeline::setActiveCamera(Camera* camera) {
     this->activeCamera = camera;
+}
+
+/**
+ * Binds render quad UVs and vertices to attrib pointers, 
+ * leaves the vertex buffer bound to GL_ARRAY_BUFFER
+ */
+void RenderPipeline::bindRenderQuad() {
+    glBindBuffer(GL_ARRAY_BUFFER, this->quadUvBuffer);
+    glVertexAttribPointer(
+        1,                    // attribute 0
+        2,                    // size - vec2
+        GL_FLOAT,             // type
+        GL_FALSE,             // normalized?
+        0,    // stride
+        (void*)0              // array buffer offset
+    );
+
+    glBindBuffer(GL_ARRAY_BUFFER, this->quadVertexBuffer);
+    glVertexAttribPointer(
+        0,                    // attribute 1
+        3,                    // size - vec3
+        GL_FLOAT,             // type
+        GL_FALSE,             // normalized?
+        0,    // stride
+        (void*)0 // array buffer offset
+    );
 }

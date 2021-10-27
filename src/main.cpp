@@ -15,6 +15,7 @@
 #include "core/Lighting/Lighting.hpp"
 #include "core/components/Camera/Camera.hpp"
 #include "core/components/MeshRenderer/MeshRenderer.hpp"
+#include "core/components/TextRenderer3d/TextRenderer3d.hpp"
 #include "core/GameObject/GameObject.hpp"
 #include "core/Material/Material.hpp"
 #include "core/Texture/Texture.hpp"
@@ -22,18 +23,12 @@
 #include "assets/CameraMouseController/CameraMouseController.hpp"
 #include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
 
-RuntimeFont::FontFace face;
-GLuint fontProgram;
-
 extern "C" void gameLoop() {
     Time::frameStart();
     
     Input::Mouse::doLoop();
     GameEngine::renderPipeline.render();
-    GameEngine::worldSpace.updateGameObjects();    
-
-    glUseProgram(fontProgram);
-    face.renderText("Hello world!", 0, 0, 10, 10);
+    GameEngine::worldSpace.updateGameObjects();
 
     Time::frameEnd();
     Time::incrementFrameCounter();
@@ -43,9 +38,11 @@ extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
 
     RuntimeFont::init();
-    face = RuntimeFont::loadFont("/fonts/Roboto-Black.ttf");
+    RuntimeFont::FontFace face = RuntimeFont::loadFont("/fonts/Roboto-Black.ttf");
 
-    fontProgram = Shaders::CreateProgram("/shaders/BasicFont.vert", "/shaders/BasicFont.frag");
+    GameObject* text3d = GameEngine::CreateGameObject();
+    text3d->createComponent<TextRenderer3d>();
+    text3d->transform->position = glm::vec3(0, 2, 0);
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();

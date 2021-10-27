@@ -8,6 +8,7 @@
 #include "../../../../include/freetype/freetype.h"
 
 class TextRenderer3d : public Renderer {
+public:
     TextRenderer3d();
 
     void setFont(char* filepath);
@@ -20,6 +21,5 @@ private:
     char* text;
     RuntimeFont::FontFace face;
     GLuint vbo;
-    
-
+    Mesh textMesh;
 };

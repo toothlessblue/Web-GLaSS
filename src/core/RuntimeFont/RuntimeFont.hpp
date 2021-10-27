@@ -8,6 +8,7 @@
 #include <vector>
 #include "../../../include/ft2build.h"
 #include "../../../include/freetype/freetype.h"
+#include "../Mesh/Mesh.hpp"
 
 struct cmp_str
 {
@@ -45,7 +46,7 @@ namespace RuntimeFont {
         void clearResources();
         void load();
         void generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128);
-        void renderText(const char *text, float x, float y, float sx, float sy);
+        Mesh generateMesh(const char *text, float sx, float sy);
 
     private:
         char* filepath;

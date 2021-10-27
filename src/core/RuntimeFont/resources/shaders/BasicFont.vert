@@ -1,13 +1,16 @@
 #version 300 es
 precision mediump float;
 
-layout (location = 0) in vec4 vertex; // <vec2 pos, vec2 tex>
-out vec2 TexCoords;
+layout (location = 0) in vec3 vVertex;
+layout (location = 2) in vec2 vUv;
 
-uniform mat4 projection;
+out vec2 fUv;
 
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 void main()
 {
-    gl_Position = projection * vec4(vertex.xy, 0.0, 1.0);
-    TexCoords = vertex.zw;
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vVertex, 1);
+    fUv = vUv;
 }  
