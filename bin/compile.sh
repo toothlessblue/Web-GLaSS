@@ -39,7 +39,7 @@ echo "Running emcc..."
 -o ./lib/index.js                                   `# Output file, specifying .js outputs index.wasm and index.js files` \
 -fsanitize=undefined                                `# Much needed more detailed error info` \
 --preload-file ./lib/resources@/                    `# Data files to include in the virtual file system, adds index.data to output` \
- 
+-L/usr/local/lib -lfreetype
 
 echo ""
 echo "Compilation complete"

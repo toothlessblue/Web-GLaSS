@@ -22,7 +22,8 @@
 #include "assets/CameraMouseController/CameraMouseController.hpp"
 #include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
 
-extern RuntimeFont::FontFace face;
+RuntimeFont::FontFace face;
+GLuint fontProgram;
 
 extern "C" void gameLoop() {
     Time::frameStart();
@@ -31,6 +32,7 @@ extern "C" void gameLoop() {
     GameEngine::renderPipeline.render();
     GameEngine::worldSpace.updateGameObjects();    
 
+    glUseProgram(fontProgram);
     face.renderText("Hello world!", 0, 0, 10, 10);
 
     Time::frameEnd();
@@ -41,7 +43,9 @@ extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
 
     RuntimeFont::init();
-    face = RuntimeFont::loadFont("/fonts/Robot-Black.ttf");
+    face = RuntimeFont::loadFont("/fonts/Roboto-Black.ttf");
+
+    fontProgram = Shaders::CreateProgram("/shaders/BasicFont.vert", "/shaders/BasicFont.frag");
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();
