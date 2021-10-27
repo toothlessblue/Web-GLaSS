@@ -1,15 +1,11 @@
 if [ ! -d "./emsdk" ]; then
-    echo "installing emsdk:"
-    echo "- cloning repo"
-    git clone https://github.com/emscripten-core/emsdk.git
-
-    cd emsdk
-        echo "- running ./emsdk install"
-        ./emsdk install latest
-
-        echo "- running ./emsdk activate"
-        ./emsdk activate latest
-    cd ..
+    source ./bin/install/download-emsdk.sh
 fi
 
-echo 'emsdk is installed! use bin/compile.sh'
+
+if [ ! -f "./external-libs/libfreetype.a" ]; then
+    source ./bin/install/download-freetype.sh
+fi
+
+echo 'Project folder is initialised'
+echo 'Use bin/dev-server.sh, and bin/compile.sh'

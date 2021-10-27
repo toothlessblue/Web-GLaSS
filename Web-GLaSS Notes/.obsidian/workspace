@@ -10,7 +10,7 @@
           "type": "markdown",
           "state": {
             "file": "Engine Documentation/Installing FreeType.md",
-            "mode": "source"
+            "mode": "preview"
           }
         }
       }
@@ -88,6 +88,7 @@
   },
   "active": "700bde6458494847",
   "lastOpenFiles": [
+    "Engine Documentation/Installing FreeType.md",
     "Engine Documentation/Untitled.md",
     "C++ Notes/Template Functions.md",
     "C++ Notes/Lists.md",
@@ -96,7 +97,6 @@
     "GLSL/Keywords/Layout.md",
     "GLSL/in-out and varying.md",
     "GLSL/Layout.md",
-    "Web GL Notes/Matrices/Translation Matrix.md",
-    "Web GL Notes/Matrices/Scale Matrix.md"
+    "Web GL Notes/Matrices/Translation Matrix.md"
   ]
 }
