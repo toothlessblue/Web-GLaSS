@@ -9,14 +9,7 @@
 #include "../../../include/ft2build.h"
 #include "../../../include/freetype/freetype.h"
 #include "../Mesh/Mesh.hpp"
-
-struct cmp_str
-{
-   bool operator()(char const *a, char const *b) const
-   {
-      return std::strcmp(a, b) < 0;
-   }
-};
+#include "../StringUtils/StringUtils.hpp"
 
 namespace RuntimeFont {
     struct AtlasCharacterPositionInfo {
@@ -34,7 +27,7 @@ namespace RuntimeFont {
 
     class FontFace {
     public:
-        FontFace(char* filepath, int fontSize);
+        FontFace(const char* filepath, int fontSize);
         FontFace();
 
         GLuint atlasTexture;
@@ -48,17 +41,17 @@ namespace RuntimeFont {
         void generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128);
         Mesh generateMesh(const char *text, float sx, float sy);
 
-    private:
-        char* filepath;
-        FT_Face face;
-        int fontSize;
+        const char* filepath;
         bool loaded = false;
+        int fontSize;
+    private:
+        FT_Face face;
     };
 
     extern FT_Library freeTypeLibrary;
-    extern std::map<char*, FontFace, cmp_str> faceCache;
+    extern std::map<const char*, FontFace*, StringUtils::cmp_str> faceCache;
 
     void init();
 
-    FontFace loadFont(char* filepath);
+    FontFace* loadFont(const char* filepath);
 }

@@ -54,17 +54,23 @@ void Material::setMat4(const char* name, glm::mat4 value) {
 }
 
 void Material::setTexture(const char* name, Texture* value) {
+    this->setTexture(name, value->id);
+}
+
+void Material::setTexture(const char* name, GLuint textureId) {
     GLint index = this->getAttributeIndex(name);
-    GLint textureUnit = this->textureUnitCounter;
+    GLuint unit = this->textureUnitCounter;
+
+    this->textureBindings.push_back({
+        textureId,
+        GL_TEXTURE0 + unit
+    });
+    
+    this->executeOnUse([index, unit] {
+        glUniform1i(index, unit);
+    });
 
     this->textureUnitCounter++;
-
-    this->executeOnUse([index, value, textureUnit] {
-        glUniform1i(index, textureUnit);
-        glActiveTexture(GL_TEXTURE0 + textureUnit);
-        glBindTexture(GL_TEXTURE_2D, value->id);
-        std::cout << "Bound texture to unit " << textureUnit << std::endl;
-    });
 }
 
 void Material::executeOnUse(std::function<void()> toExecute) {
@@ -85,19 +91,20 @@ void Material::use() {
         call();
     }
 
+    for (TextureBinding binding : this->textureBindings) {
+        glActiveTexture(binding.textureUnit);
+        glBindTexture(GL_TEXTURE_2D, binding.textureId);
+    }
+
     this->toExecuteOnUse.clear();
 }
 
 GLint Material::getAttributeIndex(const char* name) {
     std::string string(name);
-    GLint location;
 
     if (!this->attributeIndexCache.count(string)) {
-        location = glGetUniformLocation(this->shaderProgramId, name);
-        this->attributeIndexCache[string] = location;
-    } else {
-        location = this->attributeIndexCache[string];
+        this->attributeIndexCache[string] = glGetUniformLocation(this->shaderProgramId, name);
     }
 
-    return location;
+    return this->attributeIndexCache[string];
 }

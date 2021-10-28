@@ -9,4 +9,10 @@ namespace StringUtils {
     void split(const std::string &s, char delim, Out result);
 
     std::vector<std::string> split(const std::string &s, char delim);
+
+    bool compareCharPointers(char const *a, char const *b);
+
+    struct cmp_str {
+        bool operator() (char const *a, char const *b) const;
+    };
 }

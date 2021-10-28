@@ -75,6 +75,46 @@ void Mesh::setIndexes(std::vector<unsigned int> indexes) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+/**
+ * To be used by renderers, binds the vertex buffer and assigns attribute pointers, then binds the index buffer
+ */
+void Mesh::bindMesh() {
+    glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
+    glVertexAttribPointer(
+        0,                    // attribute 0
+        3,                    // size - vec3
+        GL_FLOAT,             // type
+        GL_FALSE,             // normalized?
+        8 * sizeof(float),    // stride
+        (void*)0              // array buffer offset
+    );
+
+    glVertexAttribPointer(
+        1,                    // attribute 1
+        3,                    // size - vec3
+        GL_FLOAT,             // type
+        GL_FALSE,             // normalized?
+        8 * sizeof(float),    // stride
+        (void*)(3 * sizeof(float)) // array buffer offset
+    );
+
+    glVertexAttribPointer(
+        2,                    // attribute 2
+        2,                    // size - vec2
+        GL_FLOAT,             // type
+        GL_FALSE,             // normalized?
+        8 * sizeof(float),    // stride
+        (void*)(6 * sizeof(float)) // array buffer offset
+    );
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBuffer);
+}
+
+void Mesh::unbindMesh() {
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
 void Mesh::constructVertexBuffer() {
     this->bufferData.clear();
 
@@ -83,9 +123,15 @@ void Mesh::constructVertexBuffer() {
         this->bufferData.push_back(this->vertices[i].y);
         this->bufferData.push_back(this->vertices[i].z);
 
-        this->bufferData.push_back(this->normals[i].x);
-        this->bufferData.push_back(this->normals[i].y);
-        this->bufferData.push_back(this->normals[i].z);
+        if (this->normals.size() > i) {
+            this->bufferData.push_back(this->normals[i].x);
+            this->bufferData.push_back(this->normals[i].y);
+            this->bufferData.push_back(this->normals[i].z);
+        } else {
+            this->bufferData.push_back(0);
+            this->bufferData.push_back(0);
+            this->bufferData.push_back(0);
+        }
 
         this->bufferData.push_back(this->uvs[i].x);
         this->bufferData.push_back(this->uvs[i].y);

@@ -36,13 +36,15 @@ extern "C" void gameLoop() {
 
 extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
-
     RuntimeFont::init();
-    RuntimeFont::FontFace face = RuntimeFont::loadFont("/fonts/Roboto-Black.ttf");
+
+
 
     GameObject* text3d = GameEngine::CreateGameObject();
-    text3d->createComponent<TextRenderer3d>();
+    TextRenderer3d* textRenderer3d = text3d->createComponent<TextRenderer3d>();
     text3d->transform->position = glm::vec3(0, 2, 0);
+    textRenderer3d->setText("Hello world!");
+    textRenderer3d->setColour(glm::vec3(1, 0, 0));
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();

@@ -15,4 +15,12 @@ namespace StringUtils {
         split(s, delim, std::back_inserter(elems));
         return elems;
     }
+
+    bool compareCharPointers(char const *a, char const *b) {
+        return std::strcmp(a, b) < 0;
+    }
+
+    bool cmp_str::operator() (char const *a, char const *b) const {
+        return compareCharPointers(a, b);
+    }
 }

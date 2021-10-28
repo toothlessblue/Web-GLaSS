@@ -40,7 +40,7 @@ vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)
 
 void main()
 {
-    vec2 uv = vec2(gl_FragCoord.x / 900.0f, gl_FragCoord.y / 450.0f);
+    vec2 uv = vec2(gl_FragCoord.x / 900.0f, gl_FragCoord.y / 450.0f); // TODO get screen resolution from uniform
 
     // retrieve data from G-buffer
     vec3 fragPos = texture(gPosition, uv).rgb;

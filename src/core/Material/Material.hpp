@@ -6,9 +6,15 @@
 #include <iostream>
 #include <list>
 #include <functional>
+#include <vector>
 
 #include "../../../include/glm/glm.hpp"
 #include "../Texture/Texture.hpp"
+
+struct TextureBinding {
+    GLuint textureId;
+    GLuint textureUnit;
+};
 
 class Material {
 public:
@@ -25,9 +31,12 @@ public:
     void setMat4(const char* name, glm::mat4 value);
 
     void setTexture(const char* name, Texture* texture);
+    void setTexture(const char* name, GLuint textureId);
 
     void use();
 private:
+    std::vector<TextureBinding> textureBindings;
+
     void executeOnUse(std::function<void()>);
     GLint getAttributeIndex(const char* name);
 

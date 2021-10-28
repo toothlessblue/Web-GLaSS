@@ -16,6 +16,8 @@ public:
     void setNormals(std::vector<glm::vec3> normals);
     void setIndexes(std::vector<unsigned int> indexes);
     void constructVertexBuffer();
+    void bindMesh();
+    void unbindMesh();
 
     std::vector<glm::vec3> getVertices();
     std::vector<glm::vec2> getUVs();

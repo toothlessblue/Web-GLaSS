@@ -6,20 +6,22 @@
 #include "../../RuntimeFont/RuntimeFont.hpp"
 #include "../../../../include/ft2build.h"
 #include "../../../../include/freetype/freetype.h"
+#include "../../StringUtils/StringUtils.hpp"
 
 class TextRenderer3d : public Renderer {
 public:
     TextRenderer3d();
 
-    void setFont(char* filepath);
-    void setFont(RuntimeFont::FontFace fontFace);
+    void setFont(const char* filepath);
+    void setFont(RuntimeFont::FontFace* fontFace);
     void render() override;
-    void setText(char* text);
+    void setText(const char* text);
+    void setColour(glm::vec3 colour);
 
     glm::vec3 colour;
 private:
-    char* text;
-    RuntimeFont::FontFace face;
+    const char* text;
+    RuntimeFont::FontFace* face;
     GLuint vbo;
     Mesh textMesh;
 };

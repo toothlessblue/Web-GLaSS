@@ -11,8 +11,8 @@ uniform float power;
 
 void main()
 {
-    vec2 uv = vec2(gl_FragCoord.x / 900.0f, gl_FragCoord.y / 450.0f);
+    vec2 uv = vec2(gl_FragCoord.x / 900.0f, gl_FragCoord.y / 450.0f); // TODO get screen resolution from uniform
     vec4 albedoSpec = texture(gAlbedo, uv).rgba;
     
-    color = vec4(albedoSpec.rgb, 1.0) * power;
+    color = vec4(albedoSpec.rgb, 1.0) * power * 9.0; // TODO remove 9 multiple
 }

@@ -2,7 +2,7 @@
 
 namespace RuntimeFont {
     FT_Library freeTypeLibrary;
-    std::map<char*, FontFace, cmp_str> faceCache;
+    std::map<const char*, FontFace*, StringUtils::cmp_str> faceCache;
 
     void init() {
         if (FT_Init_FreeType(&freeTypeLibrary))
@@ -11,22 +11,22 @@ namespace RuntimeFont {
         }
     }
 
-    FontFace::FontFace(char* filepath, int fontSize) {
+    FontFace::FontFace(const char* filepath, int fontSize) {
         this->filepath = filepath;
         this->fontSize = fontSize;
     }
 
     FontFace::FontFace() {}
 
-    FontFace loadFont(char* filepath) {
+    FontFace* loadFont(const char* filepath) {
         if (!RuntimeFont::faceCache.count(filepath)) {
-            FontFace fontFace(filepath, 48);
+            FontFace* fontFace = new FontFace(filepath, 48);
 
-            fontFace.load();
-            fontFace.generateFontAtlas();
-            fontFace.clearResources();
+            fontFace->load();
+            fontFace->generateFontAtlas();
+            fontFace->clearResources();
 
-            RuntimeFont::faceCache.insert(std::pair<char*, FontFace>(filepath, fontFace));
+            RuntimeFont::faceCache.insert(std::pair<const char*, FontFace*>(filepath, fontFace));
         }
 
         return faceCache[filepath];
@@ -72,6 +72,7 @@ namespace RuntimeFont {
         glBindTexture(GL_TEXTURE_2D, this->atlasTexture);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+        // TODO I suspect this line is responsible for text not rendering
         glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, this->atlasWidth, this->atlasHeight, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
 
         int x = 0;
@@ -83,17 +84,19 @@ namespace RuntimeFont {
 
             x += glyph->bitmap.width;
 
-           this->atlasInfo[i].ax = glyph->advance.x >> 6;
-           this->atlasInfo[i].ay = glyph->advance.y >> 6;
-
-           this->atlasInfo[i].bw = glyph->bitmap.width;
-           this->atlasInfo[i].bh = glyph->bitmap.rows;
-
-           this->atlasInfo[i].bl = glyph->bitmap_left;
-           this->atlasInfo[i].bt = glyph->bitmap_top;
-
-           this->atlasInfo[i].tx = (float)x / this->atlasWidth;
+            this->atlasInfo[i].ax = glyph->advance.x >> 6;
+            this->atlasInfo[i].ay = glyph->advance.y >> 6;
+ 
+            this->atlasInfo[i].bw = glyph->bitmap.width;
+            this->atlasInfo[i].bh = glyph->bitmap.rows;
+ 
+            this->atlasInfo[i].bl = glyph->bitmap_left;
+            this->atlasInfo[i].bt = glyph->bitmap_top;
+ 
+            this->atlasInfo[i].tx = (float)x / this->atlasWidth;
         }
+        
+        glBindTexture(GL_TEXTURE_2D, 0);
 
         std::cout << "Generated atlas" << std::endl;
     }
@@ -108,7 +111,7 @@ namespace RuntimeFont {
         float x = 0;
         float y = 0;
 
-        int tris = 0;
+        int vCount = 0;
         for (const char *character = text; *character; character++) { 
             float x2 =  x + this->atlasInfo[*character].bl * sx;
             float y2 = -y - this->atlasInfo[*character].bt * sy;
@@ -128,17 +131,25 @@ namespace RuntimeFont {
             verts.push_back(glm::vec3(x2    , -y2 - h, 0));
             verts.push_back(glm::vec3(x2 + w, -y2 - h, 0));
 
-            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, 0));
-            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
-            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight));
-            uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight));
+            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, 0));
+            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
+            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight));
+            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight));
+            
+            uvs.push_back(glm::vec2(0, 0));
+            uvs.push_back(glm::vec2(1, 0));
+            uvs.push_back(glm::vec2(0, 1));
+            uvs.push_back(glm::vec2(1, 1));
 
-            triangles.push_back(tris);
-            triangles.push_back(tris + 2);
-            triangles.push_back(tris + 1);
-            triangles.push_back(tris + 2);
-            triangles.push_back(tris + 3);
-            triangles.push_back(tris + 1);
+            triangles.push_back(vCount);
+            triangles.push_back(vCount + 2);
+            triangles.push_back(vCount + 1);
+
+            triangles.push_back(vCount + 2);
+            triangles.push_back(vCount + 3);
+            triangles.push_back(vCount + 1);
+
+            vCount += 4;
 
             //coords.push_back(glm::vec4(x2, -y2, this->atlasInfo[*character].tx, 0));
             //coords.push_back(glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
@@ -153,7 +164,7 @@ namespace RuntimeFont {
         mesh.setVertices(verts);
         mesh.setUVs(uvs);
         mesh.setIndexes(triangles);
-        // Text usually doesn't use normals
+        mesh.constructVertexBuffer();
 
         return mesh;
     }
