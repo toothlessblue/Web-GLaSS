@@ -44,7 +44,7 @@ extern "C" int main(int argc, char** argv) {
     TextRenderer3d* textRenderer3d = text3d->createComponent<TextRenderer3d>();
     text3d->transform->position = glm::vec3(0, 2, 0);
     textRenderer3d->setText("Hello world!");
-    textRenderer3d->setColour(glm::vec3(1, 0, 0));
+    textRenderer3d->setColour(glm::vec3(1, 1, 1));
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();

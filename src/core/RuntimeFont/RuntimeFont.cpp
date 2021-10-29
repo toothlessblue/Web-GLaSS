@@ -67,9 +67,14 @@ namespace RuntimeFont {
             this->atlasHeight = std::max(this->atlasHeight, glyph->bitmap.rows);
         }
 
-        glActiveTexture(GL_TEXTURE0);
         glGenTextures(1, &this->atlasTexture);
         glBindTexture(GL_TEXTURE_2D, this->atlasTexture);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
         // TODO I suspect this line is responsible for text not rendering
@@ -82,8 +87,6 @@ namespace RuntimeFont {
 
             glTexSubImage2D(GL_TEXTURE_2D, 0, x, 0, glyph->bitmap.width, glyph->bitmap.rows, GL_RED, GL_UNSIGNED_BYTE, glyph->bitmap.buffer);
 
-            x += glyph->bitmap.width;
-
             this->atlasInfo[i].ax = glyph->advance.x >> 6;
             this->atlasInfo[i].ay = glyph->advance.y >> 6;
  
@@ -94,6 +97,8 @@ namespace RuntimeFont {
             this->atlasInfo[i].bt = glyph->bitmap_top;
  
             this->atlasInfo[i].tx = (float)x / this->atlasWidth;
+            
+            x += glyph->bitmap.width;
         }
         
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -126,20 +131,17 @@ namespace RuntimeFont {
             if(!w || !h)
                 continue;
 
-            verts.push_back(glm::vec3(x2    , -y2    , 0));
-            verts.push_back(glm::vec3(x2 + w, -y2    , 0));
-            verts.push_back(glm::vec3(x2    , -y2 - h, 0));
-            verts.push_back(glm::vec3(x2 + w, -y2 - h, 0));
+            verts.push_back(glm::vec3(x2    , -y2    , 0)); // TL
+            verts.push_back(glm::vec3(x2 + w, -y2    , 0)); // TR
+            verts.push_back(glm::vec3(x2    , -y2 - h, 0)); // BL
+            verts.push_back(glm::vec3(x2 + w, -y2 - h, 0)); // BR
 
-            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, 0));
-            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
-            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight));
-            //uvs.push_back(glm::vec2(this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight));
-            
-            uvs.push_back(glm::vec2(0, 0));
-            uvs.push_back(glm::vec2(1, 0));
-            uvs.push_back(glm::vec2(0, 1));
-            uvs.push_back(glm::vec2(1, 1));
+            AtlasCharacterPositionInfo c = this->atlasInfo[*character];
+
+            uvs.push_back(glm::vec2(c.tx, 0));
+            uvs.push_back(glm::vec2(c.tx + c.bw / this->atlasWidth, 0));
+            uvs.push_back(glm::vec2(c.tx,  c.bh / this->atlasHeight));
+            uvs.push_back(glm::vec2(c.tx + c.bw / this->atlasWidth, c.bh / this->atlasHeight));
 
             triangles.push_back(vCount);
             triangles.push_back(vCount + 2);
@@ -150,13 +152,6 @@ namespace RuntimeFont {
             triangles.push_back(vCount + 1);
 
             vCount += 4;
-
-            //coords.push_back(glm::vec4(x2, -y2, this->atlasInfo[*character].tx, 0));
-            //coords.push_back(glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
-            //coords.push_back(glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight)); //remember: each glyph occupies a different amount of vertical space
-            //coords.push_back(glm::vec4(x2 + w, -y2, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, 0));
-            //coords.push_back(glm::vec4(x2, -y2 - h, this->atlasInfo[*character].tx, this->atlasInfo[*character].bh / this->atlasHeight));
-            //coords.push_back(glm::vec4(x2 + w, -y2 - h, this->atlasInfo[*character].tx + this->atlasInfo[*character].bw / this->atlasWidth, this->atlasInfo[*character].bh / this->atlasHeight));
         }
 
         Mesh mesh;

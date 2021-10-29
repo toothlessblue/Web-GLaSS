@@ -61,7 +61,7 @@ void Material::setTexture(const char* name, GLuint textureId) {
     GLint index = this->getAttributeIndex(name);
     GLuint unit = this->textureUnitCounter;
 
-    this->textureBindings.push_back({
+    this->textureBindings.push_back({ // TODO handle texture being replaced
         textureId,
         GL_TEXTURE0 + unit
     });
