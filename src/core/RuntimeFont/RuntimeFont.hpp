@@ -39,7 +39,7 @@ namespace RuntimeFont {
         void clearResources();
         void load();
         void generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128);
-        Mesh generateMesh(const char *text, float sx, float sy);
+        Mesh generateMesh(const char *text, float sx, float sy, float ox = 0, float oy = 0);
 
         const char* filepath;
         bool loaded = false;

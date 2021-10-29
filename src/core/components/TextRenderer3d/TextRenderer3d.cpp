@@ -1,7 +1,7 @@
 #include "TextRenderer3d.hpp"
 
 TextRenderer3d::TextRenderer3d() {
-    this->material = new Material("/shaders/BasicFont.vert", "/shaders/BasicFont.frag");
+    this->material = new Material("/shaders/3dFont.vert", "/shaders/3dFont.frag");
     this->setFont("/fonts/Roboto-Black.ttf");
     this->setColour(glm::vec3(1, 1, 1));
 
@@ -31,6 +31,7 @@ void TextRenderer3d::setText(const char* text) {
 }
 
 void TextRenderer3d::setColour(glm::vec3 colour) {
+    this->colour = colour;
     this->material->setVec3("textColour", this->colour);
 }
 

@@ -52,6 +52,7 @@ namespace RuntimeFont {
         std::cout << "Generating atlas for " << this->filepath << std::endl;
         
         // Get combined width of all glyphs, and max height
+        const int spacing = 1;
 
         FT_GlyphSlot glyph = this->face->glyph;
         this->atlasWidth = 0;
@@ -63,7 +64,7 @@ namespace RuntimeFont {
                 continue;
             }
 
-            this->atlasWidth += glyph->bitmap.width;
+            this->atlasWidth += glyph->bitmap.width + spacing;
             this->atlasHeight = std::max(this->atlasHeight, glyph->bitmap.rows);
         }
 
@@ -98,7 +99,7 @@ namespace RuntimeFont {
  
             this->atlasInfo[i].tx = (float)x / this->atlasWidth;
             
-            x += glyph->bitmap.width;
+            x += glyph->bitmap.width + spacing;
         }
         
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -106,7 +107,7 @@ namespace RuntimeFont {
         std::cout << "Generated atlas" << std::endl;
     }
 
-    Mesh FontFace::generateMesh(const char *text, float sx, float sy) {
+    Mesh FontFace::generateMesh(const char *text, float sx, float sy, float ox, float oy) {
         std::vector<glm::vec3> verts;
         std::vector<glm::vec2> uvs;
         std::vector<unsigned int> triangles;
