@@ -16,8 +16,8 @@ void Time::frameStart() {
 }
 
 void Time::frameEnd() {
+    Time::end = std::chrono::high_resolution_clock::now();
+
     std::chrono::duration<float> elapsed = Time::end - Time::start;
     Time::deltaTime = elapsed.count();
-
-    Time::end = std::chrono::high_resolution_clock::now();
 }

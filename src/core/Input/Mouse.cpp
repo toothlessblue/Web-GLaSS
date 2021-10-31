@@ -2,7 +2,7 @@
 
 namespace Input::Mouse {
     bool locked = false;
-    float sensitivity = 0.05f;
+    float sensitivity = 1.0f;
 
     glm::vec2 latePosition;
     glm::vec2 earlyPosition;
@@ -16,7 +16,7 @@ namespace Input::Mouse {
         glfwGetCursorPos(GameEngine::screen.window, &xPos, &yPos);
         
         latePosition = glm::vec2(xPos, yPos);
-        delta = latePosition - earlyPosition;
+        delta = earlyPosition - latePosition;
         motion = delta * sensitivity * Time::deltaTime;
     }
 

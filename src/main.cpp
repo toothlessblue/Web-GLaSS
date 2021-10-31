@@ -24,6 +24,10 @@
 #include "assets/CameraMouseController/CameraMouseController.hpp"
 #include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
 
+#include <string>
+
+TextUI* deltaTimeText;
+
 extern "C" void gameLoop() {
     Time::frameStart();
     
@@ -33,6 +37,8 @@ extern "C" void gameLoop() {
 
     Time::frameEnd();
     Time::incrementFrameCounter();
+
+    deltaTimeText->setText(&std::to_string(Time::deltaTime)[0]);
 }
 
 extern "C" int main(int argc, char** argv) {
@@ -41,9 +47,7 @@ extern "C" int main(int argc, char** argv) {
 
     GameObject* text2d = GameEngine::CreateGameObject();
     text2d->transform->position = glm::vec3(0, 0, 0);
-    TextUI* textUI = text2d->createComponent<TextUI>();
-    textUI->setText("Hello world!");
-    textUI->setColour(glm::vec3(1, 1, 1));
+    deltaTimeText = text2d->createComponent<TextUI>();
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();

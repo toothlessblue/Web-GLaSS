@@ -12,28 +12,27 @@ namespace Input::Keyboard {
         glm::vec3 movement(0.0f, 0.0f, 0.0f);
         
         if (getKey(forward)) {
-            movement.z += 1.0f;
-        }
-
-        if (getKey(back)) {
             movement.z -= 1.0f;
         }
 
+        if (getKey(back)) {
+            movement.z += 1.0f;
+        }
+
         if (getKey(left)) {
-            movement.x += 1.0f;
+            movement.x -= 1.0f;
         }
 
         if (getKey(right)) {
-            movement.x -= 1.0f;
+            movement.x += 1.0f;
         }
         
-        // TODO figure out why Y seems to be inverted
         if (getKey(down)) {
-            movement.y += 1.0f;
+            movement.y -= 1.0f;
         }
 
         if (getKey(up)) {
-            movement.y -= 1.0f;
+            movement.y += 1.0f;
         }
 
         return movement;
