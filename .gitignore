@@ -788,3 +788,25 @@ emsdk/*
 emsdk
 lib/*
 lib
+
+# All the make shit
+
+src/**/.deps/
+src/**/.dirstamp
+src/**/*.o
+src/
+missing
+autom4te.cache
+.deps
+configure
+config.status
+config.h.in
+compile
+aclocal.m4
+Makefile
+Makefile.in
+a.wasm
+config.guess
+config.sub
+depcomp
+install-sh
