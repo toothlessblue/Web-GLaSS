@@ -16,6 +16,7 @@
 #include "core/components/Camera/Camera.hpp"
 #include "core/components/MeshRenderer/MeshRenderer.hpp"
 #include "core/components/TextRenderer3d/TextRenderer3d.hpp"
+#include "core/components/TextUI/TextUI.hpp"
 #include "core/GameObject/GameObject.hpp"
 #include "core/Material/Material.hpp"
 #include "core/Texture/Texture.hpp"
@@ -38,13 +39,11 @@ extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
     RuntimeFont::init();
 
-
-
-    GameObject* text3d = GameEngine::CreateGameObject();
-    TextRenderer3d* textRenderer3d = text3d->createComponent<TextRenderer3d>();
-    text3d->transform->position = glm::vec3(0, 2, 0);
-    textRenderer3d->setText("Hello world!");
-    textRenderer3d->setColour(glm::vec3(1, 1, 1));
+    GameObject* text2d = GameEngine::CreateGameObject();
+    text2d->transform->position = glm::vec3(0, 0, 0);
+    TextUI* textUI = text2d->createComponent<TextUI>();
+    textUI->setText("Hello world!");
+    textUI->setColour(glm::vec3(1, 1, 1));
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();

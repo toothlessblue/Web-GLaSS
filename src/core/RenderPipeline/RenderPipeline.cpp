@@ -81,7 +81,7 @@ RenderPipeline::~RenderPipeline() {
     }
 }
 
-void RenderPipeline::render() {
+void RenderPipeline::renderLitToFrameBuffer(std::vector<unsigned int>* unlitRendererIds) {
     // Set up for drawing to the frame buffer
 
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->geometryBuffer); // Bind the geometry buffer
@@ -95,6 +95,11 @@ void RenderPipeline::render() {
     glm::mat4 projection = this->activeCamera->getProjectionMatrix();
 
     for (Renderer* renderer : this->renderers) {
+        if (renderer->material->unlit) {
+            unlitRendererIds->push_back(renderer->getId());
+            continue;
+        }
+
         glm::mat4 modelMatrix = renderer->gameObject->transform->getModelMatrix();
 
         renderer->material->setMat4("projectionMatrix", projection);
@@ -106,19 +111,52 @@ void RenderPipeline::render() {
     }
 
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void RenderPipeline::render2dElements() {
+    for (Renderer2d* renderer : this->renderers2d) {
+        glm::mat4 modelMatrix = 
+            glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0)) *
+            glm::translate(renderer->gameObject->transform->position * 2.0f) * 
+            renderer->gameObject->transform->getRotationMatrix() * 
+            renderer->gameObject->transform->getScaleMatrix();
+
+        renderer->material->setMat4("modelMatrix", modelMatrix);
+
+        renderer->preRenderCheck();
+        renderer->render();
+    }
+}
+
+void RenderPipeline::render() {
+    std::vector<unsigned int> unlitRendererIds;
+    this->renderLitToFrameBuffer(&unlitRendererIds);
+
     glBindFramebuffer(GL_READ_FRAMEBUFFER, this->geometryBuffer);
     glDisable(GL_DEPTH_TEST);
     glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     Lighting::renderPointLights(this->gPosition, this->gNormal, this->gAlbedo);
-    Lighting::renderAmbient(this->gPosition, this->gNormal, this->gAlbedo);
+    Lighting::renderAmbient(0.2f, this->gPosition, this->gNormal, this->gAlbedo);
+
+    // TODO render unlit materials. if I use this method I need to clear the frame buffer, render unlit materials to it, then render ambient lighting again
+
+    this->render2dElements();
 }
 
 unsigned int RenderPipeline::addRenderer(Renderer* renderer) {
     this->renderers.push_back(renderer);
 
     unsigned int index = this->renderers.size() - 1;
+    renderer->setId(index);
+    return index;
+}
+
+unsigned int RenderPipeline::addRenderer2d(Renderer2d* renderer) {
+    this->renderers2d.push_back(renderer);
+
+    unsigned int index = this->renderers2d.size() - 1;
     renderer->setId(index);
     return index;
 }

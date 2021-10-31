@@ -25,7 +25,7 @@ namespace Lighting {
     };
 
     void renderPointLights(GLuint positionTex, GLuint normalTex, GLuint albedoTex);
-    void renderAmbient(GLuint positionTex, GLuint normalTex, GLuint albedoTex);
+    void renderAmbient(float power, GLuint positionTex, GLuint normalTex, GLuint albedoTex);
 
     extern Mesh* pointLightMesh;
     extern Material* pointLightMaterial;

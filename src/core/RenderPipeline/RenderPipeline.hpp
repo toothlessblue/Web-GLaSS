@@ -13,6 +13,7 @@
 
 // Forward declarations
 class Renderer;
+class Renderer2d;
 class Camera;
 
 class RenderPipeline {
@@ -21,6 +22,7 @@ public:
     Camera* activeCamera;
 
     std::list<Renderer*> renderers;
+    std::list<Renderer2d*> renderers2d;
 
 	RenderPipeline();
 	~RenderPipeline();
@@ -31,6 +33,7 @@ public:
      * Adds a renderer to this pipelines list, and returns its index
     */
     unsigned int addRenderer(Renderer* renderer);
+    unsigned int addRenderer2d(Renderer2d* renderer);
 
     void setActiveCamera(Camera* camera);
 
@@ -61,7 +64,11 @@ private:
         1.0f, 0.0f,
         0.0f, 0.0f,
     };
+
+    void renderLitToFrameBuffer(std::vector<unsigned int>* unlitRenderers);
+    void render2dElements();
 };
 
 #include "../components/Renderer/Renderer.hpp"
+#include "../components/Renderer2d/Renderer2d.hpp"
 #include "../components/Camera/Camera.hpp"

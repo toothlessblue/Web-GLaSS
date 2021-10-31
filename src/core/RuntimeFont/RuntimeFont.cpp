@@ -107,12 +107,15 @@ namespace RuntimeFont {
         std::cout << "Generated atlas" << std::endl;
     }
 
-    Mesh FontFace::generateMesh(const char *text, float sx, float sy, float ox, float oy) {
+    Mesh FontFace::generateMesh(const char *text, float ox, float oy) {
         std::vector<glm::vec3> verts;
         std::vector<glm::vec2> uvs;
         std::vector<unsigned int> triangles;
 
         int n = 0;
+
+        float sx = 1.0f / GameEngine::screen.width;
+        float sy = 1.0f / GameEngine::screen.height;
 
         float x = 0;
         float y = 0;

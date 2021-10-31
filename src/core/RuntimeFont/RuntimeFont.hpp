@@ -10,6 +10,7 @@
 #include "../../../include/freetype/freetype.h"
 #include "../Mesh/Mesh.hpp"
 #include "../StringUtils/StringUtils.hpp"
+#include "../GameEngine/GameEngine.hpp"
 
 namespace RuntimeFont {
     struct AtlasCharacterPositionInfo {
@@ -39,7 +40,7 @@ namespace RuntimeFont {
         void clearResources();
         void load();
         void generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128);
-        Mesh generateMesh(const char *text, float sx, float sy, float ox = 0, float oy = 0);
+        Mesh generateMesh(const char *text, float ox = 0, float oy = 0);
 
         const char* filepath;
         bool loaded = false;

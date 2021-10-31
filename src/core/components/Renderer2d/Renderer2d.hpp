@@ -5,14 +5,15 @@
 #include "../../Material/Material.hpp"
 #include "../../GameEngine/GameEngine.hpp"
 #include "../../Exceptions/RenderPipelineNotAssignedException.cpp"
-#include "../../GameEngine/GameEngine.hpp"
-#include "../../Exceptions/RenderPipelineNotAssignedException.cpp"
 
-class Renderer : public Component {
+/**
+ * A parent class for rendering 2d elements, like UI. All 2d renderers are unlit, and rendered on top of 3d elements.
+ */
+class Renderer2d : public Component {
 public:
     Material* material;
 
-	Renderer();
+	Renderer2d();
 
 	virtual void preRenderCheck();
 	virtual void render();

@@ -1,24 +1,24 @@
-#include "TextRenderer3d.hpp"
+#include "TextUI.hpp"
 
-TextRenderer3d::TextRenderer3d() {
-    this->material = new Material("/shaders/3dFont.vert", "/shaders/3dFont.frag");
+TextUI::TextUI() {
+    this->material = new Material("/shaders/2dFont.vert", "/shaders/2dFont.frag");
     this->setFont("/fonts/Roboto-Black.ttf");
     this->setColour(glm::vec3(1, 1, 1));
 
     glGenBuffers(1, &this->vbo);
 }
 
-void TextRenderer3d::setFont(const char* filepath) {
+void TextUI::setFont(const char* filepath) {
     RuntimeFont::FontFace* face = RuntimeFont::loadFont(filepath);
     this->setFont(face);
 }
 
-void TextRenderer3d::setFont(RuntimeFont::FontFace* face) {
+void TextUI::setFont(RuntimeFont::FontFace* face) {
     this->face = face;
     this->material->setTexture("fontAtlas", this->face->atlasTexture);
 }
 
-void TextRenderer3d::setText(const char* text) {
+void TextUI::setText(const char* text) {
     if (!this->face) {
         std::cerr << "No font is applied while trying to set text" << std::endl;
         return;
@@ -30,12 +30,12 @@ void TextRenderer3d::setText(const char* text) {
     this->textMesh = this->face->generateMesh(this->text);
 }
 
-void TextRenderer3d::setColour(glm::vec3 colour) {
+void TextUI::setColour(glm::vec3 colour) {
     this->colour = colour;
     this->material->setVec3("textColour", this->colour);
 }
 
-void TextRenderer3d::render() {
+void TextUI::render() {
     glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

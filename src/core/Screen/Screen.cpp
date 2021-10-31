@@ -1,8 +1,4 @@
 #include "Screen.hpp"
-#include "GL/glew.h"
-#include <GLFW/glfw3.h>
-#include <math.h>
-#include "../../../include/glm/glm.hpp"
 
 Screen::Screen(int width, int height) {
     this->width = width; 

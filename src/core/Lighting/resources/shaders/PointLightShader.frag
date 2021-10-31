@@ -1,7 +1,7 @@
 #version 300 es
 precision mediump float;
 
-out vec4 color;
+out vec4 colour;
 
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
@@ -18,7 +18,7 @@ uniform sampler2D gAlbedo;
 // } lightData;
 
 uniform vec3 position;
-uniform vec3 colour;
+uniform vec3 lightColour;
 uniform float constant;
 uniform float linear;
 uniform float quadratic;
@@ -31,8 +31,8 @@ vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)
 
     vec3 lightDir = normalize(position - fragPos);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    vec3 spec = pow(max(dot(normal, halfwayDir), 0.0), albedoSpec.a) * colour;
-    vec3 diffuse = max(dot(normal, lightDir), 0.0) * albedoSpec.rgb * colour;
+    vec3 spec = pow(max(dot(normal, halfwayDir), 0.0), albedoSpec.a) * lightColour;
+    vec3 diffuse = max(dot(normal, lightDir), 0.0) * albedoSpec.rgb * lightColour;
     float attenuation = 1.0 / (constant + linear * dist + quadratic * (dist * dist)); 
     
     return (diffuse + spec) * attenuation;
@@ -52,5 +52,5 @@ void main()
 
     vec3 lighting = CalcPointLight(normal, fragPos, viewDir, albedoSpec);
     
-    color = vec4(lighting, 1.0);
+    colour = vec4(lighting, 1.0);
 }

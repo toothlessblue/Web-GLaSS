@@ -9,6 +9,8 @@
 #include "../../../include/glm/glm.hpp"
 #include "../Texture/Texture.hpp"
 
+// TODO on every set function, check a cache to make sure the value in the shader is not the same, might be faster
+
 Material::Material(const char* vertexShaderPath, const char* fragmentShaderPath) {
     this->shaderProgramId = Shaders::CreateProgram(vertexShaderPath, fragmentShaderPath);
 }

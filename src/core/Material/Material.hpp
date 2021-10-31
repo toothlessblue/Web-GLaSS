@@ -19,6 +19,7 @@ struct TextureBinding {
 class Material {
 public:
     GLuint shaderProgramId;
+    bool unlit = false;
 
     Material(const char* vertexShaderPath, const char* fragmentShaderPath);
     

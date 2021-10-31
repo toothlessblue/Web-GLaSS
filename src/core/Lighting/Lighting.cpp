@@ -61,7 +61,7 @@ namespace Lighting {
             // TODO use a uniform buffer, it'll be faster
             Lighting::pointLightMaterial->setFloat("radius", pointLight->radius);
             Lighting::pointLightMaterial->setVec3("position", pointLight->gameObject->transform->position);
-            Lighting::pointLightMaterial->setVec3("colour", pointLight->colour);
+            Lighting::pointLightMaterial->setVec3("lightColour", pointLight->colour);
             Lighting::pointLightMaterial->setFloat("constant", pointLight->constant);
             Lighting::pointLightMaterial->setFloat("linear", pointLight->linear);
             Lighting::pointLightMaterial->setFloat("quadratic", pointLight->quadratic);
@@ -73,8 +73,9 @@ namespace Lighting {
         glCullFace(GL_BACK);
     }
 
-    void renderAmbient(GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
+    void renderAmbient(float power, GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
         Lighting::ambientMaterial->use();
+        Lighting::ambientMaterial->setFloat("power", power);
         
         glActiveTexture(GL_TEXTURE3);
         glBindTexture(GL_TEXTURE_2D, gPosition);
