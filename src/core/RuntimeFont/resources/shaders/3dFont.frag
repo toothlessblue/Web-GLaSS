@@ -16,7 +16,7 @@ void main()
 {    
     float textureValue = texture(fontAtlas, fUv).r;
 
-    gAlbedo = vec4(textColour, textureValue); // TODO seperate render pass for unlit objects
+    gAlbedo = vec4(textColour, textureValue);
     gNormal = fNormal;
     gPosition = fragPos;
 }  

@@ -1,30 +1,34 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <emscripten.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+
+#include <emscripten.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/quaternion.hpp"
 #include "../include/glm/gtx/quaternion.hpp"
 
+// Game engine stuffs
 #include "core/GameEngine/GameEngine.hpp"
 #include "core/RuntimeFont/RuntimeFont.hpp"
 #include "core/Input/Input.hpp"
 #include "core/Time/Time.hpp"
 #include "core/Shaders/Shaders.hpp"
 #include "core/Lighting/Lighting.hpp"
-#include "core/components/Camera/Camera.hpp"
-#include "core/components/MeshRenderer/MeshRenderer.hpp"
-#include "core/components/TextRenderer3d/TextRenderer3d.hpp"
-#include "core/components/TextUI/TextUI.hpp"
 #include "core/GameObject/GameObject.hpp"
 #include "core/Material/Material.hpp"
 #include "core/Texture/Texture.hpp"
 
+// Components
+#include "core/components/Camera/Camera.hpp"
+#include "core/components/MeshRenderer/MeshRenderer.hpp"
+#include "core/components/TextRenderer3d/TextRenderer3d.hpp"
+#include "core/components/TextUI/TextUI.hpp"
+
 #include "assets/CameraMouseController/CameraMouseController.hpp"
 #include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
-
-#include <string>
 
 TextUI* deltaTimeText;
 
@@ -38,7 +42,7 @@ extern "C" void gameLoop() {
     Time::frameEnd();
     Time::incrementFrameCounter();
 
-    deltaTimeText->setText(&std::to_string(Time::deltaTime)[0]);
+    deltaTimeText->setText(&std::to_string(Time::deltaTime * 1000)[0]);
 }
 
 extern "C" int main(int argc, char** argv) {
@@ -46,7 +50,7 @@ extern "C" int main(int argc, char** argv) {
     RuntimeFont::init();
 
     GameObject* text2d = GameEngine::CreateGameObject();
-    text2d->transform->position = glm::vec3(0, 0, 0);
+    text2d->transform->position = glm::vec3(-1, -1, 0);
     deltaTimeText = text2d->createComponent<TextUI>();
 
     GameObject* cube = GameEngine::CreateGameObject();

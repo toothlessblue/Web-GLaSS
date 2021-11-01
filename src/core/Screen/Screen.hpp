@@ -12,7 +12,7 @@ public:
 
     GLFWwindow* window;
 
-    Screen(int width, int height);
+    Screen(int width, int height); // If screen width/height ever changes, need to update lighting shaders
     float getRatio();
     float horizontalFieldOfViewDegreesToVerticalRadians(float horizontalFieldOfViewDegrees);
     glm::mat4 get2dProjection();

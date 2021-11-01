@@ -7,7 +7,7 @@
 
 class Transform : public Component {
 public:
-	Transform* parent;
+	Transform* parent = NULL;
 
 	glm::vec3 position;
 	glm::quat rotation;
@@ -24,4 +24,6 @@ public:
 	glm::vec3 getForwards();
 	glm::vec3 getLeft();
 	glm::vec3 getUp();
+
+	glm::vec3 getWorldPosition();
 };

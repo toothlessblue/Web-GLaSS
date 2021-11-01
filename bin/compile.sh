@@ -16,7 +16,8 @@ find . -wholename "**/resources/*" -type d -prune -exec cp -R "{}" "./lib/resour
 CPP_FILEPATHS=$(find src/ -name "*.cpp" -not -path "*/\.vshistory/*" | tr '\n' ' ') 
 
 # Creates the Makefile.am file
-echo "AUTOMAKE_OPTIONS = foreign
+echo "CXXFLAGS = -Wc++17-extensions
+AUTOMAKE_OPTIONS = foreign
 bin_PROGRAMS = index
 AM_LDFLAGS = -fexceptions \
 -O0 \
@@ -37,7 +38,7 @@ echo ""
 echo "Compilation complete"
 echo ""
 
-# Move output files to lib folder - TODO could probably specify this in the makefile.am but w/e
+# Move output files to lib folder - could probably specify this in the makefile.am but w/e
 mv index lib/index.js
 mv index.data lib/
 mv index.wasm lib/

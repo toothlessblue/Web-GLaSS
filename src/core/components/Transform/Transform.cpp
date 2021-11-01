@@ -4,6 +4,8 @@
 #include "../../../../include/glm/gtc/quaternion.hpp"
 #include "../../../../include/glm/gtx/quaternion.hpp"
 
+// TODO store matrices, recalculate them on get if their vec3 counterpart has changed
+
 Transform::Transform() {
     this->scale = glm::vec3(1,1,1);
     this->position = glm::vec3(0,0,0);
@@ -11,14 +13,7 @@ Transform::Transform() {
 }
 
 glm::mat4 Transform::getTranslationMatrix() {
-    glm::mat4 translation = glm::translate(glm::mat4(1.0f), this->position);
-    
-    if (this->parent) {
-        // TODO recursive call is computationally inefficient, replace with while loop
-        // translation *= this->parent->getTranslationMatrix(); This appears to be calling infinitely?
-    }
-
-    return translation;
+    return glm::translate(glm::mat4(1.0f), this->position);
 }
 
 glm::mat4 Transform::getScaleMatrix() {
@@ -30,7 +25,15 @@ glm::mat4 Transform::getRotationMatrix() {
 }
 
 glm::mat4 Transform::getModelMatrix() {
-    return this->getTranslationMatrix() * this->getRotationMatrix() * this->getScaleMatrix();
+    glm::mat4 model = this->getTranslationMatrix() * this->getRotationMatrix() * this->getScaleMatrix();
+
+    Transform* parent = this->parent;
+    while (parent) {
+        model *= (parent->getTranslationMatrix() * parent->getRotationMatrix() * parent->getScaleMatrix());
+        parent = parent->parent;
+    }
+
+    return model;
 }
 
 glm::vec3 Transform::getForwards() {
@@ -43,4 +46,13 @@ glm::vec3 Transform::getLeft() {
 
 glm::vec3 Transform::getUp() {
     return glm::rotate(glm::inverse(this->rotation), glm::vec3(0, 1, 0));
+}
+
+glm::vec3 Transform::getWorldPosition() {
+    glm::vec3 position = this->position;
+    while (parent) {
+        position += parent->position;
+        parent = parent->parent;
+    }
+    return position;
 }

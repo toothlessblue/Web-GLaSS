@@ -7,6 +7,9 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 
+uniform float screenHeight;
+uniform float screenWidth;
+
 // TODO use uniform layout
 // layout (std140) uniform LightData {
 //     vec4 position;
@@ -40,7 +43,7 @@ vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)
 
 void main()
 {
-    vec2 uv = vec2(gl_FragCoord.x / 900.0f, gl_FragCoord.y / 450.0f); // TODO get screen resolution from uniform
+    vec2 uv = vec2(gl_FragCoord.x / screenWidth, gl_FragCoord.y / screenHeight);
 
     // retrieve data from G-buffer
     vec3 fragPos = texture(gPosition, uv).rgb;

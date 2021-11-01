@@ -115,12 +115,7 @@ void RenderPipeline::renderLitToFrameBuffer(std::vector<unsigned int>* unlitRend
 
 void RenderPipeline::render2dElements() {
     for (Renderer2d* renderer : this->renderers2d) {
-        glm::mat4 modelMatrix = 
-            glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -1.0f, 0)) *
-            glm::translate(renderer->gameObject->transform->position * 2.0f) * 
-            renderer->gameObject->transform->getRotationMatrix() * 
-            renderer->gameObject->transform->getScaleMatrix();
-
+        glm::mat4 modelMatrix = renderer->gameObject->transform->getModelMatrix();
         renderer->material->setMat4("modelMatrix", modelMatrix);
 
         renderer->preRenderCheck();

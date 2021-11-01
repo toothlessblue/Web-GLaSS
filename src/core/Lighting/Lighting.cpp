@@ -15,12 +15,16 @@ namespace Lighting {
         Lighting::pointLightMaterial->setInt("gPosition", 3);
         Lighting::pointLightMaterial->setInt("gNormal", 4);
         Lighting::pointLightMaterial->setInt("gAlbedo", 5);
+        Lighting::pointLightMaterial->setFloat("screenWidth", GameEngine::screen.width);
+        Lighting::pointLightMaterial->setFloat("screenHeight", GameEngine::screen.height);
         
         Lighting::ambientMaterial->use();
         Lighting::ambientMaterial->setInt("gPosition", 3);
         Lighting::ambientMaterial->setInt("gNormal", 4);
         Lighting::ambientMaterial->setInt("gAlbedo", 5);
         Lighting::ambientMaterial->setFloat("power", 0.2f);
+        Lighting::ambientMaterial->setFloat("screenWidth", GameEngine::screen.width);
+        Lighting::ambientMaterial->setFloat("screenHeight", GameEngine::screen.height);
 
         glUseProgram(0);
     }
@@ -74,6 +78,7 @@ namespace Lighting {
     }
 
     void renderAmbient(float power, GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
+        glEnable(GL_BLEND);
         Lighting::ambientMaterial->use();
         Lighting::ambientMaterial->setFloat("power", power);
         
@@ -85,7 +90,6 @@ namespace Lighting {
         glBindTexture(GL_TEXTURE_2D, gAlbedo);
 
         GameEngine::renderPipeline.bindRenderQuad();
-        glEnable(GL_BLEND);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glDisable(GL_BLEND);
     }

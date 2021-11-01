@@ -1,4 +1,4 @@
-# TODO self but properly, in a seperate project in C++ that self project clones and then installs, so I can compile an executable and don't have to rely on ol' unreliable python
+# TODO this but properly, in a seperate project in C++ that this project clones and then installs, using FreeType
 
 import argparse
 import sys, os, shutil
@@ -277,10 +277,6 @@ class TTFReader():
                 'offset': self.getUint32(),
                 'length': self.getUint32()
             }
-
-            # if tag != 'head':
-                # TODO work out why this assert is broken?
-                # assert(self.calculateTableChecksum(tables[tag]['offset'], len(tables[tag])) == tables[tag]['checksum'])
 
         return tables
 
@@ -817,8 +813,6 @@ class GlyphDrawer():
             self.drawGlyph(i, glyphTex)
 
     def drawTexture(self, filepath):
-        # TODO look into mode '1' for texture https://pillow.readthedocs.io/en/stable/handbook/concepts.html#concept-modes
-
         glyphTex = Image.new('RGBA', (self.resolution, self.resolution), color = 'black')
         self.drawGlyphs(glyphTex)
         glyphTex.save(filepath)

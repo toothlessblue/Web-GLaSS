@@ -78,7 +78,6 @@ namespace RuntimeFont {
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-        // TODO I suspect this line is responsible for text not rendering
         glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, this->atlasWidth, this->atlasHeight, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
 
         int x = 0;
