@@ -7,7 +7,7 @@
 #include "../../RuntimeFont/RuntimeFont.hpp"
 #include "../../../../include/ft2build.h"
 #include "../../../../include/freetype/freetype.h"
-#include "../../StringUtils/StringUtils.hpp"
+#include "../../Utils/StringUtils.hpp"
 
 class TextUI : public Renderer2d {
 public:

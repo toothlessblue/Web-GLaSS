@@ -2,7 +2,7 @@
 
 namespace RuntimeFont {
     FT_Library freeTypeLibrary;
-    std::map<const char*, FontFace*, StringUtils::cmp_str> faceCache;
+    std::map<const char*, FontFace*, Utils::String::cmp_str> faceCache;
 
     void init() {
         if (FT_Init_FreeType(&freeTypeLibrary))
