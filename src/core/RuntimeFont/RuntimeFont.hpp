@@ -9,7 +9,7 @@
 #include "../../../include/ft2build.h"
 #include "../../../include/freetype/freetype.h"
 #include "../Mesh/Mesh.hpp"
-#include "../StringUtils/StringUtils.hpp"
+#include "../Utils/StringUtils.hpp"
 #include "../GameEngine/GameEngine.hpp"
 
 namespace RuntimeFont {
@@ -50,7 +50,7 @@ namespace RuntimeFont {
     };
 
     extern FT_Library freeTypeLibrary;
-    extern std::map<const char*, FontFace*, StringUtils::cmp_str> faceCache;
+    extern std::map<const char*, FontFace*, Utils::String::cmp_str> faceCache;
 
     void init();
 

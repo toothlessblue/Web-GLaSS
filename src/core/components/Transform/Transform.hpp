@@ -15,15 +15,17 @@ public:
 
 	Transform();
 
-	glm::mat4 getTranslationMatrix();
-	glm::mat4 getRotationMatrix();
-	glm::mat4 getScaleMatrix();
+	virtual glm::mat4 getTranslationMatrix();
+	virtual glm::mat4 getRotationMatrix();
+	virtual glm::mat4 getScaleMatrix();
 
-	glm::mat4 getModelMatrix();
+	virtual glm::mat4 getModelMatrix();
 
 	glm::vec3 getForwards();
 	glm::vec3 getLeft();
 	glm::vec3 getUp();
 
-	glm::vec3 getWorldPosition();
+	virtual glm::vec3 getWorldPosition();
+
+	virtual glm::vec2 getDimensions();
 };

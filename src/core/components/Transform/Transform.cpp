@@ -56,3 +56,7 @@ glm::vec3 Transform::getWorldPosition() {
     }
     return position;
 }
+
+glm::vec2 Transform::getDimensions() {
+    return glm::vec2(0, 0);
+}
