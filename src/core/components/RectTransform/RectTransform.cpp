@@ -8,10 +8,6 @@ void RectTransform::update() {
 
 }
 
-void RectTransform::updateChildPositions() {
-    
-}
-
 glm::vec2 RectTransform::getParentDimensions() {
     if (!this->parent) {
         return glm::vec2(GameEngine::screen.width, GameEngine::screen.height);
@@ -39,6 +35,17 @@ glm::vec2 RectTransform::getDimensions() {
     return glm::vec2(this->width, this->height);
 }
 
+glm::mat4 RectTransform::getTranslationMatrix() {
+    glm::vec3 position = this->position;
+    position.y = 1 - position.y;
+
+    position *= 2;
+    position.x -= 1;
+    position.y -= 1;
+
+    return glm::translate(glm::mat4(1.0f), position);
+}
+
 float RectTransform::getLeft() {
     glm::vec3 parentPosition = this->getParentPosition();
     glm::vec2 parentDimensions = this->getParentDimensions();
@@ -50,14 +57,12 @@ float RectTransform::getLeft() {
 
     return this->position.x - anchoredX;
 }
-
 void RectTransform::setLeft(float v) {
     float delta = v - this->getLeft();
 
     this->position.x += delta;
     this->width += delta;
 }
-
 float RectTransform::getRight() {
     glm::vec3 parentPosition = this->getParentPosition();
     glm::vec2 parentDimensions = this->getParentDimensions();
@@ -69,13 +74,11 @@ float RectTransform::getRight() {
 
     return anchoredX - this->position.x + this->width;
 }
-
 void RectTransform::setRight(float v) {
     float delta = v - this->getRight();
 
     this->width += delta;
 }
-
 float RectTransform::getTop() {
     glm::vec3 parentPosition = this->getParentPosition();
     glm::vec2 parentDimensions = this->getParentDimensions();
@@ -87,14 +90,12 @@ float RectTransform::getTop() {
 
     return this->position.y - anchoredY;
 }
-
 void RectTransform::setTop(float v) {
     float delta = v - this->getTop();
 
     this->position.y += delta;
     this->height += delta;
 }
-
 float RectTransform::getBottom() {
     glm::vec3 parentPosition = this->getParentPosition();
     glm::vec2 parentDimensions = this->getParentDimensions();
@@ -106,7 +107,6 @@ float RectTransform::getBottom() {
 
     return anchoredY - this->position.y + this->height;
 }
-
 void RectTransform::setBottom(float v) {
     float delta = v - this->getBottom();
 

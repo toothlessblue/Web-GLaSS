@@ -28,6 +28,8 @@ public:
 
     glm::vec2 getDimensions() override;
 
+    glm::mat4 RectTransform::getTranslationMatrix() override;
+
 private:
     glm::vec2 getParentDimensions();
     glm::vec3 getParentPosition();

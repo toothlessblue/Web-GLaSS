@@ -26,9 +26,10 @@ public:
 	virtual glm::vec3 getWorldPosition();
 	virtual glm::vec2 getDimensions();
 
+	void getParent();
 	virtual void setParent(Transform* parent);
 	std::vector<Transform*> children;
 
-private:
+protected:
 	Transform* parent = NULL;
 };
