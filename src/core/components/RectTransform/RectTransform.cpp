@@ -44,11 +44,11 @@ float RectTransform::getLeft() {
 
     float anchoredX = Math::lerp(xStart, xEnd, this->anchorMin.x);
 
-    return anchoredX - xStart;
+    return this->position.x - anchoredX;
 }
 
 void RectTransform::setLeft(float v) {
-
+    this->position.x += v - this->getLeft();
 }
 
 float RectTransform::getRight() {
@@ -60,11 +60,11 @@ float RectTransform::getRight() {
 
     float anchoredX = Math::lerp(xStart, xEnd, this->anchorMax.x);
 
-    return xEnd - anchoredX;
+    return anchoredX - this->position.x + this->width;
 }
 
 void RectTransform::setRight(float v) {
-
+    this->position.x -= v - this->getRight();
 }
 
 float RectTransform::getTop() {
@@ -76,11 +76,11 @@ float RectTransform::getTop() {
 
     float anchoredY = Math::lerp(yStart, yEnd, this->anchorMin.y);
 
-    return anchoredY - yStart;
+    return this->position.y - anchoredY;
 }
 
 void RectTransform::setTop(float v) {
-
+    this->position.y += v - this->getTop();
 }
 
 float RectTransform::getBottom() {
@@ -92,10 +92,9 @@ float RectTransform::getBottom() {
 
     float anchoredY = Math::lerp(yStart, yEnd, this->anchorMax.y);
 
-    return yEnd - anchoredY;
+    return anchoredY - this->position.y + this->height;
 }
 
 void RectTransform::setBottom(float v) {
-
+    this->position.y -= v - this->getTop();
 }
-

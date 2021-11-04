@@ -1,6 +1,6 @@
 #pragma once
+#include <vector>
 
-#include <list>
 
 // Forward declarations
 class Component;
@@ -8,8 +8,8 @@ class Transform;
 
 class GameObject {
 private:
-	std::list<Component*> components;
-
+	std::vector<Component*> components;
+	
 public:
 	Transform* transform;
 
@@ -36,6 +36,8 @@ public:
 
 		return newComponent;
 	}
+
+	void useRectTransform();
 };
 
 #include "../Component/Component.hpp"

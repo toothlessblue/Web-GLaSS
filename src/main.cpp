@@ -50,6 +50,7 @@ extern "C" int main(int argc, char** argv) {
     RuntimeFont::init();
 
     GameObject* text2d = GameEngine::CreateGameObject();
+    text2d->useRectTransform();
     text2d->transform->position = glm::vec3(-1, -1, 0);
     deltaTimeText = text2d->createComponent<TextUI>();
 
