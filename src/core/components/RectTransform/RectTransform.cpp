@@ -8,6 +8,10 @@ void RectTransform::update() {
 
 }
 
+void RectTransform::updateChildPositions() {
+    
+}
+
 glm::vec2 RectTransform::getParentDimensions() {
     if (!this->parent) {
         return glm::vec2(GameEngine::screen.width, GameEngine::screen.height);
@@ -48,7 +52,10 @@ float RectTransform::getLeft() {
 }
 
 void RectTransform::setLeft(float v) {
-    this->position.x += v - this->getLeft();
+    float delta = v - this->getLeft();
+
+    this->position.x += delta;
+    this->width += delta;
 }
 
 float RectTransform::getRight() {
@@ -64,7 +71,9 @@ float RectTransform::getRight() {
 }
 
 void RectTransform::setRight(float v) {
-    this->position.x -= v - this->getRight();
+    float delta = v - this->getRight();
+
+    this->width += delta;
 }
 
 float RectTransform::getTop() {
@@ -80,7 +89,10 @@ float RectTransform::getTop() {
 }
 
 void RectTransform::setTop(float v) {
-    this->position.y += v - this->getTop();
+    float delta = v - this->getTop();
+
+    this->position.y += delta;
+    this->height += delta;
 }
 
 float RectTransform::getBottom() {
@@ -96,5 +108,7 @@ float RectTransform::getBottom() {
 }
 
 void RectTransform::setBottom(float v) {
-    this->position.y -= v - this->getTop();
+    float delta = v - this->getBottom();
+
+    this->height += delta;
 }

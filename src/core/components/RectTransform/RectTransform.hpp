@@ -27,6 +27,7 @@ public:
     void setBottom(float v);
 
     glm::vec2 getDimensions() override;
+
 private:
     glm::vec2 getParentDimensions();
     glm::vec3 getParentPosition();

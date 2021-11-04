@@ -60,3 +60,15 @@ glm::vec3 Transform::getWorldPosition() {
 glm::vec2 Transform::getDimensions() {
     return glm::vec2(0, 0);
 }
+
+void Transform::setParent(Transform* parent) {
+    if (this->parent) {
+        Utils::Vector::remove(parent->children, this);
+    }
+
+    this->parent = parent;
+
+    if (this->parent) {
+        this->parent->children.push_back(this);
+    }
+}
