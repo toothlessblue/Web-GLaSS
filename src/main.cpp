@@ -50,9 +50,20 @@ extern "C" int main(int argc, char** argv) {
     RuntimeFont::init();
 
     GameObject* text2d = GameEngine::CreateGameObject();
-    text2d->useRectTransform();
-    text2d->transform->position = glm::vec3(-1, -1, 0);
+    RectTransform* rect = text2d->useRectTransform();
     deltaTimeText = text2d->createComponent<TextUI>();
+    rect->height = deltaTimeText->getFont()->atlasHeight / 2.0f;
+    rect->anchorMin = glm::vec2(0.0f, 0.0f);
+    rect->anchorMax = glm::vec2(0.0f, 0.0f);
+
+    GameObject* text2d2 = GameEngine::CreateGameObject();
+    RectTransform* rect2 = text2d2->useRectTransform();
+    TextUI* helloText = text2d2->createComponent<TextUI>();
+    helloText->setText("Hello world!");
+    rect2->height = rect->height;
+    rect2->anchorMin = glm::vec2(0.0f, 1.0f);
+    rect2->anchorMax = glm::vec2(0.0f, 1.0f);
+    rect2->setParent(rect);
 
     GameObject* cube = GameEngine::CreateGameObject();
     GameObject* player = GameEngine::CreateGameObject();
@@ -62,11 +73,11 @@ extern "C" int main(int argc, char** argv) {
 
     GameObject* light = GameEngine::CreateGameObject();
     light->createComponent<Lighting::PointLight>();
-    light->transform->position = glm::vec3(0, 2.0f, 0);
+    light->transform->setPosition(glm::vec3(0, 2.0f, 0));
 
     player->createComponent<FloatingCameraKeyboardController>();
     player->createComponent<CameraMouseController>();
-    player->transform->position = glm::vec3(-3.0f,2.0f,3.0f);
+    player->transform->setPosition(glm::vec3(-3.0f,2.0f,3.0f));
 
     MeshRenderer* renderer = cube->createComponent<MeshRenderer>();
     Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);

@@ -1,8 +1,5 @@
 #include "Transform.hpp"
-#include "../../../../include/glm/glm.hpp"
-#include "../../../../include/glm/gtx/transform.hpp"
-#include "../../../../include/glm/gtc/quaternion.hpp"
-#include "../../../../include/glm/gtx/quaternion.hpp"
+
 
 // TODO store matrices, recalculate them on get if their vec3 counterpart has changed
 
@@ -10,6 +7,14 @@ Transform::Transform() {
     this->scale = glm::vec3(1,1,1);
     this->position = glm::vec3(0,0,0);
     this->rotation = glm::quat(glm::vec3(0,0,0));
+}
+
+glm::vec3 Transform::getPosition() {
+    return this->position;
+}
+
+void Transform::setPosition(glm::vec3 position) {
+    this->position = position;
 }
 
 glm::mat4 Transform::getTranslationMatrix() {
@@ -49,9 +54,9 @@ glm::vec3 Transform::getUp() {
 }
 
 glm::vec3 Transform::getWorldPosition() {
-    glm::vec3 position = this->position;
+    glm::vec3 position = this->getPosition();
     while (parent) {
-        position += parent->position;
+        position += parent->getPosition();
         parent = parent->parent;
     }
     return position;
@@ -71,4 +76,8 @@ void Transform::setParent(Transform* parent) {
     if (this->parent) {
         this->parent->children.push_back(this);
     }
+}
+
+Transform* Transform::getParent() {
+    return this->parent;
 }

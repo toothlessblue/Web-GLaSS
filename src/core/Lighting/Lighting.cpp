@@ -48,7 +48,7 @@ namespace Lighting {
         glCullFace(GL_FRONT);
 
         Lighting::pointLightMaterial->use();
-        Lighting::pointLightMaterial->setVec3("viewPos", GameEngine::renderPipeline.activeCamera->gameObject->transform->position);
+        Lighting::pointLightMaterial->setVec3("viewPos", GameEngine::renderPipeline.activeCamera->gameObject->transform->getPosition());
         Lighting::pointLightMaterial->setMat4("viewMatrix", GameEngine::renderPipeline.activeCamera->getViewMatrix());
         Lighting::pointLightMaterial->setMat4("projectionMatrix", GameEngine::renderPipeline.activeCamera->getProjectionMatrix());
 
@@ -64,7 +64,7 @@ namespace Lighting {
 
             // TODO use a uniform buffer, it'll be faster
             Lighting::pointLightMaterial->setFloat("radius", pointLight->radius);
-            Lighting::pointLightMaterial->setVec3("position", pointLight->gameObject->transform->position);
+            Lighting::pointLightMaterial->setVec3("position", pointLight->gameObject->transform->getPosition());
             Lighting::pointLightMaterial->setVec3("lightColour", pointLight->colour);
             Lighting::pointLightMaterial->setFloat("constant", pointLight->constant);
             Lighting::pointLightMaterial->setFloat("linear", pointLight->linear);

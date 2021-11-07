@@ -1,10 +1,14 @@
 #pragma once
 #include <vector>
-
+#include "../Component/Component.hpp"
+#include "../Time/Time.hpp"
+#include "../Input/Input.hpp"
+#include "../components/RectTransform/RectTransform.hpp"
 
 // Forward declarations
 class Component;
 class Transform;
+class RectTransform;
 
 class GameObject {
 private:
@@ -37,7 +41,7 @@ public:
 		return newComponent;
 	}
 
-	void useRectTransform();
+	RectTransform* useRectTransform();
 };
 
 #include "../Component/Component.hpp"

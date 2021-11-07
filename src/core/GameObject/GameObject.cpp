@@ -1,9 +1,4 @@
 #include "GameObject.hpp"
-#include "../Component/Component.hpp"
-#include "../components/Transform/Transform.hpp"
-#include "../Time/Time.hpp"
-#include "../Input/Input.hpp"
-#include "../components/RectTransform/RectTransform.hpp"
 
 GameObject::GameObject() {
     this->transform = new Transform();
@@ -35,11 +30,15 @@ void GameObject::addComponent(Component* component) {
 /**
  * Irreversably switches the default Transform component for a RectTransform
  */
-void GameObject::useRectTransform() {
+RectTransform* GameObject::useRectTransform() {
     // delete to free up memory, and replace with new transform - it should always be at index 0
     delete this->transform;
-    this->transform = new RectTransform();
+    RectTransform* rect = new RectTransform();
+    this->transform = rect;
     this->components[0] = this->transform;
+    return rect;
 }
+
+// TODO getRectTransform function
 
 // Also has GameObject::createComponent, but this is defined in hpp instead

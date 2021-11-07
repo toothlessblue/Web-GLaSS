@@ -1,9 +1,9 @@
 #pragma once
-
 #include "../../Component/Component.hpp"
 #include "../../../../include/glm/glm.hpp"
 #include "../../../../include/glm/gtc/quaternion.hpp"
 #include "../../../../include/glm/gtx/quaternion.hpp"
+#include "../../../../include/glm/gtx/transform.hpp"
 #include "../../Utils/VectorUtils.hpp"
 
 class Transform : public Component {
@@ -11,9 +11,11 @@ public:
 
 	Transform();
 
-	glm::vec3 position;
+	virtual glm::vec3 getPosition();
+	virtual void setPosition(glm::vec3 position);
+
 	glm::quat rotation;
-	glm::vec3 scale;
+	glm::vec3 scale = glm::vec3(1,1,1);
 	virtual glm::mat4 getTranslationMatrix();
 	virtual glm::mat4 getRotationMatrix();
 	virtual glm::mat4 getScaleMatrix();
@@ -26,10 +28,11 @@ public:
 	virtual glm::vec3 getWorldPosition();
 	virtual glm::vec2 getDimensions();
 
-	void getParent();
+	Transform* getParent();
 	virtual void setParent(Transform* parent);
 	std::vector<Transform*> children;
 
 protected:
 	Transform* parent = NULL;
+	glm::vec3 position = glm::vec3(0,0,0);
 };

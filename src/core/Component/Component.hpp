@@ -14,5 +14,3 @@ public:
 	int componentId; // index in the component list of the gameobject this belongs to
 private:
 };
-
-#include "../GameObject/GameObject.hpp"

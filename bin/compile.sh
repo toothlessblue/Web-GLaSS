@@ -32,7 +32,7 @@ AM_LDFLAGS = -fexceptions \
 index_SOURCES=$CPP_FILEPATHS" > Makefile.am
 
 echo "Running emmake..."
-emsdk/upstream/emscripten/emmake make -s
+emsdk/upstream/emscripten/emmake make -s || exit 1
 
 echo ""
 echo "Compilation complete"

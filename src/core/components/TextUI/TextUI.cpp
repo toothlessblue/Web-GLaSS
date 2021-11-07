@@ -49,3 +49,7 @@ void TextUI::render() {
     glDisable(GL_BLEND);
     glEnable(GL_CULL_FACE);
 }
+
+RuntimeFont::FontFace* TextUI::getFont() {
+    return this->face;
+}

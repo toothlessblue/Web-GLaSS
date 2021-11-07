@@ -19,6 +19,8 @@ public:
     void setText(const char* text);
     void setColour(glm::vec3 colour);
     
+    RuntimeFont::FontFace* getFont();
+
     glm::vec3 colour;
 private:
     const char* text;

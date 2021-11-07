@@ -1,9 +1,9 @@
 #pragma once
-#include "../WorldSpace/WorldSpace.hpp"
 #include "../Screen/Screen.hpp"
 
 class GameObject;
 class RenderPipeline;
+class WorldSpace;
 
 namespace GameEngine {
     extern WorldSpace worldSpace;
@@ -15,3 +15,4 @@ namespace GameEngine {
 
 #include "../GameObject/GameObject.hpp"
 #include "../RenderPipeline/RenderPipeline.hpp"
+#include "../WorldSpace/WorldSpace.hpp"

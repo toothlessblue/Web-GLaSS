@@ -10,5 +10,5 @@ void FloatingCameraKeyboardController::update() {
     if (abs(glm::length(movementVector)) < 0.7f) return;
 
     glm::vec3 motionVector = glm::rotate(glm::inverse(this->gameObject->transform->rotation), glm::normalize(movementVector)) * Time::deltaTime * 50.0f;
-    this->gameObject->transform->position += motionVector;
+    this->gameObject->transform->setPosition(this->gameObject->transform->getPosition() + motionVector);
 }
