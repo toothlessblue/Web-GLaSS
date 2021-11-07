@@ -1,14 +1,13 @@
 #pragma once
-#include "../../Component/Component.hpp"
 #include "../../../../include/glm/glm.hpp"
 #include "../../../../include/glm/gtc/quaternion.hpp"
 #include "../../../../include/glm/gtx/quaternion.hpp"
 #include "../../../../include/glm/gtx/transform.hpp"
+#include "../../Component/Component.hpp"
 #include "../../Utils/VectorUtils.hpp"
 
 class Transform : public Component {
 public:
-
 	Transform();
 
 	virtual glm::vec3 getPosition();

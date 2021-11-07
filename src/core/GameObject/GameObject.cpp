@@ -15,7 +15,7 @@ GameObject::~GameObject() {
 
 void GameObject::updateComponents() {
     for (Component *component : this->components) {
-        if (component->enabled) {
+        if (component->isActive()) {
             component->update();
         }
     }
@@ -27,6 +27,23 @@ void GameObject::addComponent(Component* component) {
     this->components.push_back(component);
 }
 
+void GameObject::setActive(bool value) {
+    this->enabled = value;
+}
+
+bool GameObject::isActive() {
+    if (Time::frameCount == this->frameCheckedActivity) {
+        return this->cachedIsActive;
+    }
+
+    Transform* parent = this->transform->getParent();
+
+    this->cachedIsActive = this->enabled && (!parent || parent->gameObject->isActive());
+    this->frameCheckedActivity = Time::frameCount;
+
+    return this->cachedIsActive;
+}
+
 /**
  * Irreversably switches the default Transform component for a RectTransform
  */
@@ -36,6 +53,7 @@ RectTransform* GameObject::useRectTransform() {
     RectTransform* rect = new RectTransform();
     this->transform = rect;
     this->components[0] = this->transform;
+    rect->gameObject = this;
     return rect;
 }
 

@@ -5,7 +5,7 @@ std::chrono::steady_clock::time_point Time::start;
 std::chrono::steady_clock::time_point Time::end;
 float Time::deltaTime;
 
-int Time::frameCount = 0;
+unsigned int Time::frameCount = 0;
 
 void Time::incrementFrameCounter() {
     Time::frameCount++;

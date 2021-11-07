@@ -7,7 +7,6 @@
 #include "../GameEngine/GameEngine.hpp"
 #include "../Screen/Screen.hpp"
 #include "../Time/Time.hpp"
-#include "../components/Transform/Transform.hpp"
 
 namespace Input {
     namespace Mouse {

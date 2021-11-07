@@ -95,6 +95,8 @@ void RenderPipeline::renderLitToFrameBuffer(std::vector<unsigned int>* unlitRend
     glm::mat4 projection = this->activeCamera->getProjectionMatrix();
 
     for (Renderer* renderer : this->renderers) {
+        if (!renderer->gameObject->isActive() || !renderer->isActive()) continue;
+
         if (renderer->material->unlit) {
             unlitRendererIds->push_back(renderer->getId());
             continue;
@@ -115,6 +117,8 @@ void RenderPipeline::renderLitToFrameBuffer(std::vector<unsigned int>* unlitRend
 
 void RenderPipeline::render2dElements() {
     for (Renderer2d* renderer : this->renderers2d) {
+        if (!renderer->gameObject->isActive() || !renderer->isActive()) continue;
+        
         glm::mat4 modelMatrix = renderer->gameObject->transform->getModelMatrix();
         renderer->material->setMat4("modelMatrix", modelMatrix);
 

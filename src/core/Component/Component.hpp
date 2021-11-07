@@ -10,7 +10,13 @@ public:
 	Component();
 	virtual void update();
 
-	bool enabled = true;
+	bool isActive();
+	void setActive(bool value);
+
 	int componentId; // index in the component list of the gameobject this belongs to
 private:
+	bool enabled = true;
 };
+
+// #include "../GameObject/GameObject.hpp"
+// TODO figure out why this include breaks the build

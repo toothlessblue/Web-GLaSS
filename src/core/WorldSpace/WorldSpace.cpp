@@ -14,6 +14,8 @@ void WorldSpace::clearGameObjects() {
 
 void WorldSpace::updateGameObjects() {
     for (GameObject *gameObject : this->gameObjects) {
-        gameObject->updateComponents();
+        if (gameObject->isActive()) {
+            gameObject->updateComponents();
+        }
     }
 }

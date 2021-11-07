@@ -1,9 +1,7 @@
 #pragma once
 #include <vector>
-#include "../Component/Component.hpp"
 #include "../Time/Time.hpp"
 #include "../Input/Input.hpp"
-#include "../components/RectTransform/RectTransform.hpp"
 
 // Forward declarations
 class Component;
@@ -11,9 +9,6 @@ class Transform;
 class RectTransform;
 
 class GameObject {
-private:
-	std::vector<Component*> components;
-	
 public:
 	Transform* transform;
 
@@ -42,7 +37,17 @@ public:
 	}
 
 	RectTransform* useRectTransform();
+
+	void setActive(bool value);
+	bool isActive();
+private:
+	std::vector<Component*> components;
+	bool enabled = true;
+
+	unsigned int frameCheckedActivity = 0;
+	bool cachedIsActive = true;
 };
 
-#include "../Component/Component.hpp"
 #include "../components/Transform/Transform.hpp"
+#include "../Component/Component.hpp"
+#include "../components/RectTransform/RectTransform.hpp"
