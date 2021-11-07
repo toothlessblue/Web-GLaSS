@@ -35,6 +35,7 @@ public:
     void setTexture(const char* name, GLuint textureId);
 
     void use();
+    void unuse();
 private:
     std::vector<TextureBinding> textureBindings;
 

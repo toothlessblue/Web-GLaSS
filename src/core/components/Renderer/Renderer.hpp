@@ -10,7 +10,7 @@
 
 class Renderer : public Component {
 public:
-    Material* material;
+    Material* material = NULL;
 
 	Renderer();
 

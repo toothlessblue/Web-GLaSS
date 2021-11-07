@@ -811,3 +811,7 @@ config.guess
 config.sub
 depcomp
 install-sh
+
+# Other
+
+commit-message.txt

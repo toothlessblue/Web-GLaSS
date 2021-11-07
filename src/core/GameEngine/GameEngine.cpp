@@ -4,8 +4,6 @@ Screen GameEngine::screen = Screen(900, 450);
 RenderPipeline GameEngine::renderPipeline = RenderPipeline();
 WorldSpace GameEngine::worldSpace = WorldSpace();
 
-GameObject* GameEngine::CreateGameObject() {
-    GameObject* newObject = new GameObject();
+void GameEngine::addGameObject(GameObject* newObject) {
     GameEngine::worldSpace.addGameObject(newObject);
-    return newObject;
 }

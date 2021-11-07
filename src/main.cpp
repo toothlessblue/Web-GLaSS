@@ -20,6 +20,7 @@
 #include "core/GameObject/GameObject.hpp"
 #include "core/Material/Material.hpp"
 #include "core/Texture/Texture.hpp"
+#include "core/ModelLoader/ModelLoader.hpp"
 
 // Components
 #include "core/components/Camera/Camera.hpp"
@@ -49,14 +50,22 @@ extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
     RuntimeFont::init();
 
-    GameObject* text2d = GameEngine::CreateGameObject();
+    GameObject* stage = new GameObject();
+    MeshRenderer* stageMeshRenderer = stage->createComponent<MeshRenderer>();
+    stageMeshRenderer->deleteMesh();
+    stageMeshRenderer->setMesh(ModelLoader::OBJ::loadMesh("/models/stage.obj"));
+    stageMeshRenderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
+    stageMeshRenderer->material->setTexture("albedoTexture", (GLuint)0);
+    stage->transform->setPosition(glm::vec3(0, -2, 0));
+
+    GameObject* text2d = new GameObject();
     RectTransform* rect = text2d->useRectTransform();
     deltaTimeText = text2d->createComponent<TextUI>();
     rect->height = deltaTimeText->getFont()->atlasHeight / 2.0f;
     rect->anchorMin = glm::vec2(0.0f, 0.0f);
     rect->anchorMax = glm::vec2(0.0f, 0.0f);
 
-    GameObject* text2d2 = GameEngine::CreateGameObject();
+    GameObject* text2d2 = new GameObject();
     RectTransform* rect2 = text2d2->useRectTransform();
     TextUI* helloText = text2d2->createComponent<TextUI>();
     helloText->setText("Hello world!");
@@ -65,20 +74,19 @@ extern "C" int main(int argc, char** argv) {
     rect2->anchorMax = glm::vec2(0.0f, 1.0f);
     rect2->setParent(rect);
 
-    GameObject* cube = GameEngine::CreateGameObject();
-    GameObject* player = GameEngine::CreateGameObject();
 
-    Camera* camera = player->createComponent<Camera>();
-    camera->setAsActiveCamera();
-
-    GameObject* light = GameEngine::CreateGameObject();
+    GameObject* light = new GameObject();
     light->createComponent<Lighting::PointLight>();
     light->transform->setPosition(glm::vec3(0, 2.0f, 0));
 
+    GameObject* player = new GameObject();
+    Camera* camera = player->createComponent<Camera>();
+    camera->setAsActiveCamera();
     player->createComponent<FloatingCameraKeyboardController>();
     player->createComponent<CameraMouseController>();
     player->transform->setPosition(glm::vec3(-3.0f,2.0f,3.0f));
 
+    GameObject* cube = new GameObject();
     MeshRenderer* renderer = cube->createComponent<MeshRenderer>();
     Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
     renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");

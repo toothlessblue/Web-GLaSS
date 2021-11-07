@@ -133,7 +133,7 @@ void RenderPipeline::render() {
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, this->geometryBuffer);
     glDisable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     Lighting::renderPointLights(this->gPosition, this->gNormal, this->gAlbedo);

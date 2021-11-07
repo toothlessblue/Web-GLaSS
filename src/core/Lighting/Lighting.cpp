@@ -79,6 +79,8 @@ namespace Lighting {
 
     void renderAmbient(float power, GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
         glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        
         Lighting::ambientMaterial->use();
         Lighting::ambientMaterial->setFloat("power", power);
         

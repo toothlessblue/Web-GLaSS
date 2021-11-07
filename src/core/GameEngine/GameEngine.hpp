@@ -10,7 +10,7 @@ namespace GameEngine {
     extern RenderPipeline renderPipeline;
     extern Screen screen;
 
-    GameObject* CreateGameObject();
+    void addGameObject(GameObject* gameObject);
 };
 
 #include "../GameObject/GameObject.hpp"

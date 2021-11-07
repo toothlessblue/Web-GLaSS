@@ -1,6 +1,7 @@
 #include "GameObject.hpp"
 
 GameObject::GameObject() {
+    GameEngine::addGameObject(this);
     this->transform = new Transform();
     this->addComponent(this->transform);
 }

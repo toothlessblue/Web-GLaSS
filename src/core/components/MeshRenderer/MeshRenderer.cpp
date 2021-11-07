@@ -19,6 +19,8 @@ void MeshRenderer::render() {
     this->mesh->bindMesh();
     glDrawElements(GL_TRIANGLES, this->mesh->indexes.size(), GL_UNSIGNED_INT, (void*)0);
     this->mesh->unbindMesh();
+
+    this->material->unuse();
 }
 
 void MeshRenderer::update() {
@@ -27,6 +29,7 @@ void MeshRenderer::update() {
 
 void MeshRenderer::deleteMesh() {
     delete this->mesh;
+    this->mesh = NULL;
 }
 
 void MeshRenderer::setMesh(Mesh* mesh) {
