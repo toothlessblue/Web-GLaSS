@@ -39,11 +39,9 @@ public:
 private:
     std::vector<TextureBinding> textureBindings;
 
-    void executeOnUse(std::function<void()>);
     GLint getAttributeIndex(const char* name);
 
     GLuint textureUnitCounter = 6;
 
     std::map<std::string, GLint> attributeIndexCache;
-    std::list<std::function<void()>> toExecuteOnUse;
 };
