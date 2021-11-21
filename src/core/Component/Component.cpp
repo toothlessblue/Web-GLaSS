@@ -2,6 +2,7 @@
 
 Component::Component() { }
 void Component::update() { }
+void Component::start() { }
 
 bool Component::isActive() {
     return this->enabled;

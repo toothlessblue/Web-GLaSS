@@ -2,11 +2,12 @@
 
 RenderPipeline::RenderPipeline() {
     std::cout << "initialising lighting" << std::endl;
-
     Lighting::initialise();
 
-    std::cout << "Creating render quad" << std::endl;
+    std::cout << "initialising shadows" << std::endl;
+    Shadows::initialise();
 
+    std::cout << "Creating render quad" << std::endl;
     glGenBuffers(1, &this->quadVertexBuffer);
     glGenBuffers(1, &this->quadUvBuffer);
 
@@ -19,7 +20,6 @@ RenderPipeline::RenderPipeline() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     std::cout << "Creating render pipeline" << std::endl;
-
     glGenVertexArrays(1, &this->vao);
     glBindVertexArray(this->vao);
 
@@ -70,9 +70,9 @@ RenderPipeline::RenderPipeline() {
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    std::cout << "Render pipeline constructed" << std::endl;
-
     glEnable(GL_CULL_FACE);
+
+    std::cout << "Render pipeline constructed" << std::endl;
 }
 
 RenderPipeline::~RenderPipeline() {
@@ -81,16 +81,20 @@ RenderPipeline::~RenderPipeline() {
     }
 }
 
-void RenderPipeline::renderLitToFrameBuffer(std::vector<unsigned int>* unlitRendererIds) {
-    // Set up for drawing to the frame buffer
+void RenderPipeline::render2dElements() {
+    for (Renderer2d* renderer : this->renderers2d) {
+        if (!renderer->gameObject->isActive() || !renderer->isActive()) continue;
+        
+        glm::mat4 modelMatrix = renderer->gameObject->transform->getModelMatrix();
+        renderer->material->setMat4("modelMatrix", modelMatrix);
 
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->geometryBuffer); // Bind the geometry buffer
-    glClearColor(0.0, 0.0, 0.0, 1.0); // keep it black so it doesn't leak into g-buffer
-    glEnable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        renderer->preRenderCheck();
+        renderer->render();
+    }
+}
 
+void RenderPipeline::renderLitToCurrentFBO(std::vector<unsigned int>* unlitRendererIds) {
     // Draw the actual scene to the frame buffer
-
     glm::mat4 view = this->activeCamera->getViewMatrix();
     glm::mat4 projection = this->activeCamera->getProjectionMatrix();
 
@@ -111,30 +115,25 @@ void RenderPipeline::renderLitToFrameBuffer(std::vector<unsigned int>* unlitRend
         renderer->preRenderCheck();
         renderer->render();
     }
-
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-}
-
-void RenderPipeline::render2dElements() {
-    for (Renderer2d* renderer : this->renderers2d) {
-        if (!renderer->gameObject->isActive() || !renderer->isActive()) continue;
-        
-        glm::mat4 modelMatrix = renderer->gameObject->transform->getModelMatrix();
-        renderer->material->setMat4("modelMatrix", modelMatrix);
-
-        renderer->preRenderCheck();
-        renderer->render();
-    }
 }
 
 void RenderPipeline::render() {
     std::vector<unsigned int> unlitRendererIds;
-    this->renderLitToFrameBuffer(&unlitRendererIds);
+
+    // Set up for drawing to the frame buffer
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->geometryBuffer); // Bind the geometry buffer
+    glClearColor(0.0, 0.0, 0.0, 1.0); // keep it black so it doesn't leak into g-buffer
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    this->renderLitToCurrentFBO(&unlitRendererIds);
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+
+    Lighting::renderPointLightShadows();
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, this->geometryBuffer);
     glDisable(GL_DEPTH_TEST);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     Lighting::renderPointLights(this->gPosition, this->gNormal, this->gAlbedo);
     Lighting::renderAmbient(0.2f, this->gPosition, this->gNormal, this->gAlbedo);

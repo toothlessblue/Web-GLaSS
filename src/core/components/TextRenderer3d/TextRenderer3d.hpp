@@ -14,7 +14,7 @@ public:
 
     void setFont(const char* filepath);
     void setFont(RuntimeFont::FontFace* fontFace);
-    void render() override;
+    void render(bool useMaterial) override;
     void setText(const char* text);
     void setColour(glm::vec3 colour);
 

@@ -8,12 +8,18 @@ enum TextureType {
 
 class Texture {
 public:
-
     GLuint id;
     unsigned char* buffer;
 
     Texture(const char* filepath, TextureType type);
+    Texture(GLuint textureId, unsigned char* buffer);
 
 private:
     void loadDDS(const char* filepath);
 };
+
+namespace GenericTextures {
+    extern Texture* whiteDot;
+
+    void generate();
+}

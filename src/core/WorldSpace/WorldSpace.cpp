@@ -19,3 +19,9 @@ void WorldSpace::updateGameObjects() {
         }
     }
 }
+
+void WorldSpace::startGameObjects() {
+    for (GameObject *gameObject : this->gameObjects) {
+        gameObject->startComponents();
+    }
+}

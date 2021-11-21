@@ -13,7 +13,7 @@ class MeshRenderer : public Renderer {
 public:
     MeshRenderer();
 
-    void render() override;
+    void render(bool useMaterial = true) override;
     void update() override;
     void deleteMesh();
     void setMesh(Mesh* mesh);

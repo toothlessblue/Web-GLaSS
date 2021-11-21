@@ -35,7 +35,7 @@ void TextRenderer3d::setColour(glm::vec3 colour) {
     this->material->setVec3("textColour", this->colour);
 }
 
-void TextRenderer3d::render() {
+void TextRenderer3d::render(bool useMaterial) {
     glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

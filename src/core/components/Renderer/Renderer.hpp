@@ -15,7 +15,7 @@ public:
 	Renderer();
 
 	virtual void preRenderCheck();
-	virtual void render();
+	virtual void render(bool useMaterial = true);
     virtual void update() override;
 
 	void setId(unsigned int id);

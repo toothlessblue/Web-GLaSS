@@ -10,7 +10,7 @@ void Renderer::preRenderCheck() {
     }
 }
 
-void Renderer::render() { }
+void Renderer::render(bool useMaterial) { }
 
 void Renderer::setId(unsigned int id) {
     this->pipelineId = id;

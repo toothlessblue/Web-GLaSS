@@ -14,8 +14,14 @@ namespace Lighting {
     class PointLight : public Component {
     public:
         PointLight();
+        void start() override;
 
+        void renderSceneToShadowDepthCubemap();
         void recalculateRadius();
+
+        GLuint shadowCubemap;
+        glm::mat4 shadowProjection;
+        glm::mat4 shadowTransforms[6];
 
         glm::vec3 colour = glm::vec3(1,1,1);
         float constant = 1.0f;
@@ -24,10 +30,12 @@ namespace Lighting {
         float radius;
     };
 
+    void renderPointLightShadows();
     void renderPointLights(GLuint positionTex, GLuint normalTex, GLuint albedoTex);
     void renderAmbient(float power, GLuint positionTex, GLuint normalTex, GLuint albedoTex);
 
     extern Mesh* pointLightMesh;
     extern Material* pointLightMaterial;
+    extern Material* pointLightShadowCubemapMaterial;
     extern std::vector<PointLight*> pointLights;
 }

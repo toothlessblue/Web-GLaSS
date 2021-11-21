@@ -7,7 +7,8 @@ class Component {
 public:
 	GameObject* gameObject;
 
-	Component();
+	Component(); // gameObject unavailable in constructor
+	virtual void start();
 	virtual void update();
 
 	bool isActive();

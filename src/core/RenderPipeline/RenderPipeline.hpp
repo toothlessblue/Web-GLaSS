@@ -9,6 +9,7 @@
 #include "../components/Camera/Camera.hpp"
 #include "../GameEngine/GameEngine.hpp"
 #include "../Lighting/Lighting.hpp"
+#include "../Shadows/Shadows.hpp"
 #include "../Shaders/Shaders.hpp"
 
 // Forward declarations
@@ -65,7 +66,7 @@ private:
         0.0f, 0.0f,
     };
 
-    void renderLitToFrameBuffer(std::vector<unsigned int>* unlitRenderers);
+    void renderLitToCurrentFBO(std::vector<unsigned int>* unlitRendererIds);
     void render2dElements();
 };
 

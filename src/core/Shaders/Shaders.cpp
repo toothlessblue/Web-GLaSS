@@ -67,8 +67,6 @@ GLuint Shaders::CreateProgram(const GLuint vertexShaderID, const GLuint fragment
 }
 
 GLuint Shaders::CreateProgram(const char* vertex_file_path, const char* fragment_file_path) {
-    // TODO caching for identical programs
-
     // Executed for every rendered vertex
     GLuint vertexShaderID = Shaders::LoadShader(vertex_file_path, GL_VERTEX_SHADER);
 

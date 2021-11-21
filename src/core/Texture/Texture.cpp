@@ -17,6 +17,11 @@ Texture::Texture(const char* filepath, TextureType type) {
     }
 }
 
+Texture::Texture(GLuint id, unsigned char* buffer) {
+    this->id = id;
+    this->buffer = buffer;
+}
+
 void Texture::loadDDS(const char* filepath) {
     unsigned char header[124];
 
@@ -49,7 +54,6 @@ void Texture::loadDDS(const char* filepath) {
 
     unsigned int bufsize;
     /* how big is it going to be including all mipmaps? */
-    bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
     this->buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
     fread(this->buffer, 1, bufsize, fp);
     /* close the file pointer */
@@ -99,4 +103,22 @@ void Texture::loadDDS(const char* filepath) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     free(this->buffer);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+Texture* GenericTextures::whiteDot = NULL;
+void GenericTextures::generate() {
+    GLuint id;
+    glGenTextures(1, &id);
+    glBindTexture(GL_TEXTURE_2D, id);
+    
+    unsigned char pixels[4] = {255, 255, 255, 255};
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, &pixels[0]);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    
+    glBindTexture(GL_TEXTURE_2D, 0);
+    GenericTextures::whiteDot = new Texture(id, pixels);
 }

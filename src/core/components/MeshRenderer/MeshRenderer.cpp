@@ -5,7 +5,7 @@ MeshRenderer::MeshRenderer() {
     this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
 }
 
-void MeshRenderer::render() {
+void MeshRenderer::render(bool useMaterial) {
     if (!this->mesh) {
         std::cerr << "MeshRenderer does not have a mesh assigned" << std::endl;
     }
@@ -14,13 +14,13 @@ void MeshRenderer::render() {
         std::cerr << "MeshRenderer does not have a material assigned" << std::endl;
     }
 
-    this->material->use();
+    if (useMaterial) this->material->use();
     
     this->mesh->bindMesh();
     glDrawElements(GL_TRIANGLES, this->mesh->indexes.size(), GL_UNSIGNED_INT, (void*)0);
     this->mesh->unbindMesh();
 
-    this->material->unuse();
+    if (useMaterial) this->material->unuse();
 }
 
 void MeshRenderer::update() {

@@ -112,7 +112,8 @@
         "stop_token": "cpp",
         "__memory": "cpp",
         "*.inc": "cpp",
-        "__functional_base_03": "cpp"
+        "__functional_base_03": "cpp",
+        "*.rh": "cpp"
     },
     "search.exclude": {
         "**/.vshistory": true,

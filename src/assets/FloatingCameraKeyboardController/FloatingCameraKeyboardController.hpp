@@ -4,7 +4,7 @@
 
 class FloatingCameraKeyboardController : public Component {
 public:
-    float speed = 5.0f;
+    float speed = 2.0f;
 
     FloatingCameraKeyboardController();
 

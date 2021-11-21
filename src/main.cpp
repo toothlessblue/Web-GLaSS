@@ -43,19 +43,20 @@ extern "C" void gameLoop() {
     Time::frameEnd();
     Time::incrementFrameCounter();
 
-    deltaTimeText->setText(&std::to_string(Time::deltaTime * 1000)[0]);
+    deltaTimeText->setText(&std::to_string(Time::frameTime * 1000)[0]);
 }
 
 extern "C" int main(int argc, char** argv) {
     emscripten_set_main_loop(gameLoop, 0, 0);
     RuntimeFont::init();
+    GenericTextures::generate();
 
     GameObject* stage = new GameObject();
     MeshRenderer* stageMeshRenderer = stage->createComponent<MeshRenderer>();
     stageMeshRenderer->deleteMesh();
     stageMeshRenderer->setMesh(ModelLoader::OBJ::loadMesh("/models/stage.obj"));
     stageMeshRenderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
-    stageMeshRenderer->material->setTexture("albedoTexture", (GLuint)0);
+    stageMeshRenderer->material->setTexture("albedoTexture", GenericTextures::whiteDot);
     stage->transform->setPosition(glm::vec3(0, -2, 0));
 
     GameObject* text2d = new GameObject();
@@ -77,7 +78,7 @@ extern "C" int main(int argc, char** argv) {
 
     GameObject* light = new GameObject();
     light->createComponent<Lighting::PointLight>();
-    light->transform->setPosition(glm::vec3(0, 2.0f, 0));
+    light->transform->setPosition(glm::vec3(0, 2.5f, 0));
 
     GameObject* player = new GameObject();
     Camera* camera = player->createComponent<Camera>();
@@ -91,6 +92,8 @@ extern "C" int main(int argc, char** argv) {
     Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
     renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
     renderer->material->setTexture("albedoTexture", texture);
+
+    GameEngine::worldSpace.startGameObjects();
 
     return 0;
 }

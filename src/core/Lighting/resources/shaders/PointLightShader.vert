@@ -10,5 +10,5 @@ uniform mat4 modelMatrix;
 uniform float radius;
 
 void main(){
-	gl_Position = (projectionMatrix * viewMatrix * modelMatrix * vec4(vVertex * radius, 1));
+	gl_Position = (projectionMatrix * viewMatrix * modelMatrix * vec4(vVertex * radius * 2.0f, 1));
 }

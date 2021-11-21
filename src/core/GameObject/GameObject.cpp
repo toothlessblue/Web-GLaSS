@@ -14,6 +14,12 @@ GameObject::~GameObject() {
     // Transform* GameObject::transform is in the component list, no need to call delete on it seperately
 }
 
+void GameObject::startComponents() {
+    for (Component *component : this->components) {
+        component->start();
+    }
+}
+
 void GameObject::updateComponents() {
     for (Component *component : this->components) {
         if (component->isActive()) {

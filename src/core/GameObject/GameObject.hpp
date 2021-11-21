@@ -15,6 +15,7 @@ public:
 	GameObject();
 	~GameObject();
 	void updateComponents();
+	void startComponents();
 
 	/**
 	 * Adds a component to this gameObject, currently there isn't a clean way to undo this 

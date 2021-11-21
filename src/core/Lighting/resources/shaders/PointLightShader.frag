@@ -7,6 +7,9 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 
+uniform samplerCube shadowCubemap;
+uniform float shadowFarPlane;
+
 uniform float screenHeight;
 uniform float screenWidth;
 
@@ -27,6 +30,19 @@ uniform float linear;
 uniform float quadratic;
 
 uniform vec3 viewPos;
+
+float ShadowCalculation(vec3 fragPos)
+{
+    vec3 fragToLight = fragPos - position; 
+    
+    float closestDepth = texture(shadowCubemap, fragToLight).r * shadowFarPlane;
+    float currentDepth = length(fragToLight);  
+
+    float bias = 0.05; 
+    float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0; 
+
+    return shadow;
+}
 
 vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)
 {
@@ -53,7 +69,8 @@ void main()
     // then calculate lighting as usual
     vec3 viewDir = normalize(viewPos - fragPos);
 
+    float shadow = ShadowCalculation(fragPos);
     vec3 lighting = CalcPointLight(normal, fragPos, viewDir, albedoSpec);
     
-    colour = vec4(lighting, 1.0);
+    colour = vec4(lighting * shadow, 1.0);
 }

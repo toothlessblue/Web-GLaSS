@@ -2,7 +2,7 @@
 
 namespace Input::Mouse {
     bool locked = false;
-    float sensitivity = 5.0f;
+    float sensitivity = 0.1f;
 
     glm::vec2 latePosition;
     glm::vec2 earlyPosition;
