@@ -34,14 +34,28 @@ uniform vec3 viewPos;
 float ShadowCalculation(vec3 fragPos)
 {
     vec3 fragToLight = fragPos - position; 
-    
-    float closestDepth = texture(shadowCubemap, fragToLight).r * shadowFarPlane;
-    float currentDepth = length(fragToLight);  
+    float currentDepth = length(fragToLight);
 
-    float bias = 0.05; 
-    float shadow = currentDepth -  bias > closestDepth ? 0.0 : 1.0; // TODO shadow intensity
+    float shadow  = 0.0;
+    float bias    = 0.05; 
+    float samples = 4.0;
+    float offset  = 0.1;
+    for(float x = -offset; x < offset; x += offset / (samples * 0.5))
+    {
+        for(float y = -offset; y < offset; y += offset / (samples * 0.5))
+        {
+            for(float z = -offset; z < offset; z += offset / (samples * 0.5))
+            {
+                float closestDepth = texture(shadowCubemap, fragToLight + vec3(x, y, z)).r; 
+                closestDepth *= shadowFarPlane; // undo mapping [0;1]
+                if(currentDepth - bias > closestDepth)
+                    shadow += 1.0;
+            }
+        }
+    }
+    shadow /= (samples * samples * samples);
 
-    return shadow;
+    return (1.0 - shadow);
 }
 
 vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)

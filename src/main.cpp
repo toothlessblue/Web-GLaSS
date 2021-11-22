@@ -58,7 +58,7 @@ extern "C" int main(int argc, char** argv) {
     stageMeshRenderer->setMesh(ModelLoader::OBJ::loadMesh("/models/stage.obj"));
     stageMeshRenderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
     stageMeshRenderer->material->setTexture("albedoTexture", GenericTextures::whiteDot);
-    stage->transform->setPosition(glm::vec3(0, -2, 0));
+    stage->transform->setPosition(glm::vec3(0, -2.0f, 0));
 
     GameObject* text2d = new GameObject();
     RectTransform* rect = text2d->useRectTransform();

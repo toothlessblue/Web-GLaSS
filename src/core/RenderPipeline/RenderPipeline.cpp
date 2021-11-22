@@ -112,6 +112,7 @@ void RenderPipeline::renderLitToCurrentFBO(std::vector<unsigned int>* unlitRende
         renderer->material->setMat4("projectionMatrix", projection);
         renderer->material->setMat4("viewMatrix", view);
         renderer->material->setMat4("modelMatrix", modelMatrix);
+        renderer->material->setMat4("rotationMatrix", renderer->gameObject->transform->getRotationMatrix());
 
         renderer->preRenderCheck();
         renderer->render();

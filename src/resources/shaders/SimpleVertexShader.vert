@@ -15,11 +15,12 @@ out vec3 fragPos;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
+uniform mat4 rotationMatrix;
 
 void main(){
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vVertex, 1);
 
     fUv = vUv;
-    fNormal = vNormal;
+    fNormal = vec3(rotationMatrix * vec4(vNormal, 1));
     fragPos = vec3(modelMatrix * vec4(vVertex, 1));
 }
