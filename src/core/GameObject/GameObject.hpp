@@ -3,7 +3,6 @@
 #include "../Time/Time.hpp"
 #include "../Input/Input.hpp"
 
-// Forward declarations
 class Component;
 class Transform;
 class RectTransform;
@@ -49,6 +48,4 @@ private:
 	bool cachedIsActive = true;
 };
 
-#include "../components/Transform/Transform.hpp"
-#include "../Component/Component.hpp"
 #include "../components/RectTransform/RectTransform.hpp"

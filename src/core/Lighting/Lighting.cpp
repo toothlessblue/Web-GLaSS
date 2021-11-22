@@ -52,7 +52,7 @@ namespace Lighting {
     }
 
     void PointLight::start() {
-        this->shadowProjection = glm::perspective(glm::radians(90.0f), 1.0f, 1.0f, 25.0f); 
+        this->shadowProjection = glm::perspective(glm::radians(90.0f), 1.0f, Shadows::nearPlane, Shadows::farPlane); 
 
         this->shadowTransforms[0] = this->shadowProjection * glm::lookAt(this->gameObject->transform->getPosition(), this->gameObject->transform->getPosition() + glm::vec3( 1.0, 0.0, 0.0), glm::vec3(0.0,-1.0, 0.0));
         this->shadowTransforms[1] = this->shadowProjection * glm::lookAt(this->gameObject->transform->getPosition(), this->gameObject->transform->getPosition() + glm::vec3(-1.0, 0.0, 0.0), glm::vec3(0.0,-1.0, 0.0));
@@ -60,7 +60,6 @@ namespace Lighting {
         this->shadowTransforms[3] = this->shadowProjection * glm::lookAt(this->gameObject->transform->getPosition(), this->gameObject->transform->getPosition() + glm::vec3( 0.0,-1.0, 0.0), glm::vec3(0.0, 0.0,-1.0));
         this->shadowTransforms[4] = this->shadowProjection * glm::lookAt(this->gameObject->transform->getPosition(), this->gameObject->transform->getPosition() + glm::vec3( 0.0, 0.0, 1.0), glm::vec3(0.0,-1.0, 0.0));
         this->shadowTransforms[5] = this->shadowProjection * glm::lookAt(this->gameObject->transform->getPosition(), this->gameObject->transform->getPosition() + glm::vec3( 0.0, 0.0,-1.0), glm::vec3(0.0,-1.0, 0.0));
-
     }
 
     void PointLight::recalculateRadius() {
@@ -73,23 +72,20 @@ namespace Lighting {
 
         Lighting::pointLightShadowCubemapMaterial->use();
         Lighting::pointLightShadowCubemapMaterial->setFloat("farPlane", Shadows::farPlane);
+        Lighting::pointLightShadowCubemapMaterial->setVec3("lightPosition", this->gameObject->transform->getPosition());
 
-        // Create light space transform
-        glm::mat4 shadowProjection = glm::perspective(glm::radians(90.0f), 1.0f, Shadows::nearPlane, Shadows::farPlane); 
-
-        for (int i = 0; i < 6; i++) {
+        for (unsigned int i = 0; i < 6; i++) {
             GLenum face = GL_TEXTURE_CUBE_MAP_POSITIVE_X + i;
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, face, this->shadowCubemap, 0);
+            glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, face, this->shadowCubemap, 0);
+            glClear(GL_DEPTH_BUFFER_BIT);
 
             Lighting::pointLightShadowCubemapMaterial->setMat4("shadowMatrix", this->shadowTransforms[i]);
-            Lighting::pointLightShadowCubemapMaterial->setVec3("lightPosition", this->gameObject->transform->getPosition());
 
             // Draw the actual scene to the frame buffer
             for (Renderer* renderer : GameEngine::renderPipeline.renderers) {
                 if (!renderer->gameObject->isActive() || !renderer->isActive()) continue;
 
-                glm::mat4 modelMatrix = renderer->gameObject->transform->getModelMatrix();
-                Lighting::pointLightShadowCubemapMaterial->setMat4("modelMatrix", modelMatrix);
+                Lighting::pointLightShadowCubemapMaterial->setMat4("modelMatrix", renderer->gameObject->transform->getModelMatrix());
 
                 renderer->preRenderCheck();
                 renderer->render(false);
@@ -100,9 +96,9 @@ namespace Lighting {
     void renderPointLightShadows() {
         glViewport(0, 0, Shadows::resolution, Shadows::resolution);
         glBindFramebuffer(GL_FRAMEBUFFER, Shadows::depthmapFramebuffer);
-        glClear(GL_DEPTH_BUFFER_BIT);
         glDrawBuffers(0, { GL_NONE });
         glReadBuffer(GL_NONE);
+        
         Lighting::pointLightShadowCubemapMaterial->use();
 
         for (PointLight* pointLight : Lighting::pointLights) {

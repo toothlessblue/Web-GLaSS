@@ -1,8 +1,3 @@
-#include "../../Component/Component.hpp"
-#include "../../../../include/glm/glm.hpp"
-#include "../../../../include/glm/gtx/transform.hpp"
-#include "../../../../include/glm/gtc/matrix_transform.hpp"
-#include "../../GameEngine/GameEngine.hpp"
 #include "Camera.hpp"
 
 Camera::Camera() {
@@ -17,7 +12,7 @@ glm::mat4 Camera::getProjectionMatrix() {
 }
 
 glm::mat4 Camera::getViewMatrix() {
-    return glm::toMat4(this->gameObject->transform->rotation) * glm::translate(glm::mat4(1.0f), -this->gameObject->transform->getPosition());
+    return glm::toMat4(this->gameObject->transform->getRotation()) * glm::translate(glm::mat4(1.0f), -this->gameObject->transform->getPosition());
 }
 
 void Camera::setAsActiveCamera() {

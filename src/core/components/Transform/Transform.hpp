@@ -11,9 +11,14 @@ public:
 	Transform();
 
 	virtual glm::vec3 getPosition();
+	virtual glm::vec3 getWorldPosition();
 	virtual void setPosition(glm::vec3 position);
 
-	glm::quat rotation;
+	virtual void setRoation(glm::quat rotation);
+	virtual glm::quat getRotation();
+
+	virtual void addRotation(glm::vec3 rotation);
+
 	glm::vec3 scale = glm::vec3(1,1,1);
 	virtual glm::mat4 getTranslationMatrix();
 	virtual glm::mat4 getRotationMatrix();
@@ -24,7 +29,6 @@ public:
 	glm::vec3 getLeft();
 	glm::vec3 getUp();
 
-	virtual glm::vec3 getWorldPosition();
 	virtual glm::vec2 getDimensions();
 
 	Transform* getParent();
@@ -34,4 +38,5 @@ public:
 protected:
 	Transform* parent = NULL;
 	glm::vec3 position = glm::vec3(0,0,0);
+	glm::quat rotation;
 };

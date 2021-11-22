@@ -11,5 +11,5 @@ void CameraMouseController::update() {
     glm::quat qRoll = glm::angleAxis(0.0f, glm::vec3(0,0,1));  
 
     glm::quat orientation = glm::normalize(qPitch * qYaw * qRoll);
-    this->gameObject->transform->rotation = glm::toMat4(orientation);
+    this->gameObject->transform->setRoation(glm::toMat4(orientation));
 }

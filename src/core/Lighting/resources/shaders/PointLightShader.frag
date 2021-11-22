@@ -39,13 +39,15 @@ float ShadowCalculation(vec3 fragPos)
     float currentDepth = length(fragToLight);  
 
     float bias = 0.05; 
-    float shadow = currentDepth -  bias > closestDepth ? 1.0 : 0.0; 
+    float shadow = currentDepth -  bias > closestDepth ? 0.0 : 1.0; // TODO shadow intensity
 
     return shadow;
 }
 
 vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)
 {
+    float shadow = ShadowCalculation(fragPos);
+    
     float dist = length(position - fragPos);
 
     vec3 lightDir = normalize(position - fragPos);
@@ -54,7 +56,7 @@ vec3 CalcPointLight(vec3 normal, vec3 fragPos, vec3 viewDir, vec4 albedoSpec)
     vec3 diffuse = max(dot(normal, lightDir), 0.0) * albedoSpec.rgb * lightColour;
     float attenuation = 1.0 / (constant + linear * dist + quadratic * (dist * dist)); 
     
-    return (diffuse + spec) * attenuation;
+    return shadow * (diffuse + spec) * attenuation;
 } 
 
 void main()
@@ -69,8 +71,7 @@ void main()
     // then calculate lighting as usual
     vec3 viewDir = normalize(viewPos - fragPos);
 
-    float shadow = ShadowCalculation(fragPos);
     vec3 lighting = CalcPointLight(normal, fragPos, viewDir, albedoSpec);
     
-    colour = vec4(lighting * shadow, 1.0);
+    colour = vec4(lighting, 1.0);
 }

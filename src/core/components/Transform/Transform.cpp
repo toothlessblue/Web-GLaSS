@@ -9,6 +9,20 @@ Transform::Transform() {
     this->rotation = glm::quat(glm::vec3(0,0,0));
 }
 
+
+void Transform::setRoation(glm::quat rotation) {
+    this->rotation = rotation;
+}
+
+glm::quat Transform::getRotation() {
+    return this->rotation;
+}
+
+void Transform::addRotation(glm::vec3 rotation) {
+    this->rotation = glm::quat(rotation) * this->rotation;
+}
+
+
 glm::vec3 Transform::getPosition() {
     return this->position;
 }
@@ -16,6 +30,16 @@ glm::vec3 Transform::getPosition() {
 void Transform::setPosition(glm::vec3 position) {
     this->position = position;
 }
+
+glm::vec3 Transform::getWorldPosition() {
+    glm::vec3 position = this->getPosition();
+    while (parent) {
+        position += parent->getPosition();
+        parent = parent->parent;
+    }
+    return position;
+}
+
 
 glm::mat4 Transform::getTranslationMatrix() {
     return glm::translate(glm::mat4(1.0f), this->position);
@@ -41,6 +65,7 @@ glm::mat4 Transform::getModelMatrix() {
     return model;
 }
 
+
 glm::vec3 Transform::getForwards() {
     return glm::rotate(glm::inverse(this->rotation), glm::vec3(0, 0, 1));
 }
@@ -53,18 +78,11 @@ glm::vec3 Transform::getUp() {
     return glm::rotate(glm::inverse(this->rotation), glm::vec3(0, 1, 0));
 }
 
-glm::vec3 Transform::getWorldPosition() {
-    glm::vec3 position = this->getPosition();
-    while (parent) {
-        position += parent->getPosition();
-        parent = parent->parent;
-    }
-    return position;
-}
 
 glm::vec2 Transform::getDimensions() {
     return glm::vec2(0, 0);
 }
+
 
 void Transform::setParent(Transform* parent) {
     if (this->parent) {

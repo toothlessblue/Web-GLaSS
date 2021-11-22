@@ -1,6 +1,5 @@
 #pragma once
 
-// Forward declarations
 class GameObject;
 
 class Component {
@@ -19,5 +18,5 @@ private:
 	bool enabled = true;
 };
 
-// #include "../GameObject/GameObject.hpp"
-// TODO figure out why this include breaks the build
+// TODO *sigh*
+//#include "../GameObject/GameObject.hpp"

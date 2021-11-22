@@ -1,7 +1,9 @@
 #pragma once
-#include "../../Component/Component.hpp"
 #include "../../../../include/glm/glm.hpp"
+#include "../../../../include/glm/gtx/transform.hpp"
+#include "../../../../include/glm/gtc/matrix_transform.hpp"
 #include "../../GameEngine/GameEngine.hpp"
+#include "../../Component/Component.hpp"
 
 class Camera : public Component {
 public:

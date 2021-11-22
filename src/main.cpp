@@ -30,6 +30,7 @@
 
 #include "assets/CameraMouseController/CameraMouseController.hpp"
 #include "assets/FloatingCameraKeyboardController/FloatingCameraKeyboardController.hpp"
+#include "assets/TransformRotator/TransformRotator.hpp"
 
 TextUI* deltaTimeText;
 
@@ -75,10 +76,9 @@ extern "C" int main(int argc, char** argv) {
     rect2->anchorMax = glm::vec2(0.0f, 1.0f);
     rect2->setParent(rect);
 
-
     GameObject* light = new GameObject();
     light->createComponent<Lighting::PointLight>();
-    light->transform->setPosition(glm::vec3(0, 2.5f, 0));
+    light->transform->setPosition(glm::vec3(0.0f, 2.0f, 4.0f));
 
     GameObject* player = new GameObject();
     Camera* camera = player->createComponent<Camera>();
@@ -88,6 +88,7 @@ extern "C" int main(int argc, char** argv) {
     player->transform->setPosition(glm::vec3(-3.0f,2.0f,3.0f));
 
     GameObject* cube = new GameObject();
+    cube->createComponent<TransformRotator>();
     MeshRenderer* renderer = cube->createComponent<MeshRenderer>();
     Texture* texture = new Texture("/textures/NumberedCubeTex.DDS", DDS);
     renderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
