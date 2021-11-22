@@ -2,7 +2,7 @@
 #include "../../../include/glm/glm.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
+#include <iosfwd>
 #include <map>
 #include <math.h>
 #include <vector>

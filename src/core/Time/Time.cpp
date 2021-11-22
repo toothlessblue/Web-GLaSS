@@ -1,5 +1,4 @@
 #include "Time.hpp"
-#include <chrono>
 
 std::chrono::steady_clock::time_point Time::lastStart;
 std::chrono::steady_clock::time_point Time::start;

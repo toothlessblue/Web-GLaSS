@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <vector>
-#include "../components/Transform/Transform.hpp"
+
+class Transform;
 
 namespace Utils {
     namespace Vector

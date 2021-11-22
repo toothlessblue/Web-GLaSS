@@ -1,9 +1,4 @@
-#include <string>
-#include <GL/glew.h>
 #include "Texture.hpp"
-#include "../../../include/glm/glm.hpp"
-#include <GLFW/glfw3.h>
-#include <iostream>
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII

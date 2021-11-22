@@ -1,10 +1,10 @@
 #pragma once
 
-#include <GL/glew.h>
 #include "../../Component/Component.hpp"
-#include "../../Material/Material.hpp"
 #include "../../GameEngine/GameEngine.hpp"
 #include "../../Exceptions/RenderPipelineNotAssignedException.cpp"
+
+class Material;
 
 /**
  * A parent class for rendering 2d elements, like UI. All 2d renderers are unlit, and rendered on top of 3d elements.

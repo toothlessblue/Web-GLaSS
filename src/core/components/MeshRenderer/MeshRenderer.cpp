@@ -1,4 +1,5 @@
 #include "MeshRenderer.hpp"
+#include <iostream>
 
 MeshRenderer::MeshRenderer() {
     // this->mesh = PrimitiveMeshes::generateSphereMesh(20, 20, 1.0f);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <iostream>
+#include <iosfwd>
 #include "../Renderer/Renderer.hpp"
 #include "../../Mesh/Mesh.hpp"
 #include "../../ModelLoader/ModelLoader.hpp"

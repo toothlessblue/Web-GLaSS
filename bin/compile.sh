@@ -14,11 +14,13 @@ find . -wholename "**/resources/*" -type d -prune -exec cp -R "{}" "./lib/resour
                # Find all cpp files in   # Exclude any file           # Replace newlines
                # src/                    # in a .vshistory folder     # with space
 CPP_FILEPATHS=$(find src/ -name "*.cpp" -not -path "*/\.vshistory/*" | tr '\n' ' ') 
+NPROCS=$(grep -c 'processor' /proc/cpuinfo)
 
 # Creates the Makefile.am file
 echo "CXXFLAGS = -Wc++17-extensions
 AUTOMAKE_OPTIONS = foreign
 bin_PROGRAMS = index
+MAKEFLAGS = -j$NPROCS
 AM_LDFLAGS = -fexceptions \
 -O0 \
 -s LLD_REPORT_UNDEFINED \

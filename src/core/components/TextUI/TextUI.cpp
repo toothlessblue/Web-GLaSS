@@ -1,4 +1,5 @@
 #include "TextUI.hpp"
+#include <iostream>
 
 TextUI::TextUI() {
     this->material = new Material("/shaders/2dFont.vert", "/shaders/2dFont.frag");

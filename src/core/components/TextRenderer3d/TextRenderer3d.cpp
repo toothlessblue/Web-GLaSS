@@ -1,4 +1,5 @@
 #include "TextRenderer3d.hpp"
+#include <iostream>
 
 TextRenderer3d::TextRenderer3d() {
     this->material = new Material("/shaders/3dFont.vert", "/shaders/3dFont.frag");

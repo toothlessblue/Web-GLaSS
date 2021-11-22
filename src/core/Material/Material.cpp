@@ -1,13 +1,4 @@
-#include <GL/glew.h>
-#include <map>
-#include <string>
-#include <iostream>
-#include <functional>
-
 #include "Material.hpp"
-#include "../Shaders/Shaders.hpp"
-#include "../../../include/glm/glm.hpp"
-#include "../Texture/Texture.hpp"
 
 // TODO on every set function, check a cache to make sure the value in the shader is not the same, might be faster
 

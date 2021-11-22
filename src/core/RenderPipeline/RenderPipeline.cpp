@@ -1,4 +1,5 @@
 #include "RenderPipeline.hpp"
+#include <iostream>
 
 RenderPipeline::RenderPipeline() {
     std::cout << "initialising lighting" << std::endl;

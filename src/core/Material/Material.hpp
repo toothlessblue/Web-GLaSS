@@ -3,13 +3,13 @@
 #include <GL/glew.h>
 #include <string>
 #include <map>
-#include <iostream>
-#include <list>
+#include <iosfwd>
 #include <functional>
 #include <vector>
 
 #include "../../../include/glm/glm.hpp"
 #include "../Texture/Texture.hpp"
+#include "../Shaders/Shaders.hpp"
 
 struct TextureBinding {
     GLuint textureId;

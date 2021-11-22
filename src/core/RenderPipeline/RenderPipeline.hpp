@@ -1,8 +1,7 @@
 #pragma once
-
 #include <list>
 #include <GL/glew.h>
-#include <iostream>
+#include <iosfwd>
 #include "../../../include/glm/glm.hpp"
 #include "../../../include/glm/gtx/transform.hpp"
 #include "../../../include/glm/gtc/matrix_transform.hpp"

@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string.h>
-#include <iostream>
+#include <iosfwd>
 #include <vector>
 #include <sstream>
 #include <fstream>

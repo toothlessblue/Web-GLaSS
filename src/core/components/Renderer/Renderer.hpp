@@ -1,12 +1,11 @@
 #pragma once
-
 #include <GL/glew.h>
 #include "../../Component/Component.hpp"
 #include "../../Material/Material.hpp"
 #include "../../GameEngine/GameEngine.hpp"
 #include "../../Exceptions/RenderPipelineNotAssignedException.cpp"
-#include "../../GameEngine/GameEngine.hpp"
-#include "../../Exceptions/RenderPipelineNotAssignedException.cpp"
+
+class Material;
 
 class Renderer : public Component {
 public:

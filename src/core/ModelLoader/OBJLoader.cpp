@@ -1,4 +1,5 @@
 #include "ModelLoader.hpp"
+#include <iostream>
 
 namespace ModelLoader::OBJ {
     // Note: Breaks if format of obj file not properly configured, this is not a robust loader

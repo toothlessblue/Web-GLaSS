@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include <iosfwd>
 #include <GL/glew.h>
 #include <vector>
 #include "../../../include/glm/glm.hpp"

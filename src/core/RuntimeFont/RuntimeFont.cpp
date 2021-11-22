@@ -1,4 +1,5 @@
 #include "RuntimeFont.hpp"
+#include <iostream>
 
 namespace RuntimeFont {
     FT_Library freeTypeLibrary;

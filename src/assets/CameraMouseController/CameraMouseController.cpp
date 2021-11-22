@@ -1,6 +1,4 @@
 #include "CameraMouseController.hpp"
-#include "../../core/Input/Input.hpp"
-#include "../../core/Time/Time.hpp"
 
 void CameraMouseController::update() {
     this->lookVector.x -= Input::Mouse::motion.x;

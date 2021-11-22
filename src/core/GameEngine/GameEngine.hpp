@@ -1,7 +1,10 @@
 #pragma once
+#include "../RenderPipeline/RenderPipeline.hpp"
+#include "../WorldSpace/WorldSpace.hpp"
 #include "../Screen/Screen.hpp"
 
 class GameObject;
+class Screen;
 class RenderPipeline;
 class WorldSpace;
 
@@ -12,7 +15,3 @@ namespace GameEngine {
 
     void addGameObject(GameObject* gameObject);
 };
-
-#include "../GameObject/GameObject.hpp"
-#include "../RenderPipeline/RenderPipeline.hpp"
-#include "../WorldSpace/WorldSpace.hpp"

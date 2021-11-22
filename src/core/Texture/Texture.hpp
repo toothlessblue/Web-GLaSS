@@ -1,6 +1,9 @@
 #pragma once
 #include "../../../include/glm/glm.hpp"
 #include <GL/glew.h>
+#include <string>
+#include <GLFW/glfw3.h>
+#include <iosfwd>
 
 enum TextureType {
     DDS
