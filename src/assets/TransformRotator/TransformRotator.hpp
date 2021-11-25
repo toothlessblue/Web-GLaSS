@@ -1,7 +1,7 @@
 #pragma once
-#include "../../core/Component/Component.hpp"
-#include "../../core/GameObject/GameObject.hpp"
-#include "../../core/Time/Time.hpp"
+#include "../../Engine/Component/Component.hpp"
+#include "../../Engine/GameObject/GameObject.hpp"
+#include "../../Engine/Time/Time.hpp"
 
 class TransformRotator : public Component {
 public:

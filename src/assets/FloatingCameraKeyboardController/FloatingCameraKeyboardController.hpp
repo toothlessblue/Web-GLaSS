@@ -1,6 +1,6 @@
 #pragma once
-#include "../../core/Component/Component.hpp"
-#include "../../core/Input/Input.hpp"
+#include "../../Engine/Component/Component.hpp"
+#include "../../Engine/Input/Input.hpp"
 
 class FloatingCameraKeyboardController : public Component {
 public:
