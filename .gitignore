@@ -788,6 +788,7 @@ emsdk/*
 emsdk
 lib/*
 lib
+export/*
 
 # All the make shit
 

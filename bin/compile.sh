@@ -11,8 +11,6 @@ cp -R ./src/WebPage/* ./lib/
 echo "- all resource folders"
 find . -wholename "**/resources/*" -type d -prune -exec cp -R "{}" "./lib/resources/" \;
 
-               # Find all cpp files in   # Exclude any file           # Replace newlines
-               # src/                    # in a .vshistory folder     # with space
 CPP_FILEPATHS=$(find src/ -name "*.cpp" -not -path "*/\.vshistory/*" | tr '\n' ' ') 
 NPROCS=$(grep -c 'processor' /proc/cpuinfo)
 
@@ -20,9 +18,10 @@ NPROCS=$(grep -c 'processor' /proc/cpuinfo)
 echo "CXXFLAGS = -Wc++17-extensions
 AUTOMAKE_OPTIONS = foreign
 bin_PROGRAMS = index
+index_LINK = true
 MAKEFLAGS = -j$NPROCS
 AM_LDFLAGS = -fexceptions \
--O0 \
+-O3 \
 -s LLD_REPORT_UNDEFINED \
 -s WASM=1 \
 -s MAX_WEBGL_VERSION=2 \
@@ -37,10 +36,11 @@ echo "Running emmake..."
 emsdk/upstream/emscripten/emmake make -s || exit 1
 
 echo ""
-echo "Compilation complete"
+echo "Compilation complete - generated .o files"
 echo ""
 
+# TODO compile with test game
 # Move output files to lib folder - could probably specify this in the makefile.am but w/e
-mv index lib/index.js
-mv index.data lib/
-mv index.wasm lib/
+# mv index lib/index.js
+# mv index.data lib/
+# mv index.wasm lib/

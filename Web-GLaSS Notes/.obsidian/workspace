@@ -95,8 +95,8 @@
     "Web GL Notes/Matrices/Rotation Matrix.md",
     "Web GL Notes/Matrices/Projection Matrix.md",
     "Web GL Notes/Matrices/Matrix Math.md",
-    "Engine Documentation/Component.md",
-    "Engine Documentation/Camera.md",
-    "Engine Documentation/Transform.md"
+    "WebGLaSS Documentation/Component.md",
+    "WebGLaSS Documentation/Camera.md",
+    "WebGLaSS Documentation/Transform.md"
   ]
 }

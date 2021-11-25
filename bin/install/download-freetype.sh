@@ -1,4 +1,5 @@
 echo 'Downloading freetype'
+mkdir ./external-libs
 cd ./external-libs
 
 # https://download.savannah.gnu.org/releases/freetype/
