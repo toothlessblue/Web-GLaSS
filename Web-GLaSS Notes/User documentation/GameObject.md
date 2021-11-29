@@ -1,4 +1,4 @@
-Mimics unity GameObjects somewhat.
+More or less mimics unity GameObjects.
 
 GameObjects contain a list of components
 

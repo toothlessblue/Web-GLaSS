@@ -16,3 +16,5 @@ And a function to get the combined [[Model Matrix]]
 `glm::mat4 getModelMatrix`
 
 Also provides `glm::mat4 getModelViewProjectionMatrix`, but this is maybe poor placement, as it requires [[View matrix]] and [[Projection Matrix]] which both come from the [[Camera]]. 
+
+A Transform may be replaced by a [[RectTransform]], which inherits Transform and provides a number of extra functions for use with UIs.
