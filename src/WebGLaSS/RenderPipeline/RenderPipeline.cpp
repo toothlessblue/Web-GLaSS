@@ -137,8 +137,15 @@ void RenderPipeline::render() {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glEnable(GL_BLEND);
+    
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     Lighting::renderPointLights(this->gPosition, this->gNormal, this->gAlbedo);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     Lighting::renderAmbient(0.2f, this->gPosition, this->gNormal, this->gAlbedo);
+
+    glDisable(GL_BLEND);
 
     // TODO render unlit materials. if I use this method I need to clear the frame buffer, render unlit materials to it, then render ambient lighting again
 

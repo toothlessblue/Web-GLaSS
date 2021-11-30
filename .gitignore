@@ -790,6 +790,10 @@ lib/*
 lib
 export/*
 
+# Test game
+TestGame/main.o
+TestGame/**/*.o
+
 # All the make shit
 
 src/**/.deps/

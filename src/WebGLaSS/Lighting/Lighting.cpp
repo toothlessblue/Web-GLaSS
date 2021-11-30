@@ -19,6 +19,7 @@ namespace Lighting {
         Lighting::pointLightMaterial->setInt("gAlbedo", 5);
         Lighting::pointLightMaterial->setFloat("screenWidth", WebGLaSS::screen.width);
         Lighting::pointLightMaterial->setFloat("screenHeight", WebGLaSS::screen.height);
+        Lighting::pointLightMaterial->setInt("shadowCubemap", 6);
         
         Lighting::ambientMaterial->use();
         Lighting::ambientMaterial->setInt("gPosition", 3);
@@ -46,7 +47,8 @@ namespace Lighting {
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);  
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
         this->recalculateRadius();
     }
@@ -71,7 +73,6 @@ namespace Lighting {
         // Assumes shadow FBO is bound
 
         Lighting::pointLightShadowCubemapMaterial->use();
-        Lighting::pointLightShadowCubemapMaterial->setFloat("farPlane", Shadows::farPlane);
         Lighting::pointLightShadowCubemapMaterial->setVec3("lightPosition", this->gameObject->transform->getPosition());
 
         for (unsigned int i = 0; i < 6; i++) {
@@ -98,8 +99,9 @@ namespace Lighting {
         glBindFramebuffer(GL_FRAMEBUFFER, Shadows::depthmapFramebuffer);
         glDrawBuffers(0, { GL_NONE });
         glReadBuffer(GL_NONE);
-        
-        Lighting::pointLightShadowCubemapMaterial->use();
+
+
+        Lighting::pointLightShadowCubemapMaterial->setFloat("farPlane", Shadows::farPlane);
 
         for (PointLight* pointLight : Lighting::pointLights) {
             pointLight->renderSceneToShadowDepthCubemap();
@@ -137,24 +139,21 @@ namespace Lighting {
             Lighting::pointLightMaterial->setMat4("modelMatrix", pointLight->gameObject->transform->getModelMatrix());
 
             // TODO use a uniform buffer, it'll be faster
-            Lighting::pointLightMaterial->setFloat("radius", pointLight->radius);
-            Lighting::pointLightMaterial->setVec3("position", pointLight->gameObject->transform->getPosition());
-            Lighting::pointLightMaterial->setVec3("lightColour", pointLight->colour);
-            Lighting::pointLightMaterial->setFloat("constant", pointLight->constant);
-            Lighting::pointLightMaterial->setFloat("linear", pointLight->linear);
-            Lighting::pointLightMaterial->setFloat("quadratic", pointLight->quadratic);
+            Lighting::pointLightMaterial->setFloat("radius",      pointLight->radius);
+            Lighting::pointLightMaterial->setVec3( "position",    pointLight->gameObject->transform->getPosition());
+            Lighting::pointLightMaterial->setVec3( "lightColour", pointLight->colour);
+            Lighting::pointLightMaterial->setFloat("constant",    pointLight->constant);
+            Lighting::pointLightMaterial->setFloat("linear",      pointLight->linear);
+            Lighting::pointLightMaterial->setFloat("quadratic",   pointLight->quadratic);
 
             glDrawElements(GL_TRIANGLES, Lighting::pointLightMesh->indexes.size(), GL_UNSIGNED_INT, (void*)0);
         }
 
-        glUseProgram(0);
+        Lighting::pointLightMaterial->unuse();
         glCullFace(GL_BACK);
     }
 
     void renderAmbient(float power, GLuint gPosition, GLuint gNormal, GLuint gAlbedo) {
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        
         Lighting::ambientMaterial->use();
         Lighting::ambientMaterial->setFloat("power", power);
         
@@ -167,6 +166,5 @@ namespace Lighting {
 
         WebGLaSS::renderPipeline.bindRenderQuad();
         glDrawArrays(GL_TRIANGLES, 0, 6);
-        glDisable(GL_BLEND);
     }
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../src/WebGLaSS/GameObject/GameObject.hpp"
+#include "../src/WebGLaSS/Math/Math.hpp"
 #include "../src/WebGLaSS/components/MeshRenderer/MeshRenderer.hpp"
 #include "../src/WebGLaSS/components/TextUI/TextUI.hpp"
 #include "../src/WebGLaSS/components/Camera/Camera.hpp"
@@ -9,6 +10,7 @@
 #include "assets/TransformRotator/TransformRotator.hpp"
 
 TextUI* deltaTimeText;
+Math::RollingAverage deltaTimeAverage(300);
 
 extern "C" void Start() {
     GameObject* stage = new GameObject();
@@ -37,7 +39,11 @@ extern "C" void Start() {
 
     GameObject* light = new GameObject();
     light->createComponent<Lighting::PointLight>();
-    light->transform->setPosition(glm::vec3(0.0f, 2.0f, 4.0f));
+    light->transform->setPosition(glm::vec3(0.0f, 1.5f, 4.0f));
+
+    GameObject* light2 = new GameObject();
+    light2->createComponent<Lighting::PointLight>();
+    light2->transform->setPosition(glm::vec3(3.0f, 2.0f, -0.75f));
 
     GameObject* player = new GameObject();
     Camera* camera = player->createComponent<Camera>();
@@ -55,5 +61,6 @@ extern "C" void Start() {
 }
 
 extern "C" void Update() {
-    deltaTimeText->setText(&std::to_string(Time::frameTime * 1000)[0]);
+    deltaTimeAverage.addValue(Time::frameTime);
+    deltaTimeText->setText(&std::to_string(deltaTimeAverage.getAverage() * 1000).append("ms")[0]);
 }
