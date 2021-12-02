@@ -6,15 +6,17 @@ namespace Math {
 
     class RollingAverage {
     public:
-        RollingAverage(int length);
+        int length;
+        bool ignoreZeros;
+
+        RollingAverage(int length, bool ignoreZeros = true);
 
         void addValue(float value);
         float getAverage();
-
-        int length;
     private:
         std::vector<float> values;
         int currentIndex = 0;
+        int maxIndex = 0;
         float total = 0;
     };
 }

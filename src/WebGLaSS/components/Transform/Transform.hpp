@@ -8,7 +8,11 @@
 
 class Transform : public Component {
 public:
+	glm::vec3 scale = glm::vec3(1,1,1);
+	std::vector<Transform*> children;
+
 	Transform();
+	~Transform();
 
 	virtual glm::vec3 getPosition();
 	virtual glm::vec3 getWorldPosition();
@@ -19,7 +23,6 @@ public:
 
 	virtual void addRotation(glm::vec3 rotation);
 
-	glm::vec3 scale = glm::vec3(1,1,1);
 	virtual glm::mat4 getTranslationMatrix();
 	virtual glm::mat4 getRotationMatrix();
 	virtual glm::mat4 getScaleMatrix();
@@ -33,7 +36,6 @@ public:
 
 	Transform* getParent();
 	virtual void setParent(Transform* parent);
-	std::vector<Transform*> children;
 
 protected:
 	Transform* parent = NULL;

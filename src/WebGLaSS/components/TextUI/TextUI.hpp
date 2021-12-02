@@ -11,6 +11,8 @@
 
 class TextUI : public Renderer2d {
 public:
+    glm::vec3 colour;
+    
     TextUI();
 
     void setFont(const char* filepath);
@@ -20,8 +22,6 @@ public:
     void setColour(glm::vec3 colour);
     
     RuntimeFont::FontFace* getFont();
-
-    glm::vec3 colour;
 private:
     const char* text;
     RuntimeFont::FontFace* face;

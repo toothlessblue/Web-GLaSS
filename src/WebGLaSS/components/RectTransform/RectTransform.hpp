@@ -6,15 +6,15 @@
 
 class RectTransform : public Transform {
 public:
-    RectTransform();
-
-    void update() override;
-    
     glm::vec2 anchorMin = glm::vec2(0, 0);
     glm::vec2 anchorMax = glm::vec2(0, 0);
 
     float width;
     float height;
+
+    RectTransform();
+
+    void update() override;
 
     void setLeft(float v);
     void setRight(float v);

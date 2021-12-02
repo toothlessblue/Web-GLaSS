@@ -12,6 +12,7 @@
 class MeshRenderer : public Renderer {
 public:
     MeshRenderer();
+    ~MeshRenderer();
 
     void render(bool useMaterial = true) override;
     void update() override;

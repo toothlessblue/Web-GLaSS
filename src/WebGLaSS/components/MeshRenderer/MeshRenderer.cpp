@@ -6,6 +6,8 @@ MeshRenderer::MeshRenderer() {
     this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
 }
 
+MeshRenderer::~MeshRenderer() { }
+
 void MeshRenderer::render(bool useMaterial) {
     if (!this->mesh) {
         std::cerr << "MeshRenderer does not have a mesh assigned" << std::endl;

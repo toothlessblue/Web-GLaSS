@@ -1,6 +1,7 @@
 #include "Component.hpp"
 
 Component::Component() { }
+Component::~Component() { }
 void Component::update() { }
 void Component::start() { }
 

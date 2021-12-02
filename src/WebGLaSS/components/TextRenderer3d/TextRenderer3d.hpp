@@ -10,6 +10,8 @@
 
 class TextRenderer3d : public Renderer {
 public:
+    glm::vec3 colour;
+
     TextRenderer3d();
 
     void setFont(const char* filepath);
@@ -17,8 +19,6 @@ public:
     void render(bool useMaterial) override;
     void setText(const char* text);
     void setColour(glm::vec3 colour);
-
-    glm::vec3 colour;
 private:
     const char* text;
     RuntimeFont::FontFace* face;

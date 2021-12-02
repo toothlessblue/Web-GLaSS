@@ -15,7 +15,6 @@ Math::RollingAverage deltaTimeAverage(300);
 extern "C" void Start() {
     GameObject* stage = new GameObject();
     MeshRenderer* stageMeshRenderer = stage->createComponent<MeshRenderer>();
-    stageMeshRenderer->deleteMesh();
     stageMeshRenderer->setMesh(ModelLoader::OBJ::loadMesh("/models/stage.obj"));
     stageMeshRenderer->material = new Material("/shaders/SimpleVertexShader.vert", "/shaders/SimpleFragmentShader.frag");
     stageMeshRenderer->material->setTexture("albedoTexture", GenericTextures::whiteDot);

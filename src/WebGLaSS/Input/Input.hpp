@@ -11,6 +11,12 @@
 namespace Input {
     namespace Mouse {
         extern float sensitivity;
+        extern bool locked;
+
+        extern glm::vec2 latePosition;  // Most up to date position
+        extern glm::vec2 earlyPosition; // Last position
+        extern glm::vec2 delta;         // delta between late and early positions
+        extern glm::vec2 motion;        // delta multiplied by sensitivity
 
         void doLoop();
 
@@ -18,15 +24,10 @@ namespace Input {
         void unlock(); // inverse of lock
 
         glm::quat getMotionRotation();
-
-        extern glm::vec2 latePosition;  // Most up to date position
-        extern glm::vec2 earlyPosition; // Last position
-        extern glm::vec2 delta;         // delta between late and early positions
-        extern glm::vec2 motion;        // delta multiplied by sensitivity
     }
 
     namespace Keyboard {
-        bool getKey();
+        bool getKey(int key);
         glm::vec3 get6KeyVector3d(int forward, int back, int left, int right, int down, int up);
     }
 }

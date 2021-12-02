@@ -9,6 +9,11 @@ Transform::Transform() {
     this->rotation = glm::quat(glm::vec3(0,0,0));
 }
 
+Transform::~Transform() {
+    for (Transform* transform : this->children) {
+        transform->setParent(NULL);
+    }
+}
 
 void Transform::setRoation(glm::quat rotation) {
     this->rotation = rotation;

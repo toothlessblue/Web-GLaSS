@@ -7,6 +7,14 @@
 
 class Mesh {
 public:
+    GLuint indexBuffer;
+    GLuint vertexBuffer;
+
+    std::vector<glm::vec3> vertices;
+    std::vector<glm::vec2> uvs;
+    std::vector<glm::vec3> normals;
+    std::vector<unsigned int> indexes;
+
     Mesh();
 
     void recalculateNormals();
@@ -23,16 +31,8 @@ public:
     std::vector<glm::vec2> getUVs();
     std::vector<glm::vec3> getNormals();
     std::vector<unsigned int> getIndexes();
-
-    GLuint indexBuffer;
-    GLuint vertexBuffer;
-
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec2> uvs;
-    std::vector<glm::vec3> normals;
-    std::vector<unsigned int> indexes;
+    
 private:
-
     std::vector<float> bufferData;
 };
 

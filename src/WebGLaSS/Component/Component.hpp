@@ -7,6 +7,7 @@ public:
 	GameObject* gameObject;
 
 	Component(); // gameObject unavailable in constructor
+	~Component();
 	virtual void start();
 	virtual void update();
 

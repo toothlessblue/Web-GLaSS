@@ -80,6 +80,10 @@ RenderPipeline::~RenderPipeline() {
     for (Renderer *renderer : this->renderers) {
         delete renderer;
     }
+
+    for (Renderer2d *renderer : this->renderers2d) {
+        delete renderer;
+    }
 }
 
 void RenderPipeline::render2dElements() {

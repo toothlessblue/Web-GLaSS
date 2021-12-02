@@ -28,23 +28,24 @@ namespace RuntimeFont {
 
     class FontFace {
     public:
-        FontFace(const char* filepath, int fontSize);
-        FontFace();
-
         GLuint atlasTexture;
         AtlasCharacterPositionInfo atlasInfo[128];
 
         unsigned int atlasWidth;
         unsigned int atlasHeight;
 
+        const char* filepath;
+        bool loaded = false;
+        int fontSize;
+
+        FontFace(const char* filepath, int fontSize);
+        FontFace();
+
         void clearResources();
         void load();
         void generateFontAtlas(unsigned int glyphStartIndex = 32, unsigned int glyphEndIndex = 128);
         Mesh generateMesh(const char *text, float ox = 0, float oy = 0);
-
-        const char* filepath;
-        bool loaded = false;
-        int fontSize;
+        
     private:
         FT_Face face;
     };

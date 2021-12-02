@@ -97,9 +97,8 @@ namespace Lighting {
     void renderPointLightShadows() {
         glViewport(0, 0, Shadows::resolution, Shadows::resolution);
         glBindFramebuffer(GL_FRAMEBUFFER, Shadows::depthmapFramebuffer);
-        glDrawBuffers(0, { GL_NONE });
+        glDrawBuffers(0, GL_NONE);
         glReadBuffer(GL_NONE);
-
 
         Lighting::pointLightShadowCubemapMaterial->setFloat("farPlane", Shadows::farPlane);
 

@@ -31,6 +31,10 @@ Screen::Screen(int width, int height) {
     }
 }
 
+Screen::~Screen() {
+    delete this->window;
+}
+
 float Screen::getRatio() {
     return (float)(this->width) / (float)(this->height);
 }
