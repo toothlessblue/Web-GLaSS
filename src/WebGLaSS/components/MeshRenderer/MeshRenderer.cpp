@@ -3,7 +3,7 @@
 
 MeshRenderer::MeshRenderer() {
     // this->mesh = PrimitiveMeshes::generateSphereMesh(20, 20, 1.0f);
-    this->mesh = ModelLoader::OBJ::loadMesh("/models/cube.obj");
+    this->setMesh(ModelLoader::OBJ::loadMesh("/models/cube.obj"));
 }
 
 MeshRenderer::~MeshRenderer() { }

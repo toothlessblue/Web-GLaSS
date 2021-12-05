@@ -38,7 +38,7 @@ public:
     void unuse();
 private:
     std::vector<TextureBinding> textureBindings;
-    GLuint textureUnitCounter = 6;
+    GLuint textureUnitCounter = 0;
     std::map<std::string, GLint> attributeIndexCache;
 
     GLint getAttributeIndex(const char* name);

@@ -81,6 +81,8 @@ void Mesh::setIndexes(std::vector<unsigned int> indexes) {
  */
 void Mesh::bindMesh() {
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBuffer);
+
+    // Vertices
     glVertexAttribPointer(
         0,                    // attribute 0
         3,                    // size - vec3
@@ -90,6 +92,7 @@ void Mesh::bindMesh() {
         (void*)0              // array buffer offset
     );
 
+    // Normals
     glVertexAttribPointer(
         1,                    // attribute 1
         3,                    // size - vec3
@@ -99,6 +102,7 @@ void Mesh::bindMesh() {
         (void*)(3 * sizeof(float)) // array buffer offset
     );
 
+    // UVs
     glVertexAttribPointer(
         2,                    // attribute 2
         2,                    // size - vec2
