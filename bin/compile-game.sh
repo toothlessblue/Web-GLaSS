@@ -24,7 +24,7 @@ AUTOMAKE_OPTIONS = foreign
 bin_PROGRAMS = index
 MAKEFLAGS = -j$NPROCS
 AM_LDFLAGS = -fexceptions \
--O3 \
+-O0 \
 -s LLD_REPORT_UNDEFINED \
 -s WASM=1 \
 -s MAX_WEBGL_VERSION=2 \
@@ -32,6 +32,7 @@ AM_LDFLAGS = -fexceptions \
 -o ./lib/index.js \
 -fsanitize=undefined \
 --preload-file ./lib/resources@/ \
+--memoryprofiler \
 -L./external-libs -lfreetype
 index_SOURCES=$CPP_FILEPATHS $CPP_DEV_GAME_FILEPATHS" > Makefile.am
 
