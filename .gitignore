@@ -809,9 +809,7 @@ config.h.in
 compile
 aclocal.m4
 Makefile
-Makefile.am
 Makefile.in
-a.wasm
 config.guess
 config.sub
 depcomp

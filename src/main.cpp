@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
-
 #include <emscripten.h>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include "../include/glm/glm.hpp"
 #include "../include/glm/gtc/quaternion.hpp"
@@ -22,7 +16,7 @@ extern "C" void Update();
 
 extern "C" void gameLoop() {
     Time::frameStart();
-    
+
     Input::Mouse::doLoop();
     WebGLaSS::renderPipeline.render();
     WebGLaSS::worldSpace.updateGameObjects();
