@@ -7,10 +7,10 @@ These steps set up CLion to build the engine along with the test game, by clicki
 Toolchains are global, however the modified CMake and Makefile configs are per make project, which is very handy :) 
 
 To export the engine for distribution, it's still required to run `bin/export.sh`
-meet
+
 Assuming:
-- using WSL on Windows 10.
 - Node >12 is installed somewhere
+- autotools are installed (`sudo apt-get update && sudo apt-get install autoconf`)
 
 0. Run `bin/install/install.sh`
 1. [Create a new emscripten toolchain](#Create-a-new-emscripten-toolchain)

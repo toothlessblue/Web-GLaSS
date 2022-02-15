@@ -814,6 +814,10 @@ config.guess
 config.sub
 depcomp
 install-sh
+a.wasm
+lib/index
+lib/index.data
+lib/index.wasm
 
 # Other
 

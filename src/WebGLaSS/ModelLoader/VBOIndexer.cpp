@@ -1,4 +1,4 @@
-#include "vboindexer.hpp"
+#include "VBOIndexer.hpp"
 
 namespace VBOIndexer {
     // Returns true iif v1 can be considered equal to v2
